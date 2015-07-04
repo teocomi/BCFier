@@ -9,7 +9,7 @@ Currently BCFier is composed of:
 
 Ready to start developing BCFier? Keep reading!
 
-**If you are looking for a Guide on how to use the installed version of BCFier instedad, refer to the [UserGuide](https://github.com/teocomi/BCFier/blob/master/UserGuide.md)**
+**If you are looking for a Guide on how to use the installed version of BCFier instedad, refer to the [UserGuide](http://bcfier.com/userguide/)**
 
 ##Disclaimer
 I have only recently started to document this project, please be comprehensive and help by pointing out what is not clear or missing.
