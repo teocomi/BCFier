@@ -1,20 +1,252 @@
----
-layout: default
----
+<!DOCTYPE html>
+<html>
 
-<div class="home">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>BCFier</title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="BCFier is an Open Source tool developed to help you create better buildings.">
+    <link rel="canonical" href="https://bcfier.com/bcfier//">
 
-  <h1>Posts</h1>
 
-  <ul class="posts">
-    {% for post in site.posts %}
-      <li>
-        <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span>
-        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-      </li>
-    {% endfor %}
-  </ul>
+    <!-- Custom CSS & Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
+    <link rel="stylesheet" href="/bcfier//style.css">
 
-  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
+    <!-- Custom Fonts
+    <link rel="stylesheet" href="/bcfier//css/font-awesome/css/font-awesome.min.css">
+    <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+ -->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
 
-</div>
+
+
+    <body id="page-top" class="index">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top"><img src="img/bcfier.png" class="img-responsive" alt="BCFier"></a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#about">About</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#features">Features</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#download">Download</a>
+                    </li> 
+                    <li>
+                        <a class="page-scroll" href="#credits">Credits</a>
+                    </li> 
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="intro-text">
+                <div class="intro-lead-in">Hi, this is BCFier!</div>
+                <div class="intro-heading">Let me help fix your buildings</div>
+                <a href="#about" class="page-scroll btn btn-xl">Tell Me More</a>
+            </div>
+        </div>
+    </header>
+<!--
+        
+          
+        
+          
+        
+ -->
+
+
+    <!-- Services Section -->
+    <section id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">About</h2>
+                    <h3 class="section-subheading text-muted">BCFier is an Open Source tool developed to help you deliver better buildings.</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-lg-offset-2">
+                    <p>Like IFC is the open standard for Building Information models, <a href="http://www.buildingsmart-tech.org/specifications/bcf-releases">BCF</a> is the open standard for Building Issues. BCFier is a set of plugins and standalone apps that handle BCF and integrate directly with BIM tools.</p>
+
+                </div>
+                <div class="col-lg-4">
+                   <p>Contribute to the Open BIM community by developing and extending BCFier to support more platforms and and online services, BCFier is now Open Source!</p>
+
+                </div>
+            </div>
+            <div class="row text-center">
+                
+            </div>
+        </div>
+    </section>
+    <!-- About Section -->
+    <section id="features">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Features</h2>
+                    <h3 class="section-subheading text-muted">BCFier is an evolving project, stay tuned for updates and new features.</h3>
+                </div>
+            </div>
+             <hr class="featurette-divider">
+       
+        <div class="featurette" >
+            <img class="featurette-image img-circle pull-right" src="img/revit.png">
+            <h2 class="featurette-heading">Autodesk Revit Addin
+                <span class="text-muted">and standalone viewer</span>
+            </h2>
+            <p class="lead">
+Create and open BCF files directly within Autodesk Revit 2015 and 2016. With BCFier you can create isseus of 3D and 2D* views, add multiple views and comments to an issue and easily share them with other team members. BCFier also features a standalone Windows app that lets you review BCF files without the need of third party tools. 
+<br /><br />
+Check out the <a href="https://github.com/teocomi/BCFier/blob/master/UserGuide.md">User Guide</a> on how to get started.
+</p>
+<p>*2D views are not a feature part of BCF therefore this functionality will only work in Revit.</p>
+
+        </div>
+         <hr class="featurette-divider">
+      
+        <div class="featurette" >
+            <img class="featurette-image img-circle pull-left" src="img/git.jpg">
+            <h2 class="featurette-heading">OPEN SOURCE
+                <span class="text-muted">Fork it & pull it</span>
+            </h2>
+            <p class="lead">
+BCFier is an open source project, join its community and contribute by making suggestions and reporting bugs using <a href="https://github.com/BuildingSMART/BCF-API">GitHub Issues</a>, or by developing new features and modules. At the top of the backlog there is integration with the <a href="https://github.com/BuildingSMART/BCF-API">BCF REST API</a> and with new BIM tools. 
+<br /><br />
+Check out the <a href="https://github.com/teocomi/BCFier">GitHub project</a> for documentation and code.
+</p>
+
+        </div>
+         <hr class="featurette-divider">
+   
+        </div>
+    </section>
+    <!-- About Section -->
+    <section id="download">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Get it!</h2>
+                    <h3 class="section-subheading text-muted">Download the installer for Windows or fork it on GitHub.</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+<a href="https://github.com/teocomi/BCFier" class="btn btn-xl down">Download</a>
+<a href="https://github.com/teocomi/BCFier" class="btn btn-xl after down">Fork it on GitHub</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h3 class="section-subheading2 text-muted">Latest stableversion is BCFier 2.0.0.0 and it was released on the 5th of July 2015.</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Services Section -->
+    <section id="credits">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Credits</h2>
+                    <h3 class="section-subheading text-muted">BCFier is powered by a community of people who love what they do, spend a moment to say thanks.</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-lg-offset-2">
+                    <p>BCFier is an effort stared by Matteo Cominetti <a href="https://twitter.com/teocomi">@teocomi</a>. At the moment there are no other contributors, be the first!</p>
+
+                </div>
+                <div class="col-lg-4">
+                    <p>This webpage was created using <a href="http://jekyllrb.com/">Jekyll</a> and the <a href="http://ironsummitmedia.github.io/startbootstrap-agency/">Agency theme</a>, it’s hosted on <a href="https://pages.github.com/">GitHub Pages</a>.</p>
+
+                </div>
+            </div>
+            <div class="row text-center">
+                
+            </div>
+        </div>
+    </section>
+      <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <span class="copyright">Copyright &copy; BCFier 2015</span>
+                </div>
+                <div class="col-md-4">
+                    <ul class="list-inline social-buttons">
+                        
+                        <li><a href="https://twitter.com/BCFier"><i class="fa fa-twitter"></i></a>
+                        </li>
+                        
+                        <li><a href="https://github.com/teocomi/BCFier"><i class="fa fa-github"></i></a>
+                        </li>
+                        
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <ul class="list-inline quicklinks">
+                        <li><a href="http://opensource.org/licenses/MIT">MIT License</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+     <!-- jQuery Version 1.11.0 -->
+    <script src="/bcfier//js/jquery-1.11.0.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/bcfier//js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="/bcfier//js/jquery.easing.min.js"></script>
+    <script src="/bcfier//js/classie.js"></script>
+    <script src="/bcfier//js/cbpAnimatedHeader.js"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="/bcfier//js/jqBootstrapValidation.js"></script>
+    <script src="/bcfier//js/contact_me.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="/bcfier//js/agency.js"></script>
+
+
+    </body>
+</html>
