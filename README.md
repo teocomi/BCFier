@@ -9,7 +9,7 @@ Currently BCFier is composed of:
 
 Ready to start developing BCFier? Keep reading!
 
-**If you are looking for a Guide on how to use the installed version of BCFier instedad, refer to: Guide_To_Be_Creaded.**
+**If you are looking for a Guide on how to use the installed version of BCFier instedad, refer to the [UserGuide](https://github.com/teocomi/BCFier/blob/master/UserGuide.md)**
 
 ##Disclaimer
 I have only recently started to document this project, please be comprehensive and help by pointing out what is not clear or missing.
@@ -57,7 +57,3 @@ A more detailed list of things that need to be done can be found in the [issues 
 **New Autodesk Revit module Features**
 - support for crop boxes
 - a setting to apply vew templates to new view
-
-
-
-
