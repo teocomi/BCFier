@@ -1,0 +1,22 @@
+<!-- About Section -->
+    <section id="features">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Features</h2>
+                    <h3 class="section-subheading text-muted">{{ site.features }}</h3>
+                </div>
+            </div>
+             <hr class="featurette-divider">
+  {% for post in site.posts %}     
+        <div class="featurette" >
+            <img class="featurette-image img-circle pull-{{ post.pull }}" src="img/{{ post.img }}">
+            <h2 class="featurette-heading">{{ post.title }}
+                <span class="text-muted">{{ post.subtitle }}</span>
+            </h2>
+            {{ post.content }}
+        </div>
+         <hr class="featurette-divider">
+ {% endfor %}  
+        </div>
+    </section>
