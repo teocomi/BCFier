@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+  {% include head.html %}
+
+
+    <body id="page-top" class="index">
+    {% include navigation.html %}   
+    {% include header-page.html %} 
+     <section id="page">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+               {{ page.content | markdownify}}
+                </div>
+            </div>
+        </div>
+    </section>
+    {% include footer.html %}
+    {% include js.html %}
+    </body>
+</html>

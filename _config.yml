@@ -19,6 +19,19 @@ credits1: "BCFier is an effort stared by Matteo Cominetti [@teocomi](https://twi
 credits2: "This webpage was created using [Jekyll](http://jekyllrb.com/) and the [Agency theme](http://ironsummitmedia.github.io/startbootstrap-agency/), it's hosted on [GitHub Pages](https://pages.github.com/)."
 
 download: "Download the installer for Windows or fork it on GitHub."
+
+download1: "<p class='lead' markdown='1'>The installer contains all the available modules and you'll be able to select what to install.<br/><br/>If it's the first time you use BCFier, check out the [User Guide](/userguide),<br/>if you are a developer check out the [Documentation](https://github.com/teocomi/BCFier).</p>"
+
+navigation:
+- text: About
+  url: "/#about"
+- text: Features
+  url: "/#features"
+- text: Download
+  url: "/#download"
+- text: Credits
+  url: "/#credits"
+
 # Color settings (hex-codes without the leading hash-tag)
 color:
   primary: 4DBFF5
