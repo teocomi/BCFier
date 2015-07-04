@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Bcfier>
+	<Name>BCFier 2</Name>
+	<Version>2.0.0.0</Version>
+	<Changelog>
+		<NewFeatures>
+			<Feature>BCFier becomes open source!</Feature>
+			<Feature>Support for BCF2</Feature>
+			<Feature>New UI</Feature>
+		</NewFeatures>
+		<BugFixes>
+			<Bug>Several minor bug fixes</Bug>
+		</BugFixes>
+</Changelog>
+	<URL>http://bcfier.com/#download</URL>
+</Bcfier>
