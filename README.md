@@ -1,9 +1,9 @@
 ![](/Assets/bcfier-text.png)
 ##Intro
-BCFier is an Open Source tool developed to help you create better buildings. 
+BCFier is an extendible Open Source tool developed to help you create better buildings. 
 Like IFC is the open standard for Building Information models, [BCF](http://www.buildingsmart-tech.org/specifications/bcf-releases) is the open standard for Building Issues. BCFier is a set of plugins and standalone apps (modules) that handle BCF and integrate directly with BIM tools.
 
-Currently BCFier is composed of:
+Currently BCFier is composed of the following modules:
 - Autodesk Revit 2015 and 2016 addin
 - Standalone Windows Viewer
 
@@ -16,29 +16,32 @@ I have only recently started to document this project, please be comprehensive a
 
 ##Getting Started
 
-To get started fork the repo, if you are going to extend the Revit Project make sure the dlls are referenced correctly, otherwise there are no other dependencies that need to be added. 
+To get started fork the repo, if you are going to extend the Revit Project make sure the Autodesk dlls are referenced correctly, otherwise there are no other dependencies that need to be added. 
 
 ###Structure
 
-The core of BCFier is under `Teocomi.Bcfier`, it contains all the logic and UI that is used by all the different integrations (modules). All modules will reference that project and extend it adding specific commands for the software they are integrating with.
+The core of BCFier is under `Bcfier`, it contains all the logic and UI that is used by all the different integrations (modules). All modules will reference that project and extend it adding specific commands for the software they are integrating with.
 
-The control `Teocomi.Bcfier.UserControls.BcfierPanel` contains the logic and UI for the main panel, while `Teocomi.Bcfier.UserControls.BcfReportPanel` for each BCF opened inside the TabControl.
+The control `Bcfier.UserControls.BcfierPanel` contains the logic and UI for the main panel, while `Bcfier.UserControls.BcfReportPanel` for each BCF opened inside the TabControl.
 
-All controls bind to ModelViews defined in `Teocomi.Bcfier.Bcf.Data`, it's not a perfect MVVM models since I use the same classes to serialize/deserialize BCFs, but it works great.
+All controls bind to ModelViews defined in `Bcfier.Bcf`, it's not a perfect MVVM models since I use the same classes to serialize/deserialize BCFs, but it works great.
 
 ###Creating a new Module
 To create a new Module, for instance, an Achicad plugin, follow these steps:
-- create a new project with the namespace `Teocomi.Bcfier.Archicad`
-- reference the `Teocomi.Bcfier` project
+- create a new project with the namespace `Bcfier.Archicad`
+- reference the `Bcfier` project
 - add the specific Archicad methods and structure to fire the plugin (like the Entry folder in the Revit plugin)
-- create a main WPF window that contains the `Teocomi.Bcfier.UserControls.BcfierPanel`
+- create a main WPF window that contains the `Bcfier.UserControls.BcfierPanel`
 - create a command for adding a new view (`data:Commands.AddView`), this will have to generate a BCF ViewPoint (see Revit plugin for reference)
 - create a command for and opening a view (`data:Commands.OpenView`)
 - extend the installer to copy these new dlls where needed
 
 ###Settings
-The settings file is stored in `%localappdata%\BCFier` so that it can be accessible by all modules, ideally the Settingd Window UI will have different tabs for each module and those will show up only if that specific module is installed.
-The class that handles the settings file is under `Teocomi.Bcfier.Data.Utils.UserSettings`, and stores the file as a `ExeConfigurationFileMap` for easy management. The same class provides methods to automatically save/retrieve settings based on the UserControl name.
+The settings file is stored in `%localappdata%\BCFier\settings.config` so that it can be accessible by all modules, the Settingd Window UI will has different tabs for each module and ideally those will show up only if that specific module is installed.
+The class that handles the settings file is under `Bcfier.Data.Utils.UserSettings`, and stores the file as a `ExeConfigurationFileMap` for easy management. The same class provides methods to automatically save/retrieve settings based on the UserControl name.
+
+##Autodesk Revit Addin
+The module for Autodesk Revit is in `Bcfier.Revit`, the project builds fine for Revit 2015 and 2016 so for now the same dlls are used for both, in the future we'll need to differenciate.
 
 ##Installer
 The installer uses the free and awesome [InnoSetup](http://www.jrsoftware.org/isinfo.php) to generate .exe files, extending the .iss files is pretty straightforward.
