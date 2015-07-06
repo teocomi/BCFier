@@ -1,0 +1,51 @@
+﻿<bcf:BcfFile  xmlns:bcf2="clr-namespace:Bcfier.Bcf.Bcf2" xmlns:bcf="clr-namespace:Bcfier.Bcf">
+  <bcf:BcfFile.Issues>
+    <bcf2:Markup >
+      <bcf2:Markup.Topic>
+        <bcf2:Topic Title="Topic of first issue created for Design Time" Description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
+      </bcf2:Markup.Topic>
+      <bcf2:Markup.Comment>
+        <bcf2:Comment Comment1="Comment liked to a viewpoint" Author="John Smith" Date="2015-01-13T12:08:26Z" Status="Resolved" VerbalStatus="Fixed it">
+          <bcf2:Comment.Viewpoint>
+            <bcf2:CommentViewpoint Guid="3cc48663-ca13-4866-b90f-72bf53dabb9e"/>
+          </bcf2:Comment.Viewpoint>
+        </bcf2:Comment>
+        <bcf2:Comment Comment1="Another comment liked to a viewpoint" Author="Mark Green" Date="2015-01-13T12:08:26Z" Status="Open">
+          <bcf2:Comment.Viewpoint>
+            <bcf2:CommentViewpoint Guid="3cc48663-ca13-4866-b90f-72bf53dabb9e"/>
+          </bcf2:Comment.Viewpoint>
+        </bcf2:Comment>
+        <bcf2:Comment Comment1="Comment not linked to a viewpoint" Author="John Smith" Date="2015-02-13T12:08:26Z" Status="Open" VerbalStatus="Urgent" >
+        </bcf2:Comment>
+      </bcf2:Markup.Comment>
+
+      <bcf2:Markup.Viewpoints>
+        <bcf2:ViewPoint SnapshotPath="http://placehold.it/350x150" Guid="3cc48663-ca13-4866-b90f-72bf53dabb9e"
+                        Snapshot="snapshot.png" Viewpoint="viewpoint.bcfv"/>
+        <bcf2:ViewPoint SnapshotPath="http://placehold.it/250x50" Guid="d917f96a-d460-4a15-9541-469b64229887"
+                        Snapshot="snapshot.png" Viewpoint="viewpoint.bcfv"/>
+      </bcf2:Markup.Viewpoints>
+
+
+    </bcf2:Markup>
+    <bcf2:Markup >
+      <bcf2:Markup.Topic>
+        <bcf2:Topic Title="Second issue for Design Time" Description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
+      </bcf2:Markup.Topic>
+      <bcf2:Markup.Comment>
+      
+        <bcf2:Comment Comment1="Comment not linked to a viewpoint" Author="John Smith" Date="2015-02-13T12:08:26Z" Status="Open" VerbalStatus="Urgent" >
+        </bcf2:Comment>
+      </bcf2:Markup.Comment>
+
+      <bcf2:Markup.Viewpoints>
+        <bcf2:ViewPoint SnapshotPath="http://placehold.it/350x150" Guid="3cc48663-ca13-4866-b90f-72bf53dabb9e"
+                        Snapshot="snapshot.png" Viewpoint="viewpoint.bcfv"/>
+        <bcf2:ViewPoint SnapshotPath="http://placehold.it/250x50" Guid="d917f96a-d460-4a15-9541-469b64229887"
+                        Snapshot="snapshot.png" Viewpoint="viewpoint.bcfv"/>
+      </bcf2:Markup.Viewpoints>
+
+
+    </bcf2:Markup>
+  </bcf:BcfFile.Issues>
+</bcf:BcfFile> 

@@ -1,0 +1,9 @@
+﻿<Window x:Class="Bcfier.Revit.AddViewRevit"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ctr="clr-namespace:Bcfier.UserControls;assembly=Bcfier"
+        Title="Add View" SizeToContent="WidthAndHeight" Icon="Assets/icon.ico">
+    <Grid>
+    <ctr:AddView x:Name="AddViewControl" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"/>   
+    </Grid>
+</Window>

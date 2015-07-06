@@ -1,0 +1,145 @@
+﻿<UserControl x:Class="Bcfier.UserControls.BcfierPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:src="clr-namespace:Bcfier.Data.ValueConverters"
+             xmlns:data="clr-namespace:Bcfier.Data"
+             xmlns:ctr="clr-namespace:Bcfier.UserControls"
+             xmlns:themes="clr-namespace:Bcfier.Themes"
+             mc:Ignorable="d" 
+             DragEnter="Window_DragEnter" DragLeave="Window_DragLeave" 
+             AllowDrop="True" Drop="Window_Drop" DragOver="Window_DragOver" >
+
+  <UserControl.Resources>
+
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../Themes/Icons.xaml" />
+        <ResourceDictionary Source="../Themes/ButtonStyles.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+
+      <src:BoolStarConverter x:Key="BoolStarConverter"/>
+      <src:BoolVisibConverter x:Key="BoolVisibConverter"/>
+    </ResourceDictionary>
+
+  </UserControl.Resources>
+  <UserControl.CommandBindings>
+    <CommandBinding Command="data:Commands.DeleteIssues" Executed="OnDeleteIssues" CanExecute="HasIssueSelected" />
+    <CommandBinding Command="data:Commands.AddComment" Executed="OnAddComment" />
+    <CommandBinding Command="data:Commands.DeleteComments" Executed="OnDeleteComment" />
+    <!--<CommandBinding Command="data:Commands.AddView" Executed="OnAddView" />-->
+    <CommandBinding Command="data:Commands.AddIssue" Executed="OnAddIssue" />
+    <CommandBinding Command="data:Commands.DeleteViews" Executed="OnDeleteView" />
+    <!--<CommandBinding Command="data:Commands.OpenView" Executed="OnOpenView" />-->
+    <CommandBinding Command="data:Commands.OpenSnapshot" Executed="OnOpenSnapshot" />
+    <CommandBinding Command="data:Commands.OpenComponents" Executed="OnOpenComponents" />
+    <CommandBinding Command="data:Commands.CloseBcf" Executed="OnCloseBcf" />
+
+  </UserControl.CommandBindings>
+  <Grid Background="{StaticResource BackgroundLight}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="*"/>
+
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+    <Canvas Grid.ColumnSpan="6" Name="whitespace" Grid.RowSpan="6" Background="WhiteSmoke" Opacity=".70" Panel.ZIndex="100" Visibility="Collapsed" />
+
+    <!--MENU        ******************************************************************************************************************************-->
+    <DockPanel  Grid.ColumnSpan="3" Background="{StaticResource SecondaryLight}">
+
+      <themes:ButtonIcon ToolTip="New BCF Report" x:Name="NewBcfBtn" Style="{StaticResource MainMenuButton}" Content="New BCF" IconPath="{StaticResource IconNewFile}"/>
+      <themes:ButtonIcon ToolTip="Save BCF as..." x:Name="SaveBcfBtn" Style="{StaticResource CanSaveEnablerStyle}" Content="Save as..." IconPath="{StaticResource IconSaveFile}"/>
+      <themes:ButtonIcon ToolTip="Open a BCF..."  x:Name="OpenBcfBtn" Content="Open..." IconPath="{StaticResource IconOpenFile}" Style="{StaticResource MainMenuButton}"/>
+      <themes:ButtonIcon ToolTip="Merge one or more BCFs with the current one" x:Name="MergeBcfBtn" Style="{StaticResource CanSaveEnablerStyle}" Content="Merge..." IconPath="{StaticResource IconMergeFile}"/>
+      <themes:ButtonIcon ToolTip="Settings..." x:Name="SettingsBtn"  Style="{StaticResource MainMenuButton}" Content="Settings" IconPath="{StaticResource IconSettings}" />
+      <themes:ButtonIcon ToolTip="Help" x:Name="HelpBtn" HorizontalAlignment="Left" Content="Help" IconPath="{StaticResource IconHelp}" Style="{StaticResource MainMenuButton}"/>
+
+      <Label Name="LabelVersion" Content="BCFier v0.0.1" HorizontalAlignment="Right" Foreground="{StaticResource BackgroundDark}" VerticalAlignment="Center" FontSize="10"/>
+
+    </DockPanel>
+
+    <TabControl Grid.Row="1" Name="BcfTabControl" BorderThickness="0" Margin="0" Padding="0"  ItemsSource="{Binding BcfFiles}" SelectedIndex="{Binding SelectedReportIndex}"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Background="{StaticResource BackgroundLight}">
+      <TabControl.Resources>
+        <Style TargetType="TabItem">
+          <Setter Property="Template">
+            <Setter.Value>
+              <ControlTemplate TargetType="TabItem">
+                <Grid Name="Panel">
+                  <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="10,2"/>
+                </Grid>
+                <ControlTemplate.Triggers>
+                  <Trigger Property="IsSelected" Value="True">
+                    <Setter TargetName="Panel" Property="Background" Value="{StaticResource PrimaryLight}" />
+                  </Trigger>
+                  <Trigger Property="IsSelected" Value="False">
+                    <Setter TargetName="Panel" Property="Background" Value="{StaticResource PrimaryDark}" />
+                  </Trigger>
+                </ControlTemplate.Triggers>
+              </ControlTemplate>
+            </Setter.Value>
+          </Setter>
+        </Style>
+        <Style TargetType="{x:Type TabControl}">
+          <Setter Property="Template">
+            <Setter.Value>
+              <ControlTemplate TargetType="TabControl">
+                <Grid UseLayoutRounding="True">
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="*" />
+                  </Grid.RowDefinitions>
+                  <TabPanel IsItemsHost="True"
+                              Grid.Row="0"
+                              Panel.ZIndex="1" 
+                             Background="{StaticResource PrimaryDark}"/>
+                  <Border Grid.Row="1" Background="{StaticResource PrimaryLight}" />
+                  <Border Grid.Row="2"
+                            
+                            Panel.ZIndex="0"
+                            BorderThickness="0"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}">
+                    <ContentPresenter Margin="0" ContentSource="SelectedContent" />
+                  </Border>
+                </Grid>
+              </ControlTemplate>
+            </Setter.Value>
+          </Setter>
+        </Style>
+      </TabControl.Resources>
+      <TabControl.ItemTemplate>
+        
+        <DataTemplate>
+          <StackPanel Orientation="Horizontal" Margin="2,2,0,2">
+            <TextBlock Text="{Binding Filename}" Foreground="White" FontWeight="Bold"/>
+            <TextBlock Text="{Binding HasBeenSaved, Converter={StaticResource BoolStarConverter}}" VerticalAlignment="Center" Foreground="White"/>
+            <themes:ButtonIcon IsVertical="True" IconMarginVertical="0" Margin="5,0,0,0" Padding="0" Name="CloseButton" 
+                             Command="data:Commands.CloseBcf" CommandParameter="{Binding Id}" BorderThickness="0" IconSizeVertical="8" IconColor="DarkGray" IconPath="{StaticResource IconXClose}"/>
+          </StackPanel>
+        </DataTemplate>
+      </TabControl.ItemTemplate>
+      <TabControl.ContentTemplate>
+        <DataTemplate>
+          <ctr:BcfReportPanel HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"/>
+        </DataTemplate>
+      </TabControl.ContentTemplate>
+    </TabControl>
+    <TextBlock Grid.Row="1" Foreground="{StaticResource BackgroundDark}" FontWeight="Bold" FontSize="40" Padding="40" Visibility="{Binding ElementName=BcfTabControl, Path=HasItems, Converter={StaticResource BoolVisibConverter},ConverterParameter='opposite'}"
+               TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center">
+      Drag&amp;Drop one <LineBreak/>or more BCF files<LineBreak/>to open them
+    </TextBlock>
+
+
+  </Grid>
+</UserControl>
+

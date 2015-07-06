@@ -1,0 +1,69 @@
+﻿using System.Windows;
+using System.ComponentModel;
+using System.Windows.Input;
+using Bcfier.Bcf.Bcf2;
+using Bcfier.UserControls;
+
+
+namespace Bcfier.Win
+{
+
+  /// <summary>
+  /// Interaction logic for MainWindow.xaml
+  /// </summary>
+  public partial class MainWindow : Window
+  {
+    public MainWindow()
+    {
+      InitializeComponent();
+    }
+
+    /// <summary>
+    /// passing event to the user control
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void Window_Closing(object sender, CancelEventArgs e)
+    {
+      e.Cancel = Bcfier.onClosing(e);
+    }
+
+    #region commands
+
+
+    private void OnAddView(object sender, ExecutedRoutedEventArgs e)
+    {
+      try
+      {
+
+        if (Bcfier.SelectedBcf() == null)
+          return;
+        var issue = e.Parameter as Markup;
+        if (issue == null)
+        {
+          MessageBox.Show("No Issue selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+          return;
+        }
+
+        var addView = new AddView(issue, Bcfier.SelectedBcf().TempPath);
+        var win = new Window
+        {
+          Content = addView,
+          Title = "Add View",
+          SizeToContent = SizeToContent.WidthAndHeight,
+          WindowStartupLocation = WindowStartupLocation.CenterScreen
+        };
+        win.ShowDialog();
+        if (win.DialogResult.HasValue && win.DialogResult.Value)
+          Bcfier.SelectedBcf().HasBeenSaved = false;
+
+      }
+      catch (System.Exception ex1)
+      {
+        MessageBox.Show("exception: " + ex1);
+      }
+    }
+    #endregion
+
+  }
+}

@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="Bcfier.UserControls.AddView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:themes="clr-namespace:Bcfier.Themes"
+        xmlns:utils="clr-namespace:Bcfier.Data.Utils" Width="300"
+        DragEnter="Window_DragEnter" DragLeave="Window_DragLeave" 
+        AllowDrop="True" Drop="Window_Drop" DragOver="Window_DragOver">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../Themes/ButtonStyles.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+
+  </UserControl.Resources>
+  <Grid Margin="5">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+    </Grid.RowDefinitions>
+    <Grid Grid.Row="0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="auto"/>
+        <RowDefinition Height="auto"/>
+        <RowDefinition Height="auto"/>
+      </Grid.RowDefinitions>
+      <Canvas Grid.ColumnSpan="6" Name="whitespace" Grid.RowSpan="8" Background="WhiteSmoke" Opacity=".70" Panel.ZIndex="100" Visibility="Collapsed" />
+      <TextBlock Name="TextBlockInfo" TextWrapping="Wrap" FontStyle="Italic" Margin="5" Text="Browse or drag&amp;drop a local image, no 3D information will be included in the viewpoint" Grid.Row="0" VerticalAlignment="Bottom" />
+      <StackPanel Orientation="Horizontal" Grid.Row="1">
+        <Button Margin="5"  Content="Browse..."   Click="Button_LoadImage"/>
+        <Button Content="Annotate" HorizontalAlignment="Left" Margin="0,5,5,5" Style="{StaticResource AnnotateSnapshot}" VerticalAlignment="Top" Width="auto" Click="EditSnapshot_Click"/>
+        <Button Margin="0,5,5,5"  Content="Remove"   Click="Button_RemoveImage" Style="{StaticResource AnnotateSnapshot}"/>
+      </StackPanel>
+      <Image Margin="5"  Grid.Row="2" x:Name="SnapshotImg">
+        <Image.Effect>
+          <DropShadowEffect BlurRadius="10" Opacity="0.5" Direction="316" ShadowDepth="1"/>
+        </Image.Effect>
+      </Image>
+      <!--<Label x:Name="PathLabel" Content="Path" FontStyle="Italic" Height="20" Padding="0" Margin="5, 5" Grid.Row="2"  Foreground="#FF898989"  />-->
+
+    </Grid>
+
+
+    <Expander Grid.Row="1" Header="Include Comment" >
+      <Grid  >
+        <Grid.RowDefinitions>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+
+        <DockPanel HorizontalAlignment="Stretch"  Grid.Row="0"  >
+          <ComboBox  x:Name="comboStatuses" Margin="5" Width="100" ItemsSource="{x:Static utils:Globals.AvailStatuses}" SelectedIndex="0"/>
+          <themes:TextPlaceholder Placeholder="Verbal Status (optional)" MaxLength="20" x:Name="VerbalStatus" HorizontalAlignment="Stretch"   Margin="5" />
+
+        </DockPanel>
+        <TextBox x:Name="CommentBox" Grid.Row="1" Margin="5" Height="70" HorizontalAlignment="Stretch" TextWrapping="Wrap" />
+      </Grid>
+    </Expander>
+    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="5" >
+      <Button Content="Add" IsDefault="True"  Margin="5" Width="75" Click="Button_OK"  Style="{StaticResource AnnotateSnapshot}"/>
+      <Button Content="Cancel"   Margin="5" Width="75" Click="Button_Cancel" Background="Transparent" BorderBrush="Transparent"/>
+    </StackPanel>
+  </Grid>
+</UserControl>
