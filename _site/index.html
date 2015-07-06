@@ -154,7 +154,7 @@ Check out the <a href="/userguide">User Guide</a> on how to get started.
                 <span class="text-muted">Fork it & pull it</span>
             </h2>
             <p class="lead">
-BCFier is an open source project, join its community and contribute by making suggestions and reporting bugs using <a href="https://github.com/BuildingSMART/BCF-API">GitHub Issues</a>, or by developing new features and modules. At the top of the backlog there is integration with the <a href="https://github.com/BuildingSMART/BCF-API">BCF REST API</a> and with new BIM tools. 
+BCFier is an open source project, join its community and contribute by making suggestions and reporting bugs using <a href="https://github.com/BuildingSMART/BCF-API">GitHub Issues</a>, or by developing new features and modules. Coming soon integration with the <a href="https://github.com/BuildingSMART/BCF-API">BCF REST API</a> and with new BIM tools. 
 <br /><br />
 Check out the <a href="https://github.com/teocomi/BCFier">GitHub project</a> for documentation and code.
 </p>
@@ -175,24 +175,26 @@ Check out the <a href="https://github.com/teocomi/BCFier">GitHub project</a> for
             </div>
             <div class="row">
                 <div class="col-lg-12 text-center lead">
-                    <p class="lead">The installer contains all the available modules and you’ll be able to select what to install.<br /><br />If it’s the first time you use BCFier, check out the <a href="/userguide">User Guide</a>, it yu are a developer check out the <a href="https://github.com/teocomi/BCFier">Documentation</a>.</p>
+                    <p class="lead">The installer contains all the available modules and you’ll be able to select what to install.<br /><br />If it’s the first time you use BCFier, check out the <a href="/userguide">User Guide</a>,<br />if you are a developer check out the <a href="https://github.com/teocomi/BCFier">Documentation</a>.</p>
 
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12 text-center">
-<a href="https://github.com/teocomi/BCFier" class="btn btn-xl down">Download</a>
-<a href="https://github.com/teocomi/BCFier" class="btn btn-xl after down">Fork it on GitHub</a>
+<a target="_blank" href="https://github.com/teocomi/BCFier" class="btn btn-xl down bcfier-download">Download</a>
+<a target="_blank" href="https://github.com/teocomi/BCFier" class="btn btn-xl after down">Fork it on GitHub</a>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h3 class="section-subheading2 text-muted">Latest stableversion is BCFier 2.0.0.0 and it was released on the 5th of July 2015.</h3>
+                    <h3 class="section-subheading2 text-muted release-info">Latest stableversion is BCFier 2.0.0.0 and it was released on the 5th of July 2015.</h3>
                 </div>
             </div>
              
         </div>
     </section>
+
+
     <!-- Services Section -->
     <section id="credits">
         <div class="container">
@@ -254,12 +256,29 @@ Check out the <a href="https://github.com/teocomi/BCFier">GitHub project</a> for
     <script src="/js/classie.js"></script>
     <script src="/js/cbpAnimatedHeader.js"></script>
 
-    <!-- Contact Form JavaScript -->
-    <script src="/js/jqBootstrapValidation.js"></script>
-    <script src="/js/contact_me.js"></script>
+    <script src="/js/timeago.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="/js/agency.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GetLatestReleaseInfo();
+    });
 
+    function GetLatestReleaseInfo() {
+        $.getJSON("https://api.github.com/repos/teocomi/bcfier/releases/latest").done(function (release) {
+            var asset = release.assets[0];
+            var downloadURL = "https://github.com/teocomi/bcfier/releases/download/" + release.tag_name + "/" + asset.name;
+            var downloadCount = 0;
+            for (var i = 0; i < release.assets.length; i++) {
+                downloadCount += release.assets[i].download_count;
+            }
+            var releaseInfo = "Latest version is "+ release.name + ", it was released " + $.timeago(asset.updated_at) + " and downloaded " + downloadCount + " times.";
+            $(".bcfier-download").attr("href", downloadURL);
+            $(".release-info").text(releaseInfo);
+            $(".release-info").fadeIn("slow");
+        });
+    }
+</script>
     </body>
 </html>

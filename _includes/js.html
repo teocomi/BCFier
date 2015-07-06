@@ -9,9 +9,27 @@
     <script src="{{ "/js/classie.js" | prepend: site.baseurl }}"></script>
     <script src="{{ "/js/cbpAnimatedHeader.js" | prepend: site.baseurl }}"></script>
 
-    <!-- Contact Form JavaScript -->
-    <script src="{{ "/js/jqBootstrapValidation.js" | prepend: site.baseurl }}"></script>
-    <script src="{{ "/js/contact_me.js" | prepend: site.baseurl }}"></script>
+    <script src="{{ "/js/timeago.js" | prepend: site.baseurl }}"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="{{ "/js/agency.js" | prepend: site.baseurl }}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GetLatestReleaseInfo();
+    });
+
+    function GetLatestReleaseInfo() {
+        $.getJSON("https://api.github.com/repos/teocomi/bcfier/releases/latest").done(function (release) {
+            var asset = release.assets[0];
+            var downloadURL = "https://github.com/teocomi/bcfier/releases/download/" + release.tag_name + "/" + asset.name;
+            var downloadCount = 0;
+            for (var i = 0; i < release.assets.length; i++) {
+                downloadCount += release.assets[i].download_count;
+            }
+            var releaseInfo = "Latest version is "+ release.name + ", it was released " + $.timeago(asset.updated_at) + " and downloaded " + downloadCount + " times.";
+            $(".bcfier-download").attr("href", downloadURL);
+            $(".release-info").text(releaseInfo);
+            $(".release-info").fadeIn("slow");
+        });
+    }
+</script>
