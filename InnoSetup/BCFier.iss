@@ -4,7 +4,7 @@
 #define MyAppVersion GetFileVersion("..\Bcfier\bin\Release\Bcfier.dll")
 #define MyAppPublisher "Matteo Cominetti"
 #define MyAppURL       "http://www.bcfier.com/"
-#define MyAppExeName   "BCFier.exe"
+#define MyAppExeName   "Bcfier.Win.exe"
 
 #define RevitAppName  "Bcfier.Revit"
 #define RevitAddinFolder "{sd}\ProgramData\Autodesk\Revit\Addins"
@@ -35,6 +35,7 @@ SetupIconFile={#Repository}\Assets\icon.ico
 Compression=lzma
 SolidCompression=yes
 WizardImageFile={#Repository}\Assets\bcfier-banner.bmp
+ChangesAssociations=yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -75,10 +76,10 @@ Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Registry]
-Root: HKCR; Subkey: ".bcfzip"; ValueType: string; ValueName: ""; ValueData: "BCFier"; Flags: uninsdeletevalue;  Components: standalone
-Root: HKCR; Subkey: "BCFier"; ValueType: string; ValueName: ""; ValueData: "BCF File"; Flags: uninsdeletekey;  Components: standalone
-Root: HKCR; Subkey: "BCFier\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\BCFicon.ico"; Components: standalone
-Root: HKCR; Subkey: "BCFier\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#WinAppName}.exe""""%1"""; Components: standalone
+Root: HKCR; Subkey: ".bcfzip"; ValueType: string; ValueName: ""; ValueData: "{#MyAppName}"; Flags: uninsdeletevalue;  Components: standalone
+Root: HKCR; Subkey: "{#MyAppName}"; ValueType: string; ValueName: ""; ValueData: "BCF File"; Flags: uninsdeletekey;  Components: standalone
+Root: HKCR; Subkey: "{#MyAppName}\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\BCF.ico"; Components: standalone
+Root: HKCR; Subkey: "{#MyAppName}\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}""""%1"""; Components: standalone
 
 ;checks if minimun requirements are met
 [Code]
