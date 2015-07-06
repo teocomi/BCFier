@@ -16,7 +16,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         GetLatestReleaseInfo();
-    });
+       });
 
     function GetLatestReleaseInfo() {
         $.getJSON("https://api.github.com/repos/teocomi/bcfier/releases").done(function (releases) {
