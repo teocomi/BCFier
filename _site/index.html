@@ -181,7 +181,7 @@ Check out the <a href="https://github.com/teocomi/BCFier">GitHub project</a> for
             </div>
             <div class="row">
                 <div class="col-lg-12 text-center">
-<a target="_blank" href="https://github.com/teocomi/BCFier" class="btn btn-xl down bcfier-download">Download</a>
+<a target="_blank" href="https://github.com/teocomi/BCFier/releases/latest" class="btn btn-xl down bcfier-download">Download</a>
 <a target="_blank" href="https://github.com/teocomi/BCFier" class="btn btn-xl after down">Fork it on GitHub</a>
                 </div>
             </div>
@@ -269,12 +269,13 @@ Check out the <a href="https://github.com/teocomi/BCFier">GitHub project</a> for
        });
 
     function GetLatestReleaseInfo() {
-        $.getJSON("https://api.github.com/repos/teocomi/bcfier/releases").done(function (releases) {
+        $.getJSON("https://api.github.com/repos/teocomi/bcfier/releases?access_token=ef85819857533da4a216df2ae8e6db642827e922").done(function (releases) {
             var release = releases[0];
             var asset = release.assets[0];
             var downloadURL = "https://github.com/teocomi/bcfier/releases/download/" + release.tag_name + "/" + asset.name;
             var downloadCount = 0;
             for (var i = 0; i < releases.length; i++) {
+                if(releases[i].assets[0] && releases[i].assets[0].download_count)
                 downloadCount += releases[i].assets[0].download_count;
             }
             var releaseInfo = "Latest version is "+ release.name + ", it was released " + $.timeago(asset.updated_at) + " and downloaded " + downloadCount + " times.";

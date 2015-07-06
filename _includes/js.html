@@ -25,6 +25,7 @@
             var downloadURL = "https://github.com/teocomi/bcfier/releases/download/" + release.tag_name + "/" + asset.name;
             var downloadCount = 0;
             for (var i = 0; i < releases.length; i++) {
+                if(releases[i].assets[0] && releases[i].assets[0].download_count)
                 downloadCount += releases[i].assets[0].download_count;
             }
             var releaseInfo = "Latest version is "+ release.name + ", it was released " + $.timeago(asset.updated_at) + " and downloaded " + downloadCount + " times.";
