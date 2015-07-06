@@ -337,6 +337,10 @@ namespace Bcfier.UserControls
     #endregion
     #region events 
 
+    public void BcfFileClicked (string path)
+    {
+      _bcf.OpenFile(path);
+    }
     //prompt to save bcf
     //delete temp folders
     public bool onClosing(CancelEventArgs e)

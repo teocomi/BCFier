@@ -141,8 +141,8 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y "$(TargetDir)*.*" "C:\ProgramData\Autodesk\Revit\Addins\2015\$(ProjectName)\"
-copy "$(TargetDir)Bcfier.Revit.addin" "C:\ProgramData\Autodesk\Revit\Addins\2015\Bcfier.Revit.addin"
+    <PostBuildEvent>::xcopy /Y "$(TargetDir)*.*" "C:\ProgramData\Autodesk\Revit\Addins\2015\$(ProjectName)\"
+::copy "$(TargetDir)Bcfier.Revit.addin" "C:\ProgramData\Autodesk\Revit\Addins\2015\Bcfier.Revit.addin"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

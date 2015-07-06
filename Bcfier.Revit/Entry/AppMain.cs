@@ -26,10 +26,6 @@ namespace Bcfier.Revit.Entry
     {
       try
       {
-        string _issuetracker = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CASE", "CASE Issue Tracker", "CASE.IssueTracker.dll");
-        //string _caseutils = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CASE", "CASE Issue Tracker", "CASEUtils.dll");
-
-        Assembly.LoadFrom(_issuetracker);
         // Tab
         RibbonPanel panel = application.CreateRibbonPanel("BCFier");
 
