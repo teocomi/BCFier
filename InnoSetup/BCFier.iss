@@ -1,3 +1,4 @@
+;defining variables
 #define Repository     "..\."
 #define MyAppName      "BCFier"
 #define MyAppVersion GetFileVersion("..\Bcfier\bin\Release\Bcfier.dll")
@@ -5,8 +6,6 @@
 #define MyAppURL       "http://www.bcfier.com/"
 #define MyAppExeName   "BCFier.exe"
 
-
-;destination folders
 #define RevitAppName  "Bcfier.Revit"
 #define RevitAddinFolder "{sd}\ProgramData\Autodesk\Revit\Addins"
 #define RevitFolder15 RevitAddinFolder+"\2015\"+RevitAppName
@@ -18,9 +17,6 @@
 
 
 [Setup]
-; NOTE: The value of AppId uniquely identifies this application.
-; Do not use the same AppId value in installers for other applications.
-; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{0d553633-80f8-490b-84d6-9d3d6ad4196d}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
@@ -33,7 +29,7 @@ DefaultDirName={pf}\{#MyAppName}
 DisableDirPage=yes
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
-OutputDir=.\.
+OutputDir={#Repository}
 OutputBaseFilename=BCFier
 SetupIconFile={#Repository}\Assets\icon.ico
 Compression=lzma
@@ -84,6 +80,7 @@ Root: HKCR; Subkey: "BCFier"; ValueType: string; ValueName: ""; ValueData: "BCF 
 Root: HKCR; Subkey: "BCFier\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\BCFicon.ico"; Components: standalone
 Root: HKCR; Subkey: "BCFier\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#WinAppName}.exe""""%1"""; Components: standalone
 
+;checks if minimun requirements are met
 [Code]
 function IsDotNetDetected(version: string; service: cardinal): boolean;
 // Indicates whether the specified version and service pack of the .NET Framework is installed.
