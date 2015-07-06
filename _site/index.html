@@ -266,12 +266,13 @@ Check out the <a href="https://github.com/teocomi/BCFier">GitHub project</a> for
     });
 
     function GetLatestReleaseInfo() {
-        $.getJSON("https://api.github.com/repos/teocomi/bcfier/releases/latest").done(function (release) {
+        $.getJSON("https://api.github.com/repos/teocomi/bcfier/releases").done(function (releases) {
+            var release = releases[0];
             var asset = release.assets[0];
             var downloadURL = "https://github.com/teocomi/bcfier/releases/download/" + release.tag_name + "/" + asset.name;
             var downloadCount = 0;
-            for (var i = 0; i < release.assets.length; i++) {
-                downloadCount += release.assets[i].download_count;
+            for (var i = 0; i < releases.length; i++) {
+                downloadCount += releases[i].assets[0].download_count;
             }
             var releaseInfo = "Latest version is "+ release.name + ", it was released " + $.timeago(asset.updated_at) + " and downloaded " + downloadCount + " times.";
             $(".bcfier-download").attr("href", downloadURL);
@@ -279,6 +280,19 @@ Check out the <a href="https://github.com/teocomi/BCFier">GitHub project</a> for
             $(".release-info").fadeIn("slow");
         });
     }
+
+
+    
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-19232134-2', 'auto');
+  ga('send', 'pageview');
+
 </script>
     </body>
 </html>
