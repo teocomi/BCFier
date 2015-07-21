@@ -5,10 +5,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.Linq;
+using Bcfier.Api;
 using Bcfier.Bcf;
 using Bcfier.Bcf.Bcf2;
 using Bcfier.Data.Utils;
@@ -34,6 +36,7 @@ namespace Bcfier.UserControls
       //top menu buttons and events
       NewBcfBtn.Click += delegate { _bcf.NewFile(); OnAddIssue(null,null);};
       OpenBcfBtn.Click += delegate { _bcf.OpenFile(); };
+      OpenProjectBtn.Click += OnOpenWebProject;
       SaveBcfBtn.Click += delegate { _bcf.SaveFile(SelectedBcf()); };
       MergeBcfBtn.Click += delegate { _bcf.MergeFiles(SelectedBcf()); };
       SettingsBtn.Click += delegate
@@ -337,6 +340,11 @@ namespace Bcfier.UserControls
     #endregion
     #region events 
 
+    private void OnOpenWebProject(object sender, RoutedEventArgs routedEventArgs)
+    {
+      
+    }
+
     public void BcfFileClicked (string path)
     {
       _bcf.OpenFile(path);
@@ -376,42 +384,37 @@ namespace Bcfier.UserControls
     #endregion
 
     #region web
-    private void CheckUpdates()
+    private async void CheckUpdates()
     {
-      var webClient = new WebClient();
-      webClient.DownloadStringCompleted += DownloadUpdateComplete;
-      webClient.DownloadStringAsync(new Uri(@"https://raw.githubusercontent.com/teocomi/BCFier/master/bcfier-update.xml"));
-    }
-    //Could be serialized to a class that binds to the UI
-    //Could use a json instad than XML
-    private void DownloadUpdateComplete(object sender, DownloadStringCompletedEventArgs e)
-    {
-      try
+       try
       {
-        if (e.Error == null)
-        {
-          var document = XDocument.Parse(e.Result);
-          string version = document.Element("Bcfier").Element("Version").Value;
+      var cancel = new CancellationTokenSource();
+      var release = await GitHubRest.GetLatestRelease(cancel);
+      if (release == null)
+        return;
 
-          if (System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.CompareTo(Version.Parse(version)) < 0)
-          {
-          var dialog = new NewVersion();
-          dialog.Description.Text = "Version " + version + " is available,\ndo you want to check it out now?";
-          dialog.NewFeatures.Text = document.Element("Bcfier").Element("Changelog").Element("NewFeatures").Value;
-          dialog.BugFixes.Text = document.Element("Bcfier").Element("Changelog").Element("BugFixes").Value;
-          dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-          dialog.ShowDialog();
-          if(dialog.DialogResult.HasValue && dialog.DialogResult.Value)
-            Process.Start(document.Element("Bcfier").Element("URL").Value);
-          }
-        }
-      }
-      catch (System.Exception ex1)
+      string version = release.tag_name.Replace("v","");
+
+      if (System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.CompareTo(Version.Parse(version)) < 0 && release.assets.Any())
       {
-        //warning suppressed
-        Console.WriteLine("exception: " + ex1);
+        var dialog = new NewVersion();
+        dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+        dialog.Description.Text = release.name + " has been released on "+ release.published_at.ToLongDateString()+"\ndo you want to check it out now?";
+        //dialog.NewFeatures.Text = document.Element("Bcfier").Element("Changelog").Element("NewFeatures").Value;
+        //dialog.BugFixes.Text = document.Element("Bcfier").Element("Changelog").Element("BugFixes").Value;
+        //dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+        dialog.ShowDialog();
+        if (dialog.DialogResult.HasValue && dialog.DialogResult.Value)
+          Process.Start(release.assets.First().browser_download_url);
       }
+      }
+       catch (System.Exception ex1)
+       {
+         //warning suppressed
+         Console.WriteLine("exception: " + ex1);
+       }
     }
+    
     #endregion
     #region drag&drop
     private void Window_DragEnter(object sender, DragEventArgs e)

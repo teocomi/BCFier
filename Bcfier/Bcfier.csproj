@@ -54,6 +54,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.105.1.0\lib\net45\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -73,6 +76,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\GitHubAsset.cs" />
+    <Compile Include="Api\GitHubAuthor.cs" />
+    <Compile Include="Api\GitHubRelease.cs" />
+    <Compile Include="Api\GitHubRest.cs" />
     <Compile Include="Bcf\Bcf2\Markup.cs" />
     <Compile Include="Bcf\Bcf2\Project.cs" />
     <Compile Include="Bcf\Bcf2\Version.cs" />

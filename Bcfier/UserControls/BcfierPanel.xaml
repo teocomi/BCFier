@@ -53,7 +53,8 @@
 
       <themes:ButtonIcon ToolTip="New BCF Report" x:Name="NewBcfBtn" Style="{StaticResource MainMenuButton}" Content="New BCF" IconPath="{StaticResource IconNewFile}"/>
       <themes:ButtonIcon ToolTip="Save BCF as..." x:Name="SaveBcfBtn" Style="{StaticResource CanSaveEnablerStyle}" Content="Save as..." IconPath="{StaticResource IconSaveFile}"/>
-      <themes:ButtonIcon ToolTip="Open a BCF..."  x:Name="OpenBcfBtn" Content="Open..." IconPath="{StaticResource IconOpenFile}" Style="{StaticResource MainMenuButton}"/>
+      <themes:ButtonIcon ToolTip="Open a BCF..."  x:Name="OpenBcfBtn" Content="Open BCF" IconPath="{StaticResource IconOpenFile}" Style="{StaticResource MainMenuButton}"/>
+      <themes:ButtonIcon ToolTip="Open a Web Project..."  x:Name="OpenProjectBtn" Content="Open Project" IconPath="{StaticResource IconOpenFile}" Style="{StaticResource MainMenuButton}"/>
       <themes:ButtonIcon ToolTip="Merge one or more BCFs with the current one" x:Name="MergeBcfBtn" Style="{StaticResource CanSaveEnablerStyle}" Content="Merge..." IconPath="{StaticResource IconMergeFile}"/>
       <themes:ButtonIcon ToolTip="Settings..." x:Name="SettingsBtn"  Style="{StaticResource MainMenuButton}" Content="Settings" IconPath="{StaticResource IconSettings}" />
       <themes:ButtonIcon ToolTip="Help" x:Name="HelpBtn" HorizontalAlignment="Left" Content="Help" IconPath="{StaticResource IconHelp}" Style="{StaticResource MainMenuButton}"/>

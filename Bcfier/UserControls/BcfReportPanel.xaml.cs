@@ -21,6 +21,11 @@ namespace Bcfier.UserControls
     public BcfReportPanel()
     {
       InitializeComponent();
+      //binding set from code-behind
+      //so that in the designer it still binds to the "Issues" collection
+      //allowing for Design time preview
+      //the binding to View is needed for filtering the collection
+      IssueList.SetBinding(ItemsControl.ItemsSourceProperty, "View");
       ((INotifyCollectionChanged)IssueList.Items).CollectionChanged += IssueList_CollectionChanged;
 
      
