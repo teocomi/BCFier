@@ -8,7 +8,7 @@ description: "BCFier is an Open Source tool developed to help you create better 
 
 latest: "Latest stableversion is BCFier 2.0.0.0 and it was released on the 5th of July 2015."
 
-about: "BCFier is an Open Source tool developed to help you deliver better buildings."
+about: "BCFier is an Open Source BCF client developed to help you deliver better buildings."
 about1: "Like IFC is the open standard for Building Information models, [BCF](http://www.buildingsmart-tech.org/specifications/bcf-releases) (also developed by buildingSMART) is the open standard for Building Issues. BCFier is a set of plugins and standalone apps that handle BCF and integrate directly with BIM tools."
 about2: "Contribute to the Open BIM community by developing and extending BCFier to support more platforms and and online services, BCFier is now Open Source!"
 
