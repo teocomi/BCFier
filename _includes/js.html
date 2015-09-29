@@ -19,7 +19,9 @@
        });
 
     function GetLatestReleaseInfo() {
-        $.getJSON("https://api.github.com/repos/teocomi/bcfier/releases?access_token=36bb5c95a0cd013c6c868fd812f8bbd07ade5e5f").done(function (releases) {
+        //removed access token
+        //?access_token=36bb5c95a0cd013c6c868fd812f8bbd07ade5e5f
+        $.getJSON("https://api.github.com/repos/teocomi/bcfier/releases").done(function (releases) {
             var release = releases[0];
             var asset = release.assets[0];
             var downloadURL = "https://github.com/teocomi/bcfier/releases/download/" + release.tag_name + "/" + asset.name;
