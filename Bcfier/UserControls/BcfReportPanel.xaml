@@ -43,7 +43,7 @@
         <RowDefinition Height="auto"/>
       </Grid.RowDefinitions>
       <themes:TextPlaceholder Text="{Binding TextSearch, UpdateSourceTrigger=PropertyChanged}" ToolTip="Search within title, description and comments..." Placeholder="Search issues..." KeyDown="SearchBox_OnKeyDown" Margin="5" x:Name="SearchBox" BorderBrush="{StaticResource BackgroundDark}" Grid.Row="1"/>
-      <ListView   ItemsSource="{Binding View}" SelectedItem="{Binding SelectedIssue}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+      <ListView   ItemsSource="{Binding Issues}" SelectedItem="{Binding SelectedIssue}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  Grid.Row="2" Background="Transparent"  BorderThickness="0"  SelectionMode="Extended" SelectedIndex="0"
                   AlternationCount="2"  IsSynchronizedWithCurrentItem="True"  x:Name="IssueList" Margin="0" Padding="0" 
                   Style="{StaticResource ListViewTheme}"  ItemContainerStyle="{StaticResource IssueListStyle}"
