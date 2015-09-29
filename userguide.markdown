@@ -15,7 +15,7 @@ Currently BCFier is composed of:
 ##General Usage
 
 ###Installation
-Installation is done by running BCFier.exe that can be downloaded from [bcfier.com](bcfier.com). Follow the installation wizard and select the modules you want to install.
+Installation is done by running BCFier.exe that can be downloaded from [bcfier.com](http://bcfier.com). Follow the installation wizard and select the modules you want to install.
 
 **Requirements**
 

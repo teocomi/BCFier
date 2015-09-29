@@ -23,7 +23,10 @@
             var release = releases[0];
             var asset = release.assets[0];
             var downloadURL = "https://github.com/teocomi/bcfier/releases/download/" + release.tag_name + "/" + asset.name;
-            var downloadCount = 0;
+            //I removed acidentally a GitHubRelease and lost the real count of downloads,
+            //last time I checked (a month ago) it was 700+, so just adding it here to keep track
+            //I promise I'm not cheating :)
+            var downloadCount = 700;
             for (var i = 0; i < releases.length; i++) {
                 if(releases[i].assets[0] && releases[i].assets[0].download_count)
                 downloadCount += releases[i].assets[0].download_count;
