@@ -24,7 +24,7 @@ namespace Bcfier.Api
         return null;
 
 
-      var request = new RestRequest("repos/teocomi/bcfier/releases?access_token=ef85819857533da4a216df2ae8e6db642827e922", Method.GET);
+      var request = new RestRequest("repos/teocomi/bcfier/releases", Method.GET);
       request.AddHeader("Content-Type", "application/json");
       request.RequestFormat = DataFormat.Json;
       request.OnBeforeDeserialization = resp => { resp.ContentType = "application/json"; };
@@ -39,7 +39,7 @@ namespace Bcfier.Api
         return null;
 
 
-      var request = new RestRequest("repos/teocomi/bcfier/releases/latest?access_token=ef85819857533da4a216df2ae8e6db642827e922", Method.GET);
+      var request = new RestRequest("repos/teocomi/bcfier/releases/latest", Method.GET);
       request.AddHeader("Content-Type", "application/json");
       request.RequestFormat = DataFormat.Json;
 
