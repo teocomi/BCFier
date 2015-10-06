@@ -36,7 +36,7 @@ namespace Bcfier.UserControls
       //top menu buttons and events
       NewBcfBtn.Click += delegate { _bcf.NewFile(); OnAddIssue(null,null);};
       OpenBcfBtn.Click += delegate { _bcf.OpenFile(); };
-      OpenProjectBtn.Click += OnOpenWebProject;
+      //OpenProjectBtn.Click += OnOpenWebProject;
       SaveBcfBtn.Click += delegate { _bcf.SaveFile(SelectedBcf()); };
       MergeBcfBtn.Click += delegate { _bcf.MergeFiles(SelectedBcf()); };
       SettingsBtn.Click += delegate
