@@ -64,7 +64,9 @@ A more detailed list of things that need to be done can be found in the [issues 
 You can contact Matteo Cominetti at: hello@teocomi.com
 
 ###License
-GNU General Public License v3
+GNU General Public License v3 Extended
+This porogram uses the GNU General Public License v3, extended to support the use of BCFier as Plugin of the non-free main software Autodesk Revit.
+See <http://www.gnu.org/licenses/gpl-faq.en.html#GPLPluginsInNF>.
 
 Copyright (c) 2015 Matteo Cominetti
 
@@ -80,3 +82,4 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/gpl.txt>.
+
