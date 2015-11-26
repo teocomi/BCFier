@@ -33,19 +33,17 @@ namespace Bcfier.Api
 
       return cancel.IsCancellationRequested || !CheckResponse(response, HttpStatusCode.OK) ? null : response.Data;
     } 
-    internal static async Task<GitHubRelease> GetLatestRelease(CancellationTokenSource cancel)
-    {
-      if (cancel.IsCancellationRequested)
-        return null;
 
+    internal static GitHubRelease GetLatestRelease()
+    {
 
       var request = new RestRequest("repos/teocomi/bcfier/releases/latest", Method.GET);
       request.AddHeader("Content-Type", "application/json");
       request.RequestFormat = DataFormat.Json;
 
-      var response = await DoTaskAsync<GitHubRelease>(request, cancel);
+      var response = Client.Execute<GitHubRelease> (request);
       //if cancellation oending or invalid reponse return null, otherwise the data
-      return cancel.IsCancellationRequested || !CheckResponse(response, HttpStatusCode.OK) ? null : response.Data;
+      return !CheckResponse(response, HttpStatusCode.OK) ? null : response.Data;
     }
 
     private static async Task<IRestResponse<T>> DoTaskAsync<T>(RestRequest request, CancellationTokenSource cancel) where T : class

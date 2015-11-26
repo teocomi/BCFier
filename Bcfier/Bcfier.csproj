@@ -80,6 +80,7 @@
     <Compile Include="Api\GitHubAuthor.cs" />
     <Compile Include="Api\GitHubRelease.cs" />
     <Compile Include="Api\GitHubRest.cs" />
+    <Compile Include="Api\StatHat.cs" />
     <Compile Include="Bcf\Bcf2\Markup.cs" />
     <Compile Include="Bcf\Bcf2\Project.cs" />
     <Compile Include="Bcf\Bcf2\Version.cs" />

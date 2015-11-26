@@ -171,15 +171,26 @@ namespace Bcfier.Bcf
 
         var dir = new DirectoryInfo(bcffile.TempPath);
 
+        var projectFile = Path.Combine(bcffile.TempPath, "project.bcfp");
+        if (File.Exists(projectFile))
+        {
+          var project = DeserializeProject(projectFile);
+          var g = Guid.NewGuid();
+          Guid.TryParse(project.Project.ProjectId, out g);
+          bcffile.ProjectId = g;
+        }
+         
+
         //ADD ISSUES FOR EACH SUBFOLDER
 
         foreach (var folder in dir.GetDirectories())
         {
           //An issue needs at least the markup file
-          if (!File.Exists(Path.Combine(folder.FullName, "markup.bcf")))
+          var markupFile = Path.Combine(folder.FullName, "markup.bcf");
+          if (!File.Exists(markupFile))
             continue;
 
-          var bcfissue = DeserializeMarkup(Path.Combine(folder.FullName, "markup.bcf"));
+          var bcfissue = DeserializeMarkup(markupFile);
 
 
           if (bcfissue == null)
@@ -205,12 +216,12 @@ namespace Bcfier.Bcf
           else
           {
             bcfissue.Viewpoints = new ObservableCollection<ViewPoint>();
-            string viewpointpath = Path.Combine(folder.FullName, "viewpoint.bcfv");
-            if (File.Exists(viewpointpath))
+            string viewpointFile = Path.Combine(folder.FullName, "viewpoint.bcfv");
+            if (File.Exists(viewpointFile))
             {
               bcfissue.Viewpoints.Add(new ViewPoint(true)
               {
-                VisInfo = DeserializeViewpoint(viewpointpath),
+                VisInfo = DeserializeViewpoint(viewpointFile),
                 SnapshotPath = Path.Combine(folder.FullName, "snapshot.png"),
               });
               //update the comments
@@ -261,10 +272,19 @@ namespace Bcfier.Bcf
         // Process save file dialog box results
         if (string.IsNullOrWhiteSpace(filename))
           return false;
-        var bcfProject = new Project();
+        var bcfProject = new ProjectExtension
+        {
+          Project = new Project
+          {
+            Name =string.IsNullOrEmpty(bcffile.ProjectName) ? bcffile.Filename : bcffile.ProjectName,
+            ProjectId = bcffile.ProjectId.Equals(Guid.Empty) ? Guid.NewGuid().ToString() : bcffile.ProjectId.ToString()
+          },
+          ExtensionSchema = ""
+
+        };
         var bcfVersion = new Bcf2.Version { VersionId = "2.0", DetailedVersion = "2.0" };
 
-        var serializerP = new XmlSerializer(typeof(Project));
+        var serializerP = new XmlSerializer(typeof(ProjectExtension));
         Stream writerP = new FileStream(Path.Combine(bcffile.TempPath, "project.bcfp"), FileMode.Create);
         serializerP.Serialize(writerP, bcfProject);
         writerP.Close();
@@ -316,7 +336,7 @@ namespace Bcfier.Bcf
         if (File.Exists(filename))
           File.Delete(filename);
 
-        ZipFile.CreateFromDirectory(bcffile.TempPath, filename, CompressionLevel.Fastest, false);
+        ZipFile.CreateFromDirectory(bcffile.TempPath, filename, CompressionLevel.Optimal, false);
 
         //Open browser at location
         Uri uri2 = new Uri(filename);
@@ -383,6 +403,24 @@ namespace Bcfier.Bcf
         {
           var serializerM = new XmlSerializer(typeof(Markup));
           output = serializerM.Deserialize(markupFile) as Markup;
+        }
+      }
+      catch (System.Exception ex1)
+      {
+        MessageBox.Show("exception: " + ex1);
+      }
+      return output;
+    }
+
+    private static ProjectExtension DeserializeProject(string path)
+    {
+      ProjectExtension output = null;
+      try
+      {
+        using (var markupFile = new FileStream(path, FileMode.Open))
+        {
+          var serializerM = new XmlSerializer(typeof(ProjectExtension));
+          output = serializerM.Deserialize(markupFile) as ProjectExtension;
         }
       }
       catch (System.Exception ex1)

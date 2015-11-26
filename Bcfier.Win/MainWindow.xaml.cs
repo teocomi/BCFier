@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Bcfier.Bcf.Bcf2;
@@ -75,5 +76,12 @@ namespace Bcfier.Win
     }
     #endregion
 
+    private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+    {
+      Task.Run(() =>
+      {
+        StatHat.Post.EzCounter(@"hello@teocomi.com", "BCFierWinStart", 1);
+      });
+    }
   }
 }

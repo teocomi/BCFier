@@ -10,6 +10,7 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Component = Bcfier.Bcf.Bcf2.Component;
 using Point = Bcfier.Bcf.Bcf2.Point;
 
@@ -329,5 +330,14 @@ namespace Bcfier.Revit
       e.Cancel = Bcfier.onClosing(e);
     }
     #endregion
+
+    private void RevitWindow_OnLoaded(object sender, RoutedEventArgs e)
+    {
+      Task.Run(() =>
+      {
+        StatHat.Post.EzCounter(@"hello@teocomi.com", "BCFierRevitStart", 1);
+      });
+    }
+  
   }
 }

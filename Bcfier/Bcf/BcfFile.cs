@@ -19,6 +19,8 @@ namespace Bcfier.Bcf
     private Guid id;
     public string TempPath { get; set; }
     public string Fullname { get; set; }
+    public Guid ProjectId { get; set; }
+    public string ProjectName { get; set; }
     private string _filename;
     private bool _hasBeenSaved;
     private ObservableCollection<Markup> _issues;

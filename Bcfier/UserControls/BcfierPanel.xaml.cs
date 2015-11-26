@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -30,11 +31,11 @@ namespace Bcfier.UserControls
 
 
     public BcfierPanel()
-    { 
+    {
       InitializeComponent();
       DataContext = _bcf;
       //top menu buttons and events
-      NewBcfBtn.Click += delegate { _bcf.NewFile(); OnAddIssue(null,null);};
+      NewBcfBtn.Click += delegate { _bcf.NewFile(); OnAddIssue(null, null); };
       OpenBcfBtn.Click += delegate { _bcf.OpenFile(); };
       //OpenProjectBtn.Click += OnOpenWebProject;
       SaveBcfBtn.Click += delegate { _bcf.SaveFile(SelectedBcf()); };
@@ -86,7 +87,7 @@ namespace Bcfier.UserControls
 
 
 
-   
+
     #region commands
     private void OnDeleteIssues(object sender, ExecutedRoutedEventArgs e)
     {
@@ -118,7 +119,7 @@ namespace Bcfier.UserControls
       }
     }
 
-   
+
     private void OnAddComment(object sender, ExecutedRoutedEventArgs e)
     {
       try
@@ -139,23 +140,23 @@ namespace Bcfier.UserControls
         }
 
 
-          Comment c = new Comment();
-          c.Guid = Guid.NewGuid().ToString();
-          c.Comment1 = content;
-          c.Topic = new CommentTopic();
-          c.Topic.Guid = issue.Topic.Guid;
-          c.Date = DateTime.Now;
-          c.VerbalStatus = verbalStatus;
-          c.Status = status;
-          c.Author = Utils.GetUsername();
+        Comment c = new Comment();
+        c.Guid = Guid.NewGuid().ToString();
+        c.Comment1 = content;
+        c.Topic = new CommentTopic();
+        c.Topic.Guid = issue.Topic.Guid;
+        c.Date = DateTime.Now;
+        c.VerbalStatus = verbalStatus;
+        c.Status = status;
+        c.Author = Utils.GetUsername();
 
-            c.Viewpoint = new CommentViewpoint();
-            c.Viewpoint.Guid = (view != null) ? view.Guid : "";
-          
-          issue.Comment.Add(c);
+        c.Viewpoint = new CommentViewpoint();
+        c.Viewpoint.Guid = (view != null) ? view.Guid : "";
 
-          SelectedBcf().HasBeenSaved = false;
-        
+        issue.Comment.Add(c);
+
+        SelectedBcf().HasBeenSaved = false;
+
       }
       catch (System.Exception ex1)
       {
@@ -170,14 +171,14 @@ namespace Bcfier.UserControls
           return;
         var values = (object[])e.Parameter;
         var comment = values[0] as Comment;
-      //  var comments = selItems.Cast<Comment>().ToList();
+        //  var comments = selItems.Cast<Comment>().ToList();
         var issue = (Markup)values[1];
         if (issue == null)
         {
           MessageBox.Show("No Issue selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
           return;
         }
-        if (comment==null)
+        if (comment == null)
         {
           MessageBox.Show("No Comment selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
           return;
@@ -204,7 +205,7 @@ namespace Bcfier.UserControls
     {
       try
       {
-       
+
         if (SelectedBcf() == null)
           return;
         var values = (object[])e.Parameter;
@@ -267,7 +268,7 @@ namespace Bcfier.UserControls
       try
       {
         var view = e.Parameter as ViewPoint;
-        if (view==null || !File.Exists(view.SnapshotPath))
+        if (view == null || !File.Exists(view.SnapshotPath))
         {
           MessageBox.Show("The selected Snapshot does not exist", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
           return;
@@ -279,7 +280,7 @@ namespace Bcfier.UserControls
           dialog.Show();
         }
         else
-        Process.Start(view.SnapshotPath);
+          Process.Start(view.SnapshotPath);
       }
       catch (System.Exception ex1)
       {
@@ -316,14 +317,14 @@ namespace Bcfier.UserControls
         var bcf = bcfs.First();
 
         if (CheckSaveBcf(bcf))
-          _bcf.CloseFile(bcf); 
+          _bcf.CloseFile(bcf);
       }
       catch (System.Exception ex1)
       {
         MessageBox.Show("exception: " + ex1);
       }
     }
-  
+
     private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
     {
       var target = e.Source as Control;
@@ -342,10 +343,10 @@ namespace Bcfier.UserControls
 
     private void OnOpenWebProject(object sender, RoutedEventArgs routedEventArgs)
     {
-      
+
     }
 
-    public void BcfFileClicked (string path)
+    public void BcfFileClicked(string path)
     {
       _bcf.OpenFile(path);
     }
@@ -364,7 +365,7 @@ namespace Bcfier.UserControls
         else
           return true;
       }
-      
+
 
       return false;
     }
@@ -384,37 +385,40 @@ namespace Bcfier.UserControls
     #endregion
 
     #region web
-    private async void CheckUpdates()
+    //check github API for new release
+    private void CheckUpdates()
     {
-       try
+      Task.Run(() =>
       {
-      var cancel = new CancellationTokenSource();
-      var release = await GitHubRest.GetLatestRelease(cancel);
-      if (release == null)
-        return;
+        try
+        {
+          var release = GitHubRest.GetLatestRelease();
+          if (release == null)
+            return;
 
-      string version = release.tag_name.Replace("v","");
+          string version = release.tag_name.Replace("v", "");
 
-      if (System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.CompareTo(Version.Parse(version)) < 0 && release.assets.Any())
-      {
-        var dialog = new NewVersion();
-        dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-        dialog.Description.Text = release.name + " has been released on "+ release.published_at.ToLongDateString()+"\ndo you want to check it out now?";
-        //dialog.NewFeatures.Text = document.Element("Bcfier").Element("Changelog").Element("NewFeatures").Value;
-        //dialog.BugFixes.Text = document.Element("Bcfier").Element("Changelog").Element("BugFixes").Value;
-        //dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-        dialog.ShowDialog();
-        if (dialog.DialogResult.HasValue && dialog.DialogResult.Value)
-          Process.Start(release.assets.First().browser_download_url);
-      }
-      }
-       catch (System.Exception ex1)
-       {
-         //warning suppressed
-         Console.WriteLine("exception: " + ex1);
-       }
+          if (System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.CompareTo(Version.Parse(version)) < 0 && release.assets.Any())
+          {
+            var dialog = new NewVersion();
+            dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            dialog.Description.Text = release.name + " has been released on " + release.published_at.ToLongDateString() + "\ndo you want to check it out now?";
+            //dialog.NewFeatures.Text = document.Element("Bcfier").Element("Changelog").Element("NewFeatures").Value;
+            //dialog.BugFixes.Text = document.Element("Bcfier").Element("Changelog").Element("BugFixes").Value;
+            //dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            dialog.ShowDialog();
+            if (dialog.DialogResult.HasValue && dialog.DialogResult.Value)
+              Process.Start(release.assets.First().browser_download_url);
+          }
+        }
+        catch (System.Exception ex1)
+        {
+          //warning suppressed
+          Console.WriteLine("exception: " + ex1);
+        }
+      });
     }
-    
+
     #endregion
     #region drag&drop
     private void Window_DragEnter(object sender, DragEventArgs e)
@@ -435,8 +439,8 @@ namespace Bcfier.UserControls
           var files = (string[])e.Data.GetData(DataFormats.FileDrop);
           foreach (var f in files)
           {
-            if(File.Exists(f))
-            _bcf.OpenFile(f);
+            if (File.Exists(f))
+              _bcf.OpenFile(f);
           }
         }
       }
@@ -454,8 +458,8 @@ namespace Bcfier.UserControls
         if (e.Data.GetDataPresent(DataFormats.FileDrop, true))
         {
           var filenames = e.Data.GetData(DataFormats.FileDrop, true) as string[];
-          if (filenames.Any(x=>Path.GetExtension(x).ToUpperInvariant() != ".BCFZIP"))
-          dropEnabled = false;
+          if (filenames.Any(x => Path.GetExtension(x).ToUpperInvariant() != ".BCFZIP"))
+            dropEnabled = false;
         }
         else
           dropEnabled = false;
@@ -481,6 +485,6 @@ namespace Bcfier.UserControls
     }
     #endregion
 
-   
+
   }
 }

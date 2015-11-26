@@ -4,7 +4,7 @@
         xmlns:ctr="clr-namespace:Bcfier.UserControls;assembly=Bcfier"
         xmlns:data="clr-namespace:Bcfier.Data;assembly=Bcfier"
         Title="BCFier for Windows" Width="700" Height="700"  Name="mainWin"
-        
+        Loaded="MainWindow_OnLoaded"
          Closing="Window_Closing" Icon="Assets/icon.ico" >
   <Window.CommandBindings>
 
