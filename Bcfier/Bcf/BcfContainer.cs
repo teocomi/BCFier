@@ -157,7 +157,7 @@ namespace Bcfier.Bcf
       var bcffile = new BcfFile();
       try
       {
-        if (!File.Exists(bcfzipfile) || Path.GetExtension(bcfzipfile)!= ".bcfzip")
+        if (!File.Exists(bcfzipfile) || !String.Equals(Path.GetExtension(bcfzipfile), ".bcfzip", StringComparison.InvariantCultureIgnoreCase))
           return bcffile;
 
 
