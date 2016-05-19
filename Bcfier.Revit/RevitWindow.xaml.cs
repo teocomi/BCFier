@@ -111,6 +111,15 @@ namespace Bcfier.Revit
         {
           //generate and set set the VisInfo
           issue.Viewpoints.Last().VisInfo = GenerateViewpoint();
+
+          //get filename
+          UIDocument uidoc = uiapp.ActiveUIDocument;
+
+          if(uidoc.Document.Title!=null)
+            issue.Header[0].Filename = uidoc.Document.Title;
+          else
+            issue.Header[0].Filename = "Unknown";
+        
           Bcfier.SelectedBcf().HasBeenSaved = false;
         }
 
