@@ -15,7 +15,6 @@
     <WarningLevel>4</WarningLevel>
     <TargetFrameworkProfile />
     <StartAction>Program</StartAction>
-    <StartProgram>C:\Program Files\Autodesk\Revit 2015\Revit.exe</StartProgram>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -41,23 +40,186 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ManualObfuscation|AnyCPU'">
+  <!-- MULTI VERSION CONFIGURATION START -->
+  <!-- ADDING BUILD COFIGURATION FOR EACH YEAR, DEBUG AND RELEASE -->
+  <!-- source: https://github.com/WeConnect/issue-tracker -->
+  <!-- 2015 -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-2015|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\ManualObfuscation\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>bin\Debug-2015\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Version2015</DefineConstants>
     <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RevitVersion>2015</RevitVersion>
+    <AssemblyName>$(AssemblyName)</AssemblyName>
+    <Prefer32Bit>false</Prefer32Bit>
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Program Files\Autodesk\Revit 2015\Revit.exe</StartProgram>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-2015|AnyCPU'">
+    <OutputPath>bin\Release-2015\</OutputPath>
+    <DefineConstants>TRACE;RELEASE;Version2015</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RevitVersion>2015</RevitVersion>
+    <AssemblyName>$(AssemblyName)</AssemblyName>
+    <WarningLevel>0</WarningLevel>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    None
+  </ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <!-- 2016 -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-2016|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug-2016\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Version2016</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RevitVersion>2016</RevitVersion>
+    <AssemblyName>$(AssemblyName)</AssemblyName>
+    <Prefer32Bit>false</Prefer32Bit>
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Program Files\Autodesk\Revit 2016\Revit.exe</StartProgram>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-2016|AnyCPU'">
+    <OutputPath>bin\Release-2016\</OutputPath>
+    <DefineConstants>TRACE;RELEASE;Version2016</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RevitVersion>2016</RevitVersion>
+    <AssemblyName>$(AssemblyName)</AssemblyName>
+    <WarningLevel>0</WarningLevel>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    None
+  </ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <!-- 2017 -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-2017|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug-2017\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Version2017</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RevitVersion>2017</RevitVersion>
+    <AssemblyName>$(AssemblyName)</AssemblyName>
+    <Prefer32Bit>false</Prefer32Bit>
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Program Files\Autodesk\Revit 2017\Revit.exe</StartProgram>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-2017|AnyCPU'">
+    <OutputPath>bin\Release-2017\</OutputPath>
+    <DefineConstants>TRACE;RELEASE;Version2017</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RevitVersion>2017</RevitVersion>
+    <AssemblyName>$(AssemblyName)</AssemblyName>
+    <WarningLevel>0</WarningLevel>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    None
+  </ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+    <!-- MULTIVERSION CONFIGURATION END -->
   <ItemGroup>
-    <Reference Include="RevitAPI">
+      <!-- MULTIVERSION REVIT API REFERENCES START -->
+    <!-- DEBUG -->
+    <!-- 2015 -->
+    <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Debug-2015'">
       <HintPath>C:\Program Files\Autodesk\Revit 2015\RevitAPI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="RevitAPIUI">
+    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug-2015'">
       <HintPath>C:\Program Files\Autodesk\Revit 2015\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
+    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug-2015'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2015\RevitAPIIFC.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <!-- 2016 -->
+    <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Debug-2016'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2016\RevitAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug-2016'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2016\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug-2016'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2016\RevitAPIIFC.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+      <!-- 2017 -->
+    <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Debug-2017'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2017\RevitAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug-2017'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2017\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug-2017'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2017\RevitAPIIFC.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <!-- RELEASE -->
+    <!-- 2015 -->
+    <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Release-2015'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2015\RevitAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Release-2015'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2015\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Release-2015'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2015\RevitAPIIFC.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <!-- 2016 -->
+    <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Release-2016'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2016\RevitAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Release-2016'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2016\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Release-2016'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2016\RevitAPIIFC.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+       <!-- 2017 -->
+    <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Release-2017'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2017\RevitAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Release-2017'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2017\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Release-2017'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2017\RevitAPIIFC.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <!-- MULTIVERSION REVIT API REFERENCES END -->
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Xml" />
@@ -139,15 +301,22 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>::xcopy /Y "$(TargetDir)*.*" "C:\ProgramData\Autodesk\Revit\Addins\2015\$(ProjectName)\"
-::copy "$(TargetDir)Bcfier.Revit.addin" "C:\ProgramData\Autodesk\Revit\Addins\2015\Bcfier.Revit.addin"
+    <PostBuildEvent>
 </PostBuildEvent>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+<!-- MULTIVERSION POST BUILD EVENTS START -->
+<!-- COPIES ALL DLLS AND .ADDIN MANIFEST TO THE RELATIVE REVIT ADDIN FOLDER -->
+   <Target Name="AfterBuild">
+    <CallTarget Condition="'$(Configuration)' == 'Debug-2015' Or '$(Configuration)' == 'Debug-2016' Or '$(Configuration)' == 'Debug-2017'" Targets="AfterBuildDebug" />
   </Target>
-  <Target Name="AfterBuild">
+  <Target Name="AfterBuildDebug">
+    <ItemGroup>
+      <SourceDLLs Include="$(TargetDir)*.dll" />
+      <SourceManifest Include="$(TargetDir)*.addin" />
+    </ItemGroup>
+    <Copy SourceFiles="@(SourceDLLs)" DestinationFolder="$(AppData)\Autodesk\REVIT\Addins\$(RevitVersion)\$(ProjectName)\%(RecursiveDir)" />
+    <Copy SourceFiles="@(SourceManifest)" DestinationFolder="$(AppData)\Autodesk\REVIT\Addins\$(RevitVersion)\" />
   </Target>
-  -->
+
+  <!-- MULTIVERSION POST BUILD EVENTS END -->
 </Project>
