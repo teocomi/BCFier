@@ -77,8 +77,8 @@
               <Border HorizontalAlignment="Stretch"  Grid.Row="1" Grid.Column="1" BorderThickness="0,0,0,1" BorderBrush="{StaticResource BackgroundLight}" Padding="0,0,0,4">
                 <DockPanel >
                   <Label FontSize="11" VerticalAlignment="Bottom" FontStyle="Italic"
-                       Content="{Binding Header[0].Date, Converter={StaticResource DateConverter}, ConverterParameter='relative'}" 
-                       ToolTip="{Binding Header[0].Date, Converter={StaticResource DateConverter}}" />
+                       Content="{Binding Topic.CreationDate, Converter={StaticResource DateConverter}, ConverterParameter='relative'}" 
+                       ToolTip="{Binding Topic.CreationDate, Converter={StaticResource DateConverter}}" />
                   <Path Stretch="Uniform" VerticalAlignment="Bottom" UseLayoutRounding="False"  Data="{StaticResource IconViewPoint}"  Margin="3,0,0,8" Height="11" Width="11"  Fill="{StaticResource PrimaryLight}" ToolTip="{Binding Viewpoints.Count, Converter={StaticResource IntPluralConverter},ConverterParameter='%0% Viewpoint%s%'}"/>
                   <Label FontSize="11" VerticalAlignment="Bottom" Content="{Binding Viewpoints.Count}" ToolTip="{Binding Viewpoints.Count, Converter={StaticResource IntPluralConverter},ConverterParameter='%0% Viewpoint%s%'}" />
                   <Path Stretch="Uniform" VerticalAlignment="Bottom" UseLayoutRounding="False"  Data="{StaticResource IconComment}" Margin="3,0,0,8" Height="11" Width="11" Fill="{StaticResource PrimaryLight}"  ToolTip="{Binding Comment.Count, Converter={StaticResource IntPluralConverter},ConverterParameter='%0% Comment%s%'}"/>
@@ -144,7 +144,7 @@
                                     VerticalAlignment="Bottom" FontSize="14" BorderBrush="{StaticResource BackgroundDark}" Margin="0" x:Name="TextBox_Title"/>
       <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal">
         <Label FontSize="11" VerticalAlignment="Bottom" FontStyle="Italic"
-                       Content="{Binding Header[0].Date, Converter={StaticResource DateConverter}}" />
+                       Content="{Binding Topic.CreationDate, Converter={StaticResource DateConverter}}" />
 
         <Label FontSize="11" VerticalAlignment="Bottom" Content="{Binding LastCommentStatus}" FontWeight="Bold" ToolTip="Status"/>
         <Label FontSize="11" VerticalAlignment="Bottom" Content="{Binding LastCommentVerbalStatus}" ToolTip="Verbal Status" />

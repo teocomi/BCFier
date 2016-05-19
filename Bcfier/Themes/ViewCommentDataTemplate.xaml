@@ -5,7 +5,8 @@
                     xmlns:local="clr-namespace:Bcfier.Data.AttachedProperties"
                     xmlns:valueConverters="clr-namespace:Bcfier.Data.ValueConverters"
                     xmlns:utils="clr-namespace:Bcfier.Data.Utils"
-                    xmlns:themes="clr-namespace:Bcfier.Themes">
+                    xmlns:themes="clr-namespace:Bcfier.Themes"
+                    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity">
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="../Themes/Icons.xaml" />
     <ResourceDictionary Source="../Themes/ButtonStyles.xaml" />
@@ -136,7 +137,18 @@
 
         <themes:TextPlaceholder Grid.Column="0" Placeholder="Add a comment..." KeyDown="UIElement_OnKeyDown" 
                                 TextWrapping="Wrap" AcceptsReturn="True" Name="TextBoxComment" Grid.Row="1" 
-                                BorderThickness="1,1,0,1" BorderBrush="{StaticResource BackgroundDark}"/>
+                                BorderThickness="1,1,0,1" BorderBrush="{StaticResource BackgroundDark}"
+                                local:CtrlEnterKeyDown.Command="data:Commands.AddComment">
+          <local:CtrlEnterKeyDown.CommandArgument>
+            <MultiBinding Converter="{StaticResource MultiCommandConverter}">
+              <Binding Path="Viewpoint"/>
+              <Binding ElementName="IssueList" Path="SelectedItem" />
+              <Binding ElementName="TextBoxComment" Path="Text" />
+              <Binding ElementName="ComboBoxStatus" Path="SelectedValue" />
+              <Binding ElementName="TextBoxVerbalStatus" Path="Text" />
+            </MultiBinding>
+          </local:CtrlEnterKeyDown.CommandArgument>
+        </themes:TextPlaceholder>
 
         <Border Grid.Row="1" Grid.Column="1" BorderThickness="0,1,1,1" BorderBrush="{StaticResource BackgroundDark}" Background="White">
         <themes:ButtonIcon DockPanel.Dock="Right" VerticalAlignment="Bottom"  Background="White" IconMargin="2,0,0,0" 

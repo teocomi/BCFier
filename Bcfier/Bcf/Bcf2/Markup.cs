@@ -145,6 +145,7 @@ namespace Bcfier.Bcf.Bcf2
     public Markup(DateTime created)
     {
       Topic = new Topic();
+
       Comment = new ObservableCollection<Comment>();
       Viewpoints = new ObservableCollection<ViewPoint>();
       RegisterEvents();

@@ -103,10 +103,13 @@ namespace Bcfier.UserControls
           MessageBox.Show("No Issue selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
           return;
         }
-
         MessageBoxResult answer = MessageBox.Show(
-            String.Format("Are you sure you want to\nDelete {0} Issue{1}?", issues.Count, (issues.Count > 1) ? "s" : ""),
-            "Delete Issue?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            String.Format("Are you sure you want to delete {0} Issue{1}?\n{2}", 
+            issues.Count, 
+            (issues.Count > 1) ? "s" : "",
+            "\n - " + string.Join("\n - ", issues.Select(x => x.Topic.Title))),
+            String.Format("Delete Issue{0}?", (issues.Count > 1) ? "s" : ""), 
+            MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (answer == MessageBoxResult.No)
           return;
 
@@ -118,7 +121,6 @@ namespace Bcfier.UserControls
         MessageBox.Show("exception: " + ex1);
       }
     }
-
 
     private void OnAddComment(object sender, ExecutedRoutedEventArgs e)
     {
