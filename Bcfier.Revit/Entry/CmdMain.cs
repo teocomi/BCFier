@@ -15,6 +15,20 @@ namespace Bcfier.Revit.Entry
   [Regeneration(RegenerationOption.Manual)]
   public class CmdMain : IExternalCommand
   {
+#if Version2017
+
+    public const string RevitVersion = "2017";
+
+#elif Version2015
+
+    public const string RevitVersion = "2015";
+
+#elif Version2016
+
+    public const string RevitVersion = "2016";
+
+#endif
+
     internal static CmdMain ThisCmd = null;
     private static bool _isRunning;
     private static ExtAppBcfier _extAppBcfier;
@@ -32,14 +46,13 @@ namespace Bcfier.Revit.Entry
       {
 
         //Version check
-        //2016 and 2015 use an amost identical API
-        if (!commandData.Application.Application.VersionName.Contains("2015") && !commandData.Application.Application.VersionName.Contains("2016"))
+        if (!commandData.Application.Application.VersionName.Contains(RevitVersion))
         {
           using (var td = new TaskDialog("Untested version"))
           {
             td.TitleAutoPrefix = false;
             td.MainInstruction = "Untested Revit Version";
-            td.MainContent = "This Add-In was built and tested only for Revit 2016 or 2015, proceed at your own risk";
+            td.MainContent = "This Add-In was built and tested only for Revit "+ RevitVersion+", proceed at your own risk";
             td.Show();
           }
         }

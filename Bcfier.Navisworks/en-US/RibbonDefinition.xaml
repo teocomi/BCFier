@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- BEGIN STANDARD SECTION DO NOT EDIT 
+    except for ensuring x:Uid="CustomRibbonTab" has a unique ID
+    -->
+<RibbonControl 
+    x:Uid="caseitsribbon" xmlns="clr-namespace:Autodesk.Windows;assembly=AdWindows" 
+    xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:adwi="clr-namespace:Autodesk.Internal.Windows;assembly=AdWindows"  
+    xmlns:system="clr-namespace:System;assembly=mscorlib"  
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Autodesk.Navisworks.Gui.Roamer.AIRLook;assembly=navisworks.gui.roamer">
+  <!-- END STANDARD SECTION DO NOT EDIT -->
+
+
+  <RibbonTab Id="ID_case" Title="BCFier">
+
+    <!-- RibbonPanel provides a distinct panel in the ribbon tab for a group of buttons -->
+    <RibbonPanel x:Uid="caselabs_ribbon">
+      <!-- RibbonPanelSource defines the content and proerties of the parent RibbonPanel. -->
+      <RibbonPanelSource x:Uid="caselabs_ribbonpanel" Title="BCFier">
+
+
+        <local:NWRibbonButton x:Uid="caseissuetracker" Id="ID_caseissuetracker"
+                                      Size="Large"
+                                      ShowText="True" 
+                                      Orientation="Vertical" />
+      </RibbonPanelSource>
+    </RibbonPanel>
+  </RibbonTab>
+  <!-- BEGIN STANDARD SECTION DO NOT EDIT -->
+</RibbonControl>
+<!-- END STANDARD SECTION DO NOT EDIT -->
