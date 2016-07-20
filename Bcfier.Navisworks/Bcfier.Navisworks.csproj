@@ -33,7 +33,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-   <!-- MULTI VERSION CONFIGURATION START -->
+  <!-- MULTI VERSION CONFIGURATION START -->
   <!-- ADDING BUILD COFIGURATION FOR EACH YEAR, DEBUG AND RELEASE -->
   <!-- source: https://github.com/WeConnect/issue-tracker -->
   <!-- 2015 -->
@@ -129,9 +129,9 @@
   </ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-    <!-- MULTIVERSION CONFIGURATION END -->
+  <!-- MULTIVERSION CONFIGURATION END -->
   <ItemGroup>
-      <!-- REVIT API References -->
+    <!-- REVIT API References -->
     <!-- DEBUG -->
     <!-- 2015 -->
     <Reference Include="Autodesk.Navisworks.Api" Condition="'$(Configuration)' == 'Debug-2015'">
@@ -165,7 +165,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>C:\Program Files\Autodesk\Navisworks Manage 2016\Autodesk.Navisworks.Interop.ComApi.dll</HintPath>
     </Reference>
-     <!-- 2017 -->
+    <!-- 2017 -->
     <Reference Include="Autodesk.Navisworks.Api" Condition="'$(Configuration)' == 'Debug-2017'">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\Autodesk\Navisworks Manage 2017\Autodesk.Navisworks.Api.dll</HintPath>
@@ -214,7 +214,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>C:\Program Files\Autodesk\Navisworks Manage 2016\Autodesk.Navisworks.Interop.ComApi.dll</HintPath>
     </Reference>
-      <!-- 2017 -->
+    <!-- 2017 -->
     <Reference Include="Autodesk.Navisworks.Api" Condition="'$(Configuration)' == 'Release-2017'">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\Autodesk\Navisworks Manage 2017\Autodesk.Navisworks.Api.dll</HintPath>
@@ -233,6 +233,7 @@
     <!-- end NAVIS API -->
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -244,25 +245,11 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="Entry\AppMain.cs" />
+    <Compile Include="Entry\CmdMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -286,10 +273,17 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="en-US\RibbonDefinition.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- MULTIVERSION POST BUILD EVENTS START -->
-<!-- COPIES ALL DLLS AND .ADDIN MANIFEST TO THE RELATIVE REVIT ADDIN FOLDER -->
-   <Target Name="AfterBuild">
+  <!-- COPIES ALL DLLS AND .ADDIN MANIFEST TO THE RELATIVE REVIT ADDIN FOLDER -->
+  <Target Name="AfterBuild">
     <CallTarget Condition="'$(Configuration)' == 'Debug-2015' Or '$(Configuration)' == 'Debug-2016' Or '$(Configuration)' == 'Debug-2017'" Targets="AfterBuildDebug" />
   </Target>
   <Target Name="AfterBuildDebug">
