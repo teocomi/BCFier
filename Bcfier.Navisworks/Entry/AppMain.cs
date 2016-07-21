@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
+using Autodesk.Navisworks.Api.Plugins;
 
 namespace Bcfier.Navisworks.Entry
 { 
@@ -38,7 +39,8 @@ namespace Bcfier.Navisworks.Entry
 
     public override void DestroyControlPane(Control pane)
     {
-      ns.mainPan.onClosing(null);
+      //TODO: uncommet
+      //ns.mainPan.onClosing(null);
       pane.Dispose();
 
     }

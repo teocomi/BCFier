@@ -5,14 +5,15 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{CAF05B60-6A81-489D-B966-7B94F0D69AC7}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Bcfier.Navisworks</RootNamespace>
     <AssemblyName>Bcfier.Navisworks</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -23,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,6 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <!-- MULTI VERSION CONFIGURATION START -->
   <!-- ADDING BUILD COFIGURATION FOR EACH YEAR, DEBUG AND RELEASE -->
@@ -50,6 +53,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <StartAction>Program</StartAction>
     <StartProgram>C:\Program Files\Autodesk\Navisworks Manage 2015\Roamer.exe</StartProgram>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-2015|AnyCPU'">
     <OutputPath>bin\Release-2015\</OutputPath>
@@ -66,6 +70,7 @@
     None
   </ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
     <Prefer32Bit>false</Prefer32Bit>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <!-- 2016 -->
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-2016|AnyCPU'">
@@ -81,6 +86,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <StartAction>Program</StartAction>
     <StartProgram>C:\Program Files\Autodesk\Navisworks Manage 2016\Roamer.exe</StartProgram>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-2016|AnyCPU'">
     <OutputPath>bin\Release-2016\</OutputPath>
@@ -97,6 +103,7 @@
     None
   </ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
     <Prefer32Bit>false</Prefer32Bit>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <!-- 2017 -->
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-2017|AnyCPU'">
@@ -112,6 +119,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <StartAction>Program</StartAction>
     <StartProgram>C:\Program Files\Autodesk\Navisworks Manage 2017\Roamer.exe</StartProgram>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-2017|AnyCPU'">
     <OutputPath>bin\Release-2017\</OutputPath>
@@ -128,6 +136,10 @@
     None
   </ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
     <Prefer32Bit>false</Prefer32Bit>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <!-- MULTIVERSION CONFIGURATION END -->
   <ItemGroup>
@@ -250,6 +262,9 @@
   <ItemGroup>
     <Compile Include="Entry\AppMain.cs" />
     <Compile Include="Entry\CmdMain.cs" />
+    <Compile Include="NavisWindow.xaml.cs">
+      <DependentUpon>NavisWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -267,6 +282,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -279,6 +295,20 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\BCFierIcon16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Images\BCFierIcon32x32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="NavisWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- MULTIVERSION POST BUILD EVENTS START -->

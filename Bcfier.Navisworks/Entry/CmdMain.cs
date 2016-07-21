@@ -9,8 +9,8 @@ namespace Bcfier.Navisworks.Entry
 
   [Plugin("Bcfier.CmdMain", "Bcfier", DisplayName = "BCFier")]
   [RibbonLayout("RibbonDefinition.xaml")]
-  [RibbonTab("ID_case")]
-  [Command("ID_caseissuetracker", DisplayName = "Case Issue Tracker", Icon = "CASEIssueTrackerIcon16x16.png", LargeIcon = "CASEIssueTrackerIcon32x32.png", ToolTip = "CASE Issue Tracker", ExtendedToolTip = "CASE Issue Tracker")]
+  [RibbonTab("bcfierTab")]
+  [Command("bcfierBtn", DisplayName = "BCFier", Icon = "BCFierIcon16x16.png", LargeIcon = "BCFierIcon32x32.png", ToolTip = "BCFier", ExtendedToolTip = "BCFier")]
   public class CmdMain : CommandHandlerPlugin
   {
 #if Version2017
@@ -19,17 +19,17 @@ namespace Bcfier.Navisworks.Entry
 
 #elif Version2015
 
-    public const string NavisVersion = "2015";
+      public const string NavisVersion = "2015";
 
 #elif Version2016
-    
-        public const string NavisVersion = "2016";
-    
+
+          public const string NavisVersion = "2016";
+
 #endif
     /// <summary>
     /// Constructor, just initialises variables.
     /// </summary>
-    public CASERibbon()
+    public CmdMain()
     {
 
     }
@@ -38,7 +38,7 @@ namespace Bcfier.Navisworks.Entry
     {
       switch (commandId)
       {
-        case "ID_caseissuetracker":
+        case "bcfierBtn":
           {
 
             LaunchPlugin();
@@ -76,14 +76,14 @@ namespace Bcfier.Navisworks.Entry
       // Version
       if (!Autodesk.Navisworks.Api.Application.Version.RuntimeProductName.Contains(NavisVersion))
       {
-        MessageBox.Show("This Add - In was built and tested only for Navisworks Manage  "+ NavisVersion + ", proceed at your own risk",
+        MessageBox.Show("This Add - In was built and tested only for Navisworks Manage  " + NavisVersion + ", proceed at your own risk",
                      "Untested Navisworks Version",
                    MessageBoxButtons.OK,
                    MessageBoxIcon.Warning);
       }
 
       //Find the plugin
-      PluginRecord pr = Autodesk.Navisworks.Api.Application.Plugins.FindPlugin("Bcfier.Navisworks.Entry.AppMain.Bcfier");
+      PluginRecord pr = Autodesk.Navisworks.Api.Application.Plugins.FindPlugin("Bcfier.AppMain.Bcfier");
 
       if (pr != null && pr is DockPanePluginRecord && pr.IsEnabled)
       {
@@ -102,29 +102,33 @@ namespace Bcfier.Navisworks.Entry
           dpp.Visible = !dpp.Visible;
         }
       }
-
     }
-
-
   }
 }
 
 
 
-////sample addin
-//[Plugin("MyDockPaneAddin", "ADSK", DisplayName = "MyDockPaneAddin")]
-//public class BasicDockPaneAddin : AddInPlugin
-//{
-//  public override int Execute(params string[] parameters)
-//  { //Find the plugin PluginRecord pr = Autodesk.Navisworks.Api.Application. Plugins.FindPlugin("MyDockPanePlugin.ADSK");
+// addin tab
+//  [Plugin("Bcfier.CmdMain", "Bcfier", DisplayName = "BCFier")]
+//  //[RibbonLayout("RibbonDefinition.xaml")]
+// // [RibbonTab("bcfierTab")]
+//  [Command("bcfierBtn", DisplayName = "BCFier", Icon = "BCFierIcon16x16.png", LargeIcon = "BCFierIcon32x32.png", ToolTip = "BCFier", ExtendedToolTip = "BCFier")]
+//  public class BasicDockPaneAddin : AddInPlugin
+//  {
+//    public override int Execute(params string[] parameters)
+//    {
+//       // Find the plugin 
+//       PluginRecord pr = Autodesk.Navisworks.Api.Application.Plugins.FindPlugin("Bcfier.AppMain.Bcfier");
 
-//    if (pr != null && pr is DockPanePluginRecord && pr.IsEnabled)
-//    { //check if it needs loading if (pr.LoadedPlugin == null) { pr.LoadPlugin(); }
+//      if (pr != null && pr is DockPanePluginRecord && pr.IsEnabled)
+//      { //check if it needs loading if (pr.LoadedPlugin == null) { pr.LoadPlugin(); }
 
-//      DockPanePlugin dpp = pr.LoadedPlugin as DockPanePlugin; if (dpp != null) { // Switch the Visible flag 
-//        dpp.Visible = !dpp.Visible;
+//        DockPanePlugin dpp = pr.LoadedPlugin as DockPanePlugin; if (dpp != null)
+//        { // Switch the Visible flag 
+//          dpp.Visible = !dpp.Visible;
+//        }
 //      }
+//      return 0;
 //    }
-//    return 0;
 //  }
 //}
