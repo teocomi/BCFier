@@ -1,34 +1,41 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:system="clr-namespace:System;assembly=mscorlib"
-                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                    mc:Ignorable="d"
-                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-                    xmlns:themes="clr-namespace:Bcfier.Themes">
+﻿<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:system="clr-namespace:System;assembly=mscorlib"
+  xmlns:themes="clr-namespace:Bcfier.Themes"
+  mc:Ignorable="d">
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="Icons.xaml" />
     <ResourceDictionary Source="Colors.xaml" />
   </ResourceDictionary.MergedDictionaries>
-  <!--Stiles used by different buttons and controls
-  not all of these are in use-->
+  <!--
+    Stiles used by different buttons and controls
+    not all of these are in use
+  -->
   <Style x:Key="MainMenuButton" TargetType="themes:ButtonIcon">
     <Style.Setters>
-      <Setter Property="IconColor" Value="{StaticResource PrimaryDark}"/>
-      <Setter Property="HighlightColor" Value="{StaticResource SecondaryDark}"/>
-      <Setter Property="IsVertical" Value="True"/>
-      <Setter Property="BorderThickness" Value="0"/>
-      <Setter Property="DisabledIconColor" Value="{StaticResource SecondaryDark}"/>
-      <Setter Property="Foreground" Value="{StaticResource BackgroundDark}"/>
+      <Setter Property="IconColor" Value="{StaticResource PrimaryDark}" />
+      <Setter Property="HighlightColor" Value="{StaticResource SecondaryDark}" />
+      <Setter Property="IsVertical" Value="True" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="DisabledIconColor" Value="{StaticResource SecondaryDark}" />
+      <Setter Property="Foreground" Value="{StaticResource BackgroundDark}" />
     </Style.Setters>
   </Style>
-  <Style x:Key="CanSaveEnablerStyle" TargetType="themes:ButtonIcon" BasedOn="{StaticResource MainMenuButton}">
+  
+  <Style
+    x:Key="CanSaveEnablerStyle"
+    BasedOn="{StaticResource MainMenuButton}"
+    TargetType="themes:ButtonIcon">
     <Style.Triggers>
       <DataTrigger Binding="{Binding ElementName=BcfTabControl, Path=SelectedIndex}" Value="-1">
         <Setter Property="IsEnabled" Value="False" />
       </DataTrigger>
     </Style.Triggers>
   </Style>
-
+  
   <Style x:Key="IssuesSelectedEnablerStyle" TargetType="Button">
     <Style.Triggers>
       <DataTrigger Binding="{Binding ElementName=IssueList, Path=SelectedItems.Count}" Value="0">
@@ -36,7 +43,7 @@
       </DataTrigger>
     </Style.Triggers>
   </Style>
-
+  
   <Style x:Key="ImageNullSource" TargetType="Image">
     <Style.Triggers>
       <Trigger Property="Source" Value="{x:Null}">
@@ -44,19 +51,22 @@
       </Trigger>
     </Style.Triggers>
   </Style>
-
-  <Style x:Key="AddViewCommentStyle" TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+  
+  <Style
+    x:Key="AddViewCommentStyle"
+    BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+    TargetType="Button">
     <Style.Setters>
-      <Setter Property="BorderBrush" Value="{StaticResource BackgroundDark}"/>
-      <Setter Property="HorizontalAlignment" Value="Stretch"/>
-      <Setter Property="VerticalAlignment" Value="Stretch"/>
-
-
+      <Setter Property="BorderBrush" Value="{StaticResource BackgroundDark}" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="VerticalAlignment" Value="Stretch" />
     </Style.Setters>
-
   </Style>
-
-  <Style x:Key="AddCommentEnablerStyle" TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+  
+  <Style
+    x:Key="AddCommentEnablerStyle"
+    BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+    TargetType="Button">
     <Style.Triggers>
       <DataTrigger Binding="{Binding ElementName=IssueList, Path=SelectedItems.Count}" Value="0">
         <Setter Property="IsEnabled" Value="False" />
@@ -74,6 +84,7 @@
       </DataTrigger>
     </Style.Triggers>
   </Style>
+  
   <Style x:Key="AnnotateSnapshot" TargetType="Button">
     <Style.Triggers>
       <DataTrigger Binding="{Binding ElementName=SnapshotImg, Path=Source}" Value="{x:Null}">
@@ -133,8 +144,17 @@
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="ToggleButton">
-          <Border Name="border" BorderThickness="0" Padding="2" BorderBrush="DarkGray" CornerRadius="0" Background="Transparent">
-            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Name="content"/>
+          <Border
+            Name="border"
+            Padding="2"
+            Background="Transparent"
+            BorderBrush="DarkGray"
+            BorderThickness="0"
+            CornerRadius="0">
+            <ContentPresenter
+              Name="content"
+              HorizontalAlignment="Left"
+              VerticalAlignment="Center" />
           </Border>
         </ControlTemplate>
       </Setter.Value>
@@ -143,55 +163,60 @@
 
   <Style x:Key="OverlayButton" TargetType="themes:ButtonIcon">
     <Style.Setters>
-      <Setter Property="IsVertical" Value="True"/>
-      <Setter Property="IconMarginVertical" Value="0"/>
-      <Setter Property="Margin" Value="0"/>
-      <Setter Property="Padding" Value="0"/>
-      <Setter Property="BorderThickness" Value="0"/>
-      <Setter Property="IconSizeVertical" Value="12"/>
-      <Setter Property="VerticalAlignment" Value="Top"/>
-      <Setter Property="IconColor" Value="DarkGray"/>
-      <Setter Property="HorizontalAlignment" Value="Right"/>
-      <Setter Property="Visibility" Value="Collapsed"/>
+      <Setter Property="IsVertical" Value="True" />
+      <Setter Property="IconMarginVertical" Value="0" />
+      <Setter Property="Margin" Value="0" />
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="IconSizeVertical" Value="12" />
+      <Setter Property="VerticalAlignment" Value="Top" />
+      <Setter Property="IconColor" Value="DarkGray" />
+      <Setter Property="HorizontalAlignment" Value="Right" />
+      <Setter Property="Visibility" Value="Collapsed" />
     </Style.Setters>
     <Style.Triggers>
-      <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Grid},
-                                               Path=IsMouseOver}" Value="True">
-        <Setter Property="Visibility" Value="Visible"/>
+      <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=IsMouseOver}" Value="True">
+        <Setter Property="Visibility" Value="Visible" />
       </DataTrigger>
     </Style.Triggers>
   </Style>
 
-  <Style x:Key="CloseButton" TargetType="themes:ButtonIcon" BasedOn="{StaticResource OverlayButton}">
+  <Style
+    x:Key="CloseButton"
+    BasedOn="{StaticResource OverlayButton}"
+    TargetType="themes:ButtonIcon">
     <Style.Setters>
-      <Setter Property="IconPath" Value="{StaticResource IconXClose}"/>
+      <Setter Property="IconPath" Value="{StaticResource IconXClose}" />
     </Style.Setters>
   </Style>
 
 
-  <Style x:Key="ChangeFieldButton" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" TargetType="Button">
+  <Style
+    x:Key="ChangeFieldButton"
+    BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+    TargetType="Button">
     <Style.Triggers>
-      <Trigger Property="Content" Value="{x:Static system:String.Empty}"  >
-        <Setter Property="Background" Value="#EEEEEE"/>
+      <Trigger Property="Content" Value="{x:Static system:String.Empty}">
+        <Setter Property="Background" Value="#EEEEEE" />
       </Trigger>
-      <Trigger Property="Content" Value="{x:Null}"  >
-        <Setter Property="Background" Value="#EEEEEE"/>
+      <Trigger Property="Content" Value="{x:Null}">
+        <Setter Property="Background" Value="#EEEEEE" />
       </Trigger>
       <MultiDataTrigger>
         <MultiDataTrigger.Conditions>
-          <Condition Binding="{Binding Path=Value.isRequired}" Value="True"/>
-          <Condition Binding="{Binding Path=Value.display}" Value="{x:Static system:String.Empty}"/>
+          <Condition Binding="{Binding Path=Value.isRequired}" Value="True" />
+          <Condition Binding="{Binding Path=Value.display}" Value="{x:Static system:String.Empty}" />
         </MultiDataTrigger.Conditions>
-        <Setter Property="Background" Value="DarkSalmon"/>
-        <Setter Property="ToolTip" Value="Required Field"/>
+        <Setter Property="Background" Value="DarkSalmon" />
+        <Setter Property="ToolTip" Value="Required Field" />
       </MultiDataTrigger>
       <MultiDataTrigger>
         <MultiDataTrigger.Conditions>
-          <Condition Binding="{Binding Path=Value.isRequired}" Value="True"/>
-          <Condition Binding="{Binding Path=Value.display}" Value="{x:Null}"/>
+          <Condition Binding="{Binding Path=Value.isRequired}" Value="True" />
+          <Condition Binding="{Binding Path=Value.display}" Value="{x:Null}" />
         </MultiDataTrigger.Conditions>
-        <Setter Property="Background" Value="DarkSalmon"/>
-        <Setter Property="ToolTip" Value="Required Field"/>
+        <Setter Property="Background" Value="DarkSalmon" />
+        <Setter Property="ToolTip" Value="Required Field" />
       </MultiDataTrigger>
     </Style.Triggers>
   </Style>

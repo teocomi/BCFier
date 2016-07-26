@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+
+using Autodesk.Revit.DB;
+using Autodesk.Revit.UI;
 using Bcfier.Bcf.Bcf2;
 using Bcfier.Revit.Data;
 using Bcfier.Revit.Entry;
-using Autodesk.Revit.DB;
-using Autodesk.Revit.UI;
-
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Component = Bcfier.Bcf.Bcf2.Component;
@@ -340,6 +340,7 @@ namespace Bcfier.Revit
     }
     #endregion
 
+    //stats
     private void RevitWindow_OnLoaded(object sender, RoutedEventArgs e)
     {
       Task.Run(() =>

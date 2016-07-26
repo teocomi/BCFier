@@ -1,18 +1,25 @@
-﻿<Window x:Class="Bcfier.Revit.RevitWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:ctr="clr-namespace:Bcfier.UserControls;assembly=Bcfier"
-        xmlns:data="clr-namespace:Bcfier.Data;assembly=Bcfier"
-        Title="BCFier for Revit" Width="700" Height="700"  Name="mainWin"
-        Loaded="RevitWindow_OnLoaded"
-          Closing="Window_Closing" Icon="Assets/icon.ico">
+﻿<Window
+  x:Class="Bcfier.Revit.RevitWindow"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:ctr="clr-namespace:Bcfier.UserControls;assembly=Bcfier"
+  xmlns:data="clr-namespace:Bcfier.Data;assembly=Bcfier"
+  Name="mainWin"
+  Title="BCFier for Revit"
+  Width="700"
+  Height="700"
+  Closing="Window_Closing"
+  Icon="Assets/icon.ico"
+  Loaded="RevitWindow_OnLoaded">
   <Window.CommandBindings>
     <CommandBinding Command="data:Commands.OpenView" Executed="OnOpenView" />
     <CommandBinding Command="data:Commands.AddView" Executed="OnAddView" />
   </Window.CommandBindings>
-  <Grid >
-    <ctr:BcfierPanel x:Name="Bcfier" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"/>
-
+  <Grid>
+    <ctr:BcfierPanel
+      x:Name="Bcfier"
+      HorizontalAlignment="Stretch"
+      HorizontalContentAlignment="Stretch" />
   </Grid>
 </Window>
 

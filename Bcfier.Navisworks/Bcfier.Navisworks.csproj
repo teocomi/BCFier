@@ -310,6 +310,12 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bcfier\Bcfier.csproj">
+      <Project>{503ce2c1-09d7-4f15-bb42-86196ee01ed4}</Project>
+      <Name>Bcfier</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- MULTIVERSION POST BUILD EVENTS START -->
   <!-- COPIES ALL DLLS AND .ADDIN MANIFEST TO THE RELATIVE REVIT ADDIN FOLDER -->

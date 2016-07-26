@@ -1,15 +1,20 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<RibbonControl 
-    x:Uid="bcfierControl" xmlns="clr-namespace:Autodesk.Windows;assembly=AdWindows" 
-    xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-    xmlns:adwi="clr-namespace:Autodesk.Internal.Windows;assembly=AdWindows"  
-    xmlns:system="clr-namespace:System;assembly=mscorlib"  
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:Autodesk.Navisworks.Gui.Roamer.AIRLook;assembly=navisworks.gui.roamer">
-  <RibbonTab Id="bcfierTab" Title="BCFier">
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<RibbonControl
+  xmlns="clr-namespace:Autodesk.Windows;assembly=AdWindows"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:adwi="clr-namespace:Autodesk.Internal.Windows;assembly=AdWindows"
+  xmlns:local="clr-namespace:Autodesk.Navisworks.Gui.Roamer.AIRLook;assembly=navisworks.gui.roamer"
+  xmlns:system="clr-namespace:System;assembly=mscorlib"
+  xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  x:Uid="bcfierControl">
+  <RibbonTab Title="BCFier" Id="bcfierTab">
     <RibbonPanel>
       <RibbonPanelSource Title="BCFier">
-        <local:NWRibbonButton Id="bcfierBtn" Size="Large" ShowText="True" Orientation="Vertical" />
+        <local:NWRibbonButton
+          Id="bcfierBtn"
+          Orientation="Vertical"
+          ShowText="True"
+          Size="Large" />
       </RibbonPanelSource>
     </RibbonPanel>
   </RibbonTab>
