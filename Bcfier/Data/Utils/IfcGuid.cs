@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 
-namespace Bcfier.Revit.Data
+namespace Bcfier.Data.Utils
 {
   /// <summary>
   /// Conversion methods between an IFC 
@@ -161,15 +161,14 @@ namespace Bcfier.Revit.Data
      //</summary>
      //<param name="element"></param>
      //<returns></returns>
-    public static string IfcGUID(this Autodesk.Revit.DB.Element element)
+    public static string IfcGUID(string UniqueId)
     {
-      string a = element.UniqueId;
-      Guid episodeId = new Guid(a.Substring(0, 36));
-      int elementId = int.Parse(a.Substring(37), NumberStyles.AllowHexSpecifier);
-      int last_32_bits = int.Parse(a.Substring(28, 8), NumberStyles.AllowHexSpecifier);
+      Guid episodeId = new Guid(UniqueId.Substring(0, 36));
+      int elementId = int.Parse(UniqueId.Substring(37), NumberStyles.AllowHexSpecifier);
+      int last_32_bits = int.Parse(UniqueId.Substring(28, 8), NumberStyles.AllowHexSpecifier);
       int xor = last_32_bits ^ elementId;
-      a = a.Substring(0, 28) + xor.ToString("x8");
-      Guid guid = new Guid(a);
+      UniqueId = UniqueId.Substring(0, 28) + xor.ToString("x8");
+      Guid guid = new Guid(UniqueId);
       return ToIfcGuid(guid);
     }
     #endregion

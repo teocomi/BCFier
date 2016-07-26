@@ -57,7 +57,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <StartAction>Program</StartAction>
     <StartProgram>C:\Program Files\Autodesk\Revit 2015\Revit.exe</StartProgram>
-     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-2015|AnyCPU'">
     <OutputPath>bin\Release-2015\</OutputPath>
@@ -74,7 +74,7 @@
     None
   </ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
     <Prefer32Bit>false</Prefer32Bit>
-     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <!-- 2016 -->
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-2016|AnyCPU'">
@@ -90,7 +90,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <StartAction>Program</StartAction>
     <StartProgram>C:\Program Files\Autodesk\Revit 2016\Revit.exe</StartProgram>
-     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-2016|AnyCPU'">
     <OutputPath>bin\Release-2016\</OutputPath>
@@ -107,7 +107,7 @@
     None
   </ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
     <Prefer32Bit>false</Prefer32Bit>
-     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <!-- 2017 -->
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-2017|AnyCPU'">
@@ -123,7 +123,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <StartAction>Program</StartAction>
     <StartProgram>C:\Program Files\Autodesk\Revit 2017\Revit.exe</StartProgram>
-     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-2017|AnyCPU'">
     <OutputPath>bin\Release-2017\</OutputPath>
@@ -140,7 +140,7 @@
     None
   </ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
     <Prefer32Bit>false</Prefer32Bit>
-     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
   </PropertyGroup>
   <!-- MULTIVERSION CONFIGURATION END -->
   <ItemGroup>
@@ -241,7 +241,6 @@
     <Compile Include="AddViewRevit.xaml.cs">
       <DependentUpon>AddViewRevit.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Data\IfcGuid.cs" />
     <Compile Include="Data\RevitUtils.cs" />
     <Page Include="AddViewRevit.xaml">
       <SubType>Designer</SubType>

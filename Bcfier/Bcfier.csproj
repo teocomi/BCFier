@@ -140,6 +140,7 @@
     <Compile Include="Bcf\BcfFile.cs" />
     <Compile Include="Data\AttachedProperties\CtrlEnterKeyDown.cs" />
     <Compile Include="Data\AttachedProperties\NavigationService.cs" />
+    <Compile Include="Data\Utils\IfcGuid.cs" />
     <Compile Include="Data\Utils\RelativeDate.cs" />
     <Compile Include="Data\ValueConverters\DateConverter.cs" />
     <Compile Include="Data\Utils\ImagingUtils.cs" />

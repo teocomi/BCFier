@@ -260,6 +260,7 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\NavisUtils.cs" />
     <Compile Include="Entry\AppMain.cs" />
     <Compile Include="Entry\CmdMain.cs" />
     <Compile Include="NavisWindow.xaml.cs">

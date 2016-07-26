@@ -13,6 +13,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using Component = Bcfier.Bcf.Bcf2.Component;
 using Point = Bcfier.Bcf.Bcf2.Point;
+using Bcfier.Data.Utils;
 
 namespace Bcfier.Revit
 {
