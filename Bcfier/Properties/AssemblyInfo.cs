@@ -11,12 +11,13 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("teocomi")]
 [assembly: AssemblyProduct("Bcfier")]
-[assembly: AssemblyCopyright("Copyright © teocomi 2014")]
+[assembly: AssemblyCopyright("Copyright © teocomi 2017")]
 [assembly: AssemblyTrademark("teocomi")]
 [assembly: AssemblyCulture("")]
 
 [assembly: InternalsVisibleTo("Bcfier.Revit")]
 [assembly: InternalsVisibleTo("Bcfier.Win")]
+[assembly: InternalsVisibleTo("Bcfier.Navisworks")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -53,6 +54,6 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.0.2")]
-[assembly: AssemblyFileVersion("2.0.2")]
+[assembly: AssemblyVersion("2.1.0")]
+[assembly: AssemblyFileVersion("2.1.0")]
 [assembly: GuidAttribute("0d553633-80f8-490b-84d6-9d3d6ad4196d")]

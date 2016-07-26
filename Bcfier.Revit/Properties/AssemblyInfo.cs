@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("teocomi")]
 [assembly: AssemblyProduct("Bcfier.Revit")]
-[assembly: AssemblyCopyright("Copyright © teocomi 2014")]
+[assembly: AssemblyCopyright("Copyright © teocomi 2017")]
 [assembly: AssemblyTrademark("teocomi")]
 [assembly: AssemblyCulture("")]
 
@@ -31,11 +31,11 @@ using System.Windows;
 
 [assembly: ThemeInfo(
     ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located
-    //(used if a resource is not found in the page, 
-    // or application resource dictionaries)
+                                     //(used if a resource is not found in the page, 
+                                     // or application resource dictionaries)
     ResourceDictionaryLocation.ExternalAssembly //where the generic resource dictionary is located
-    //(used if a resource is not found in the page, 
-    // app, or any theme specific resource dictionaries)
+                                                //(used if a resource is not found in the page, 
+                                                // app, or any theme specific resource dictionaries)
 )]
 
 
@@ -49,6 +49,6 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.0.2")]
-[assembly: AssemblyFileVersion("2.0.2")]
+[assembly: AssemblyVersion("2.1.0")]
+[assembly: AssemblyFileVersion("2.1.0")]
 [assembly: GuidAttribute("59068325-ACDC-4DB3-892A-1C90C9434BF8")]
