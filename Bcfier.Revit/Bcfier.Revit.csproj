@@ -250,6 +250,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Data\RevitView.cs" />
     <Compile Include="Entry\ExtAppBcfier.cs" />
     <Compile Include="Entry\CmdMain.cs" />
     <Compile Include="Entry\ExtEvntOpenView.cs" />
