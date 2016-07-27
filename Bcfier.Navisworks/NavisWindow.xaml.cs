@@ -6,10 +6,12 @@ using System.Windows.Input;
 using System.Linq;
 using System.Collections.Generic;
 
+using System.IO;
 using Bcfier.Data.Utils;
 using Bcfier.Navisworks.Data;
 using Bcfier.Bcf.Bcf2;
 using Autodesk.Navisworks.Api;
+using Bcfier.Navisworks.Windows;
 using ComBridge = Autodesk.Navisworks.Api.ComApi.ComApiBridge;
 using ComApi = Autodesk.Navisworks.Api.Interop.ComApi;
 
@@ -21,9 +23,24 @@ namespace Bcfier.Navisworks
   /// </summary>
   public partial class NavisWindow : UserControl
   {
+    List<SavedViewpoint> _savedViewpoints = new List<SavedViewpoint>();
+
     public NavisWindow()
     {
       InitializeComponent();
+
+      // set image export settings
+      // configure the option "export.image.format" to export png and image size
+      ComApi.InwOaPropertyVec options = ComBridge.State.GetIOPluginOptions("lcodpimage");
+      foreach (ComApi.InwOaProperty opt in options.Properties())
+      {
+        if (opt.name == "export.image.format")
+          opt.value = "lcodpexpng";
+        if (opt.name == "export.image.width")
+          opt.value = 1600;
+        if (opt.name == "export.image.height")
+          opt.value = 900;
+      }
     }
     #region commands
     /// <summary>
@@ -45,94 +62,7 @@ namespace Bcfier.Navisworks
         
         //current document
         var doc = Autodesk.Navisworks.Api.Application.ActiveDocument;
-        NavisUtils.GetGunits(doc);
-
-        Viewpoint viewpoint = new Viewpoint();
-       
-        //orthogonal
-        if (v.OrthogonalCamera != null)
-        {
-          if (v.OrthogonalCamera.CameraViewPoint == null || v.OrthogonalCamera.CameraUpVector == null || v.OrthogonalCamera.CameraDirection == null)
-            return;
-
-          var zoom = v.OrthogonalCamera.ViewToWorldScale.ToInternal();
-          var cameraDirection = NavisUtils.GetNavisVector(v.OrthogonalCamera.CameraDirection);
-          var cameraUpVector = NavisUtils.GetNavisVector(v.OrthogonalCamera.CameraUpVector);
-          var cameraViewPoint = NavisUtils.GetNavisXYZ(v.OrthogonalCamera.CameraViewPoint);
-
-          viewpoint.Position = cameraViewPoint;
-          viewpoint.AlignUp(cameraUpVector);
-          viewpoint.AlignDirection(cameraDirection);
-          viewpoint.Projection = ViewpointProjection.Orthographic;
-          viewpoint.FocalDistance = 1;
-
-          //TODO
-          //for better zooming from revit should use > zoom * 1.25
-          //for better zooming from tekla should use > zoom / 1.25
-          //still not sure why
-          Point3D xyzTL = cameraViewPoint.Add(cameraUpVector.Multiply(zoom));
-          var dist = xyzTL.DistanceTo(cameraViewPoint);
-          viewpoint.SetExtentsAtFocalDistance(1, dist);
-        }
-        //perspective
-        else if (v.PerspectiveCamera != null)
-        {
-          if (v.PerspectiveCamera.CameraViewPoint == null || v.PerspectiveCamera.CameraUpVector == null || v.PerspectiveCamera.CameraDirection == null)
-            return;
-
-          var zoom = v.PerspectiveCamera.FieldOfView;
-          var cameraDirection = NavisUtils.GetNavisVector(v.PerspectiveCamera.CameraDirection);
-          var cameraUpVector = NavisUtils.GetNavisVector(v.PerspectiveCamera.CameraUpVector);
-          var cameraViewPoint = NavisUtils.GetNavisXYZ(v.PerspectiveCamera.CameraViewPoint);
-
-          viewpoint.Position = cameraViewPoint;
-          viewpoint.AlignUp(cameraUpVector);
-          viewpoint.AlignDirection(cameraDirection);
-          viewpoint.Projection = ViewpointProjection.Perspective;
-          viewpoint.FocalDistance = zoom;
-        }
-      
-        doc.CurrentViewpoint.CopyFrom(viewpoint);
-
-
-        //show/hide elements
-        //todo: needs improvement
-        //todo: add settings
-        if (v.Components != null && v.Components.Any())
-        {
-          List<ModelItem> attachedElems = new List<ModelItem>();
-          List<ModelItem> elems = doc.Models.First.RootItem.DescendantsAndSelf.ToList<ModelItem>();
-
-
-          foreach (var item in elems.Where(o => o.InstanceGuid != Guid.Empty))
-          {
-            string ifcguid = IfcGuid.ToIfcGuid(item.InstanceGuid).ToString();
-            if (v.Components.Any(o => o.IfcGuid == ifcguid))
-              attachedElems.Add(item);
-
-          }
-          if (attachedElems.Any())//avoid to hide everything if no elements matches
-          {
-            if (UserSettings.Get("selattachedelems") == "0")
-            {
-              List<ModelItem> elemsVisible = new List<ModelItem>();
-              foreach (var item in attachedElems)
-              {
-                elemsVisible.AddRange(item.AncestorsAndSelf);
-              }
-              foreach (var item in elemsVisible)
-                elems.Remove(item);
-
-              doc.Models.ResetAllHidden();
-              doc.Models.SetHidden(elems, true);
-            }
-            else
-            {
-              doc.CurrentSelection.Clear();
-              doc.CurrentSelection.AddRange(attachedElems);
-            }
-          }
-        }
+        NavisView.Open(doc,v);
       }
       catch (System.Exception ex1)
       {
@@ -157,27 +87,31 @@ namespace Bcfier.Navisworks
           MessageBox.Show("No Issue selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
           return;
         }
+        try
+        {
+          var doc = Autodesk.Navisworks.Api.Application.ActiveDocument;
+          var dialog = new AddViewNavis(issue, Bcfier.SelectedBcf().TempPath);
+          dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+          dialog.ShowDialog();
+          if (dialog.DialogResult.HasValue && dialog.DialogResult.Value)
+          {
+            //generate and set the VisInfo
+            issue.Viewpoints.Last().VisInfo = GenerateViewpoint();
 
-        //todo
+            //set filename here as it's not set when an issue is created
+            if (!string.IsNullOrEmpty(doc.FileName))
+              issue.Header[0].Filename = doc.FileName;
+            else
+              issue.Header[0].Filename = "Unknown";
 
-        //var dialog = new AddViewRevit(issue, Bcfier.SelectedBcf().TempPath, uiapp.ActiveUIDocument.Document);
-        //dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-        //dialog.ShowDialog();
-        //if (dialog.DialogResult.HasValue && dialog.DialogResult.Value)
-        //{
-        //  //generate and set set the VisInfo
-        //  issue.Viewpoints.Last().VisInfo = GenerateViewpoint();
+            Bcfier.SelectedBcf().HasBeenSaved = false;
+          }
+        }
 
-        //  //get filename
-        //  UIDocument uidoc = uiapp.ActiveUIDocument;
-
-        //  if (uidoc.Document.Title != null)
-        //    issue.Header[0].Filename = uidoc.Document.Title;
-        //  else
-        //    issue.Header[0].Filename = "Unknown";
-
-        //  Bcfier.SelectedBcf().HasBeenSaved = false;
-        //}
+        catch (Exception ex)
+        {
+          MessageBox.Show(ex.ToString());
+        }
 
       }
       catch (System.Exception ex1)
@@ -185,6 +119,40 @@ namespace Bcfier.Navisworks
         MessageBox.Show("exception: " + ex1, "Error adding a View!");
       }
     }
+
+    private void OnAddIssues(object sender, ExecutedRoutedEventArgs e)
+    {
+
+    }
+
+   
+
+    private void RecurseItems(SavedItem savedItem)
+    {
+      try
+      {
+        Autodesk.Navisworks.Api.GroupItem group = savedItem as Autodesk.Navisworks.Api.GroupItem;
+        //is a group
+        if (null != group)
+        {
+          foreach (SavedItem child in group.Children)
+          {
+            RecurseItems(child);
+          }
+        }
+        else
+        {
+          _savedViewpoints.Add((SavedViewpoint)savedItem);
+        }
+      }
+      catch
+      {
+       //do nothing
+      }
+
+    }
+
+
     #endregion
     //stats
     private void NavisWindow_OnLoaded(object sender, RoutedEventArgs e)

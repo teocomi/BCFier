@@ -13,6 +13,7 @@
   mc:Ignorable="d"
   Loaded="NavisWindow_OnLoaded">
   <UserControl.CommandBindings>
+    <CommandBinding Command="data:Commands.AddIssues" Executed="OnAddIssues" />
     <CommandBinding Command="data:Commands.OpenView" Executed="OnOpenView" />
     <CommandBinding Command="data:Commands.AddView" Executed="OnAddView" />
   </UserControl.CommandBindings>

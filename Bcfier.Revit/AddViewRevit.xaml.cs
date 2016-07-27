@@ -23,7 +23,7 @@ namespace Bcfier.Revit
         AddViewControl.TempFolder = bcfTempFolder;
         doc = _doc;
 
-        AddViewControl.TextBlockInfo.Text = "3D/2D informations of the current view will be included in the viewpoint";
+        AddViewControl.TextBlockInfo.Text = "3D/2D information of the current view will be included in the viewpoint";
 
         GetRevitSnapshot();
       }

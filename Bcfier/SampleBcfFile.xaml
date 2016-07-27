@@ -1,8 +1,7 @@
-﻿<bcf:BcfFile
-  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<bcf:BcfFile 
+  xmlns="clr-namespace:Bcfier"
   xmlns:bcf="clr-namespace:Bcfier.Bcf"
-  xmlns:bcf2="clr-namespace:Bcfier.Bcf.Bcf2"
-  xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase">
+  xmlns:bcf2="clr-namespace:Bcfier.Bcf.Bcf2">
   <bcf:BcfFile.Issues>
     <bcf2:Markup>
       <bcf2:Markup.Topic>

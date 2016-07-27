@@ -34,6 +34,11 @@ namespace Bcfier.Navisworks.Data
       return meters * _Units;
     }
 
+    public static double FromInternal(this double intUnits)
+    {
+      return intUnits / _Units;
+    }
+
     public static void  GetGunits(Document doc)
     {
       string units = doc.Units.ToString();

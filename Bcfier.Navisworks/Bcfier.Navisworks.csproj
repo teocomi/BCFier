@@ -245,6 +245,7 @@
     <!-- end NAVIS API -->
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -261,6 +262,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\NavisUtils.cs" />
+    <Compile Include="Data\NavisView.cs" />
     <Compile Include="Entry\AppMain.cs" />
     <Compile Include="Entry\CmdMain.cs" />
     <Compile Include="NavisWindow.xaml.cs">

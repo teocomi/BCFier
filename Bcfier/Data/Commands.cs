@@ -16,6 +16,7 @@ namespace Bcfier.Data
   {
     //issues
     public static readonly RoutedCommand AddIssue = new RoutedCommand("AddIssue", typeof(Button));
+    public static readonly RoutedCommand AddIssues = new RoutedCommand("AddIssues", typeof(Button));
     public static readonly RoutedCommand DeleteIssues = new RoutedCommand("DeleteIssues", typeof(Button));
     //comments
     public static readonly RoutedCommand AddComment = new RoutedCommand("AddComment", typeof(Button));

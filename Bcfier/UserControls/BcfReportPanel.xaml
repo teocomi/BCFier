@@ -8,9 +8,9 @@
   xmlns:src="clr-namespace:Bcfier.Data.ValueConverters"
   xmlns:themes="clr-namespace:Bcfier.Themes"
   Background="White"
-  d:DataContext="{d:DesignData Source=../DesignTimeClasses/SampleBcfFile.xaml}"
+  d:DataContext="{d:DesignData d:Source=../SampleBcfFile.xaml}"
   d:DesignHeight="1500"
-  d:DesignWidth="700"
+  d:DesignWidth="900"
   Loaded="BcfReportPanel_OnLoaded"
   mc:Ignorable="d">
   <UserControl.Resources>
@@ -27,6 +27,7 @@
       <src:DateConverter x:Key="DateConverter" />
       <src:IntVisibConverter x:Key="IntVisibConverter" />
       <src:PathToImageConv x:Key="PathToImageConv" />
+      <src:BoolVisibConverter x:Key="BoolVisibConverter" />
     </ResourceDictionary>
   </UserControl.Resources>
   <Grid Background="{StaticResource BackgroundLight}">
@@ -162,11 +163,10 @@
         </ListView.ItemTemplate>
       </ListView>
       <!--  DOCK PANELS ******************************************************************************************************************************  -->
-      <Grid Background="{StaticResource BackgroundLight}">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*" />
-          <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+      <UniformGrid
+        Grid.Row="0"
+        Background="{StaticResource BackgroundLight}"
+        Rows="1">
         <themes:ButtonIcon
           x:Name="AddIssueBtn"
           Margin="5,5,0,5"
@@ -178,8 +178,18 @@
           IconPath="{StaticResource IconAdd}"
           ToolTip="Add Issue" />
         <themes:ButtonIcon
+          x:Name="AddIssuesBtn"
+          Margin="0,5,0,5"
+          Style="{StaticResource AddViewCommentStyle}"
+          BorderThickness="0,1,0,1"
+          Command="data:Commands.AddIssues"
+          Content="Batch Add"
+          IconColor="Green"
+          IconPath="{StaticResource IconAdd}"
+          ToolTip="Batch Add Issues"
+          Visibility="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BoolVisibConverter}}" />
+        <themes:ButtonIcon
           x:Name="DelIssueBtn"
-          Grid.Column="1"
           Margin="0,5,5,5"
           Style="{StaticResource AddViewCommentStyle}"
           BorderThickness="0,1,1,1"
@@ -190,7 +200,7 @@
           IconColor="Red"
           IconPath="{StaticResource IconDelete}"
           ToolTip="Delete selected" />
-      </Grid>
+      </UniformGrid>
       <DockPanel
         Grid.Row="3"
         Grid.Column="0"

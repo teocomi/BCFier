@@ -182,9 +182,9 @@
     <Compile Include="Windows\SnapWin.xaml.cs">
       <DependentUpon>SnapWin.xaml</DependentUpon>
     </Compile>
-    <DesignData Include="DesignTimeClasses\SampleBcfFile.xaml">
-      <SubType>Designer</SubType>
+    <DesignData Include="SampleBcfFile.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </DesignData>
     <Page Include="Themes\ButtonStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
