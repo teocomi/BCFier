@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Xml.Serialization;
 using Bcfier.Bcf.Bcf2;
@@ -336,7 +337,10 @@ namespace Bcfier.Bcf
         if (File.Exists(filename))
           File.Delete(filename);
 
-        ZipFile.CreateFromDirectory(bcffile.TempPath, filename, CompressionLevel.Optimal, false);
+        //added encoder to address backslashes issue #11
+        //issue: https://github.com/teocomi/BCFier/issues/11
+        //ref: http://stackoverflow.com/questions/27289115/system-io-compression-zipfile-net-4-5-output-zip-in-not-suitable-for-linux-mac
+        ZipFile.CreateFromDirectory(bcffile.TempPath, filename, CompressionLevel.Optimal, false, new ZipEncoder());
 
         //Open browser at location
         Uri uri2 = new Uri(filename);
@@ -441,6 +445,19 @@ namespace Bcfier.Bcf
       {
         PropertyChanged(this, new PropertyChangedEventArgs(info));
       }
+    }
+  }
+
+  class ZipEncoder : UTF8Encoding
+  {
+    public ZipEncoder()
+    {
+
+    }
+    public override byte[] GetBytes(string s)
+    {
+      s = s.Replace("\\", "/");
+      return base.GetBytes(s);
     }
   }
 }

@@ -15,7 +15,7 @@ I have only recently started to document this project, please be comprehensive a
 
 ##Getting Started
 
-To get started fork the repo, if you are going to extend the Revit Project make sure the Autodesk dlls are referenced correctly, otherwise there are no other dependencies that need to be added. 
+To get started fork the repo, if you are going to extend the Revit Project make sure the Autodesk dlls are referenced correctly, otherwise there are no other dependencies that need to be added.
 
 ###Structure
 
@@ -65,10 +65,10 @@ You can contact Matteo Cominetti at: hello@teocomi.com
 
 ###License
 GNU General Public License v3 Extended
-This porogram uses the GNU General Public License v3, extended to support the use of BCFier as Plugin of the non-free main software Autodesk Revit.
+This program uses the GNU General Public License v3, extended to support the use of BCFier as Plugin of the non-free main software Autodesk Revit.
 See <http://www.gnu.org/licenses/gpl-faq.en.html#GPLPluginsInNF>.
 
-Copyright (c) 2015 Matteo Cominetti
+Copyright (c) 2013-2016 Matteo Cominetti
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -82,4 +82,3 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/gpl.txt>.
-
