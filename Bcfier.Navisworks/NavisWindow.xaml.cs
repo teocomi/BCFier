@@ -96,7 +96,7 @@ namespace Bcfier.Navisworks
           if (dialog.DialogResult.HasValue && dialog.DialogResult.Value)
           {
             //generate and set the VisInfo
-            issue.Viewpoints.Last().VisInfo = GenerateViewpoint();
+            //issue.Viewpoints.Last().VisInfo = GenerateViewpoint();
 
             //set filename here as it's not set when an issue is created
             if (!string.IsNullOrEmpty(doc.FileName))
