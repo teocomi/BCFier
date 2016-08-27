@@ -31,6 +31,7 @@ DefaultDirName={pf}\{#MyAppName}
 DisableDirPage=yes
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
+DisableWelcomePage=no
 OutputDir={#Repository}
 OutputBaseFilename=BCFier
 SetupIconFile={#Repository}\Assets\icon.ico
