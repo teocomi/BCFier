@@ -85,7 +85,7 @@
           <RowDefinition Height="auto" />
           <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
-        <DockPanel Grid.Row="0" HorizontalAlignment="Stretch">
+        <!--<DockPanel Grid.Row="0" HorizontalAlignment="Stretch">
           <ComboBox
             x:Name="comboStatuses"
             Width="100"
@@ -98,7 +98,7 @@
             HorizontalAlignment="Stretch"
             MaxLength="20"
             Placeholder="Verbal Status (optional)" />
-        </DockPanel>
+        </DockPanel>-->
         <TextBox
           x:Name="CommentBox"
           Grid.Row="1"

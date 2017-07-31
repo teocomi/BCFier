@@ -43,7 +43,6 @@ namespace Bcfier.Revit.Entry
           var cameraViewPoint = RevitUtils.GetRevitXYZ(v.OrthogonalCamera.CameraViewPoint);
           var orient3D = RevitUtils.ConvertBasePoint(doc, cameraViewPoint, cameraDirection, cameraUpVector, true);
 
-
           View3D orthoView = null;
           //if active view is 3d ortho use it
           if (doc.ActiveView.ViewType == ViewType.ThreeD)
@@ -175,52 +174,53 @@ namespace Bcfier.Revit.Entry
         else
           return;
 
+        //TODO: FIX visibility/selection opening a view
         //select/hide elements
-        if (v.Components != null && v.Components.Any())
-        {
-          var elementsToSelect = new List<ElementId>();
-          var elementsToHide = new List<ElementId>();
-          var elementsToShow = new List<ElementId>();
+        //if (v.Components != null && v.Components.Any())
+        //{
+        //  var elementsToSelect = new List<ElementId>();
+        //  var elementsToHide = new List<ElementId>();
+        //  var elementsToShow = new List<ElementId>();
 
-          //Assuming that 
-          var visibleElems = new FilteredElementCollector(doc, doc.ActiveView.Id)
-         .WhereElementIsNotElementType()
-         .WhereElementIsViewIndependent()
-         .ToElementIds()
-         .Where(e => doc.GetElement(e).CanBeHidden(doc.ActiveView)); //might affect performance, but it's necessary
+        //  //Assuming that 
+        //  var visibleElems = new FilteredElementCollector(doc, doc.ActiveView.Id)
+        // .WhereElementIsNotElementType()
+        // .WhereElementIsViewIndependent()
+        // .ToElementIds()
+        // .Where(e => doc.GetElement(e).CanBeHidden(doc.ActiveView)); //might affect performance, but it's necessary
 
-          foreach (var e in visibleElems)
-          {
-            //elements to select
-            var guid = IfcGuid.ToIfcGuid(ExportUtils.GetExportId(doc, e));
-            if (v.Components.Any(x => x.IfcGuid == guid && x.Selected))
-              elementsToSelect.Add(e);
+        //  foreach (var e in visibleElems)
+        //  {
+        //    //elements to select
+        //    var guid = IfcGuid.ToIfcGuid(ExportUtils.GetExportId(doc, e));
+        //    if (v.Components.Any(x => x.IfcGuid == guid && x.Selected))
+        //      elementsToSelect.Add(e);
 
-            //elements to hide
-            if (v.Components.Any(x => x.IfcGuid == guid && !x.Visible))
-              elementsToHide.Add(e);
+        //    //elements to hide
+        //    if (v.Components.Any(x => x.IfcGuid == guid && !x.Visible))
+        //      elementsToHide.Add(e);
 
-            //elements to show //could be optional
-            if (v.Components.Any(x => x.IfcGuid == guid && x.Visible))
-              elementsToShow.Add(e);
-          }
+        //    //elements to show //could be optional
+        //    if (v.Components.Any(x => x.IfcGuid == guid && x.Visible))
+        //      elementsToShow.Add(e);
+        //  }
 
-          using (var trans = new Transaction(uidoc.Document))
-          {
-            if (trans.Start("Show/Hide and select elements") == TransactionStatus.Started)
-            {
-              if (elementsToHide.Any())
-                doc.ActiveView.HideElementsTemporary(elementsToHide);
-                //there are no items to hide, therefore hide everything and just show the visible ones
-              else if (elementsToShow.Any())
-                doc.ActiveView.IsolateElementsTemporary(elementsToShow);
+        //  using (var trans = new Transaction(uidoc.Document))
+        //  {
+        //    if (trans.Start("Show/Hide and select elements") == TransactionStatus.Started)
+        //    {
+        //      if (elementsToHide.Any())
+        //        doc.ActiveView.HideElementsTemporary(elementsToHide);
+        //        //there are no items to hide, therefore hide everything and just show the visible ones
+        //      else if (elementsToShow.Any())
+        //        doc.ActiveView.IsolateElementsTemporary(elementsToShow);
 
-              if (elementsToSelect.Any())
-                uidoc.Selection.SetElementIds(elementsToSelect);
-            }
-            trans.Commit();
-          }
-        }
+        //      if (elementsToSelect.Any())
+        //        uidoc.Selection.SetElementIds(elementsToSelect);
+        //    }
+        //    trans.Commit();
+        //  }
+        //}
 
 
         uidoc.RefreshActiveView();

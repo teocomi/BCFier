@@ -67,6 +67,13 @@ namespace Bcfier.Revit
           return;
         UIDocument uidoc = uiapp.ActiveUIDocument;
 
+        if (uidoc.ActiveView.ViewType == ViewType.Schedule)
+        {
+          MessageBox.Show("BCFier can't take snapshots of schedules.",
+              "Warning!", MessageBoxButton.OK, MessageBoxImage.Warning);
+          return;
+        }
+
         if (uidoc.ActiveView.ViewType == ViewType.ThreeD)
         {
           var view3D = (View3D)uidoc.ActiveView;
@@ -116,11 +123,11 @@ namespace Bcfier.Revit
           //get filename
           UIDocument uidoc = uiapp.ActiveUIDocument;
 
-          if(uidoc.Document.Title!=null)
+          if (uidoc.Document.Title != null)
             issue.Header[0].Filename = uidoc.Document.Title;
           else
             issue.Header[0].Filename = "Unknown";
-        
+
           Bcfier.SelectedBcf().HasBeenSaved = false;
         }
 
@@ -133,7 +140,7 @@ namespace Bcfier.Revit
     #endregion
 
     #region private methods
-    
+
     /// <summary>
     /// passing event to the user control
     /// </summary>
@@ -153,6 +160,6 @@ namespace Bcfier.Revit
         StatHat.Post.EzCounter(@"hello@teocomi.com", "BCFierRevitStart", 1);
       });
     }
-  
+
   }
 }

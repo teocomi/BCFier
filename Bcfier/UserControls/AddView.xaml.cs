@@ -90,8 +90,8 @@ namespace Bcfier.UserControls
         {
           Comment1 = CommentBox.Text,
           Author = Utils.GetUsername(),
-          Status = comboStatuses.SelectedValue.ToString(),
-          VerbalStatus = VerbalStatus.Text,
+          //Status = comboStatuses.SelectedValue.ToString(),
+          //VerbalStatus = VerbalStatus.Text,
           Date = DateTime.Now,
           Viewpoint = new CommentViewpoint { Guid = view.Guid }
         };

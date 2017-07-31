@@ -7,6 +7,7 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:src="clr-namespace:Bcfier.Data.ValueConverters"
   xmlns:themes="clr-namespace:Bcfier.Themes"
+  xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
   Background="White"
   d:DataContext="{d:DesignData d:Source=../SampleBcfFile.xaml}"
   d:DesignHeight="1500"
@@ -68,7 +69,10 @@
         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
         SelectedIndex="0"
         SelectedItem="{Binding SelectedIssue}"
-        SelectionMode="Extended">
+        SelectionMode="Extended"
+        dd:DragDrop.IsDragSource="True"
+        dd:DragDrop.IsDropTarget="True"
+        >
         <ListView.ItemTemplate>
           <DataTemplate>
             <Grid>
@@ -149,8 +153,9 @@
                     VerticalAlignment="Bottom"
                     FontSize="11"
                     FontWeight="Bold"
-                    Content="{Binding LastCommentStatus}"
+                    Content="{Binding Topic.TopicStatus}"
                     ToolTip="Status" />
+                  
                 </DockPanel>
               </Border>
             </Grid>
@@ -277,17 +282,18 @@
             FontSize="11"
             FontStyle="Italic"
             Content="{Binding Topic.CreationDate, Converter={StaticResource DateConverter}}" />
-          <Label
+          <ComboBox Margin="2" Width="95" ItemsSource="{Binding Topic.TopicStatusesCollection}" SelectedItem="{Binding Topic.TopicStatus}"></ComboBox>
+          <ComboBox Margin="2" Width="95" ItemsSource="{Binding Topic.TopicTypesCollection}" SelectedItem="{Binding Topic.TopicType, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></ComboBox>
+          <!--<themes:TextPlaceholder
             VerticalAlignment="Bottom"
+            BorderBrush="{StaticResource BackgroundDark}"
             FontSize="11"
+            Width="100"
             FontWeight="Bold"
-            Content="{Binding LastCommentStatus}"
-            ToolTip="Status" />
-          <Label
-            VerticalAlignment="Bottom"
-            FontSize="11"
-            Content="{Binding LastCommentVerbalStatus}"
-            ToolTip="Verbal Status" />
+            Placeholder="Status"
+            Text="{Binding Topic.TopicType, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"
+            ToolTip="Status" />-->
+
         </StackPanel>
         <themes:TextPlaceholder
           Grid.Row="2"

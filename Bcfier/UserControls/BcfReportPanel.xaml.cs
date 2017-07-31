@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Bcfier.Bcf;
 using Bcfier.Themes;
+using GongSolutions.Wpf.DragDrop;
 
 
 namespace Bcfier.UserControls
@@ -21,6 +22,9 @@ namespace Bcfier.UserControls
     public BcfReportPanel()
     {
       InitializeComponent();
+
+      //dummy call needed to have the dll properly load
+      var d =  GongSolutions.Wpf.DragDrop.DragDrop.DataFormat;
       //binding set from code-behind
       //so that in the designer it still binds to the "Issues" collection
       //allowing for Design time preview

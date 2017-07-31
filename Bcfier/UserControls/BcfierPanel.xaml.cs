@@ -16,6 +16,7 @@ using Bcfier.Bcf;
 using Bcfier.Bcf.Bcf2;
 using Bcfier.Data.Utils;
 using Bcfier.Windows;
+using Bcfier.Data;
 using Version = System.Version;
 
 namespace Bcfier.UserControls
@@ -34,9 +35,10 @@ namespace Bcfier.UserControls
     {
       InitializeComponent();
       DataContext = _bcf;
+      _bcf.UpdateDropdowns();
       //top menu buttons and events
       NewBcfBtn.Click += delegate { _bcf.NewFile(); OnAddIssue(null, null); };
-      OpenBcfBtn.Click += delegate { _bcf.OpenFile(); };
+      OpenBcfBtn.Click += delegate { _bcf.OpenFile(); _bcf.UpdateDropdowns(); };
       //OpenProjectBtn.Click += OnOpenWebProject;
       SaveBcfBtn.Click += delegate { _bcf.SaveFile(SelectedBcf()); };
       MergeBcfBtn.Click += delegate { _bcf.MergeFiles(SelectedBcf()); };
@@ -44,13 +46,19 @@ namespace Bcfier.UserControls
       {
         var s = new Settings();
         s.ShowDialog();
+        //update bcfs with new statuses and types
+        if (s.DialogResult.HasValue && s.DialogResult.Value)
+        {
+          _bcf.UpdateDropdowns();
+        }
+
       };
       HelpBtn.Click += HelpBtnOnClick;
       //set version
       LabelVersion.Content = "BCFier " +
                          System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
 
-      Globals.SetStatuses(UserSettings.Get("Stauses"));
+
 
       if (UserSettings.GetBool("checkupdates"))
         CheckUpdates();
@@ -133,8 +141,8 @@ namespace Bcfier.UserControls
         var view = values[0] as ViewPoint;
         var issue = values[1] as Markup;
         var content = values[2].ToString();
-        var status = (values[3] == null) ? "" : values[3].ToString();
-        var verbalStatus = values[4].ToString();
+        //var status = (values[3] == null) ? "" : values[3].ToString();
+        //var verbalStatus = values[4].ToString();
         if (issue == null)
         {
           MessageBox.Show("No Issue selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -145,11 +153,11 @@ namespace Bcfier.UserControls
         Comment c = new Comment();
         c.Guid = Guid.NewGuid().ToString();
         c.Comment1 = content;
-        c.Topic = new CommentTopic();
-        c.Topic.Guid = issue.Topic.Guid;
+        //c.Topic = new CommentTopic();
+        //c.Topic.Guid = issue.Topic.Guid;
         c.Date = DateTime.Now;
-        c.VerbalStatus = verbalStatus;
-        c.Status = status;
+        //c.VerbalStatus = verbalStatus;
+        //c.Status = status;
         c.Author = Utils.GetUsername();
 
         c.Viewpoint = new CommentViewpoint();

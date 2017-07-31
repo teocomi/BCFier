@@ -20,6 +20,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="auto" />
           </Grid.RowDefinitions>
           <GroupBox Margin="5" Header="BCF">
@@ -27,6 +28,7 @@
               <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="80"/>
                 <RowDefinition Height="auto" />
               </Grid.RowDefinitions>
               <Grid.ColumnDefinitions>
@@ -55,7 +57,7 @@
                   Grid.Row="0"
                   Grid.Column="0"
                   HorizontalAlignment="Right"
-                  Content="Statuses:" />
+                  Content="Topic Statuses:" />
                 <TextBlock
                   Grid.Row="0"
                   Grid.Column="0"
@@ -63,7 +65,7 @@
                   Foreground="Gray"
                   FontSize="10"
                   FontStyle="Italic"
-                  Text="Comma separated, needs to restart the app"
+                  Text="Comma separated"
                   TextAlignment="Right"
                   TextWrapping="Wrap" />
               </StackPanel>
@@ -74,13 +76,36 @@
                 Height="50"
                 Margin="5"
                 Placeholder="Open, Closed, In Progress, Resolved" />
-              <CheckBox
-                Name="checkupdates"
+              <!--topic type-->
+              <StackPanel
+                Grid.Row="2"
+                Grid.Column="0"
+                HorizontalAlignment="Right"
+                Orientation="Vertical">
+                <Label
+                  Grid.Row="0"
+                  Grid.Column="0"
+                  HorizontalAlignment="Right"
+                  Content="Topic Types:" />
+                <TextBlock
+                  Grid.Row="0"
+                  Grid.Column="0"
+                  HorizontalAlignment="Right"
+                  Foreground="Gray"
+                  FontSize="10"
+                  FontStyle="Italic"
+                  Text="Comma separated"
+                  TextAlignment="Right"
+                  TextWrapping="Wrap" />
+              </StackPanel>
+              <themes:TextPlaceholder
+                x:Name="Types"
                 Grid.Row="2"
                 Grid.Column="1"
-                Margin="5,10"
-                Content="Check for updates on startup"
-                IsChecked="True" />
+                Height="50"
+                Margin="5"
+                Placeholder="Architecture, Structure, Mechanical, Electrical" />
+             
             </Grid>
           </GroupBox>
           <!--<GroupBox Header="View Settings" Margin="5" Grid.Row="1">
@@ -162,6 +187,15 @@
               </CheckBox>
             </Grid>
           </GroupBox>
+          <!--updates-->
+          <CheckBox
+            HorizontalAlignment="Center"
+                Name="checkupdates"
+                Grid.Row="3"
+                Grid.Column="1"
+                Margin="20"
+                Content="Check for updates on startup"
+                IsChecked="True" />
         </Grid>
       </TabItem>
       <TabItem Header="Autodesk Revit">
@@ -195,7 +229,7 @@
       <Button
         Width="75"
         Margin="5"
-        Click="Button_Click_1"
+        Click="SaveBtnClick"
         Content="Save"
         IsDefault="True" />
       <Button
@@ -203,7 +237,7 @@
         Margin="5"
         Background="Transparent"
         BorderBrush="Transparent"
-        Click="Button_Click"
+        Click="CancelBtnClick"
         Content="Cancel" />
     </StackPanel>
   </Grid>

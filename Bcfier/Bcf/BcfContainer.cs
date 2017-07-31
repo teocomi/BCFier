@@ -10,6 +10,7 @@ using System.Windows;
 using System.Xml.Serialization;
 using Bcfier.Bcf.Bcf2;
 using Bcfier.Data.Utils;
+using Bcfier.Data;
 
 namespace Bcfier.Bcf
 {
@@ -100,6 +101,15 @@ namespace Bcfier.Bcf
         SelectedReportIndex = BcfFiles.Count - 1;
         if (newbcf.Issues.Any())
           newbcf.SelectedIssue = newbcf.Issues.First();
+
+        foreach (var issue in newbcf.Issues)
+        {
+          if (!Globals.OpenStatuses.Contains(issue.Topic.TopicStatus))
+            Globals.OpenStatuses.Add(issue.Topic.TopicStatus);
+
+          if (!Globals.OpenTypes.Contains(issue.Topic.TopicType))
+            Globals.OpenTypes.Add(issue.Topic.TopicType);
+        }
       }
     }
 
@@ -116,6 +126,60 @@ namespace Bcfier.Bcf
       }
 
     }
+
+    /// <summary>
+    /// Removes all old statuses and types from the collection and adds the new ones, except for the selected one
+    /// This avoids having blank fields in case an existing value is removed
+    /// could probably be optimized
+    /// </summary>
+    public void UpdateDropdowns()
+    {
+      try
+      {
+        Globals.SetStatuses(UserSettings.Get("Stauses"));
+        Globals.SetTypes(UserSettings.Get("Types"));
+
+        foreach (var bcf in BcfFiles)
+        {
+          foreach (var issue in bcf.Issues)
+          {
+            var oldStatus = issue.Topic.TopicStatus;
+            var oldType = issue.Topic.TopicType;
+
+            //status
+            for (int i = issue.Topic.TopicStatusesCollection.Count - 1; i >= 0; i--)
+            {
+              if(issue.Topic.TopicStatusesCollection [i]!= oldStatus)
+                issue.Topic.TopicStatusesCollection.RemoveAt(i);
+            }
+            foreach (var status in Globals.AvailStatuses)
+            {
+              if (status != oldStatus || !issue.Topic.TopicStatusesCollection.Contains(status))
+                issue.Topic.TopicStatusesCollection.Add(status);
+            }
+            //type
+            for (int i = issue.Topic.TopicTypesCollection.Count - 1; i >= 0; i--)
+            {
+              if (issue.Topic.TopicTypesCollection[i] != oldType)
+                issue.Topic.TopicTypesCollection.RemoveAt(i);
+            }
+            foreach (var type in Globals.AvailTypes)
+            {
+              if (type != oldType || !issue.Topic.TopicTypesCollection.Contains(type))
+                issue.Topic.TopicTypesCollection.Add(type);
+            }
+          }
+        }
+
+      }
+
+      catch { 
+        //suppress error
+      };
+
+    }
+
+
 
 
     #region private methods
@@ -283,7 +347,7 @@ namespace Bcfier.Bcf
           ExtensionSchema = ""
 
         };
-        var bcfVersion = new Bcf2.Version { VersionId = "2.0", DetailedVersion = "2.0" };
+        var bcfVersion = new Bcf2.Version { VersionId = "2.1", DetailedVersion = "2.1" };
 
         var serializerP = new XmlSerializer(typeof(ProjectExtension));
         Stream writerP = new FileStream(Path.Combine(bcffile.TempPath, "project.bcfp"), FileMode.Create);
@@ -297,19 +361,31 @@ namespace Bcfier.Bcf
 
         var serializerV = new XmlSerializer(typeof(VisualizationInfo));
         var serializerM = new XmlSerializer(typeof(Markup));
-        
+
+        var i = 0;
         foreach (var issue in bcffile.Issues)
         {
+          //set topic index
+          issue.Topic.Index = i;
+          issue.Topic.IndexSpecified = true;
+          i++;
 
-          // Serialize the object, and close the TextWriter
+          // serialize the object, and close the TextWriter
           string issuePath = Path.Combine(bcffile.TempPath, issue.Topic.Guid);
           if (!Directory.Exists(issuePath))
             Directory.CreateDirectory(issuePath);
 
+          //set viewpoint index
+          for (var l = 0; l < issue.Viewpoints.Count; l++)
+          {
+            issue.Viewpoints[l].Index = l;
+            issue.Viewpoints[l].IndexSpecified = true;
+          }
+
           //BCF 1 compatibility
-          //there needs to be a view whose viewpoint and snapshot are named as follows and not with a guid
-          //uniqueness is still guarenteed by the guid field
-          if (issue.Viewpoints.Any() && (issue.Viewpoints.Count == 1 || issue.Viewpoints.All(o => o.Viewpoint != "viewpoint.bcfv")))
+            //there needs to be a view whose viewpoint and snapshot are named as follows and not with a guid
+            //uniqueness is still guarenteed by the guid field
+            if (issue.Viewpoints.Any() && (issue.Viewpoints.Count == 1 || issue.Viewpoints.All(o => o.Viewpoint != "viewpoint.bcfv")))
           {
             if (File.Exists(Path.Combine(issuePath, issue.Viewpoints[0].Viewpoint)))
               File.Delete(Path.Combine(issuePath, issue.Viewpoints[0].Viewpoint));
@@ -360,6 +436,7 @@ namespace Bcfier.Bcf
       }
       return true;
     }
+
     /// <summary>
     /// Prompts a the user to select where to save the bcfzip
     /// </summary>

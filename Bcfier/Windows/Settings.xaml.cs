@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using Bcfier.Data.Utils;
+using Bcfier.Data;
 
 namespace Bcfier.Windows
 {
@@ -24,20 +25,20 @@ namespace Bcfier.Windows
     public Settings()
     {
       InitializeComponent();
-      ControlsToSave = new List<Control> { BCFusername, checkupdates, editSnap, useDefPhoto, Stauses, alwaysNewView };
+      ControlsToSave = new List<Control> { BCFusername, checkupdates, editSnap, useDefPhoto, Stauses, Types, alwaysNewView };
       foreach (var control in ControlsToSave)
         UserSettings.LoadControlSettings(control);
 
     }
 
-    private void Button_Click_1(object sender, RoutedEventArgs e)
+    private void SaveBtnClick(object sender, RoutedEventArgs e)
     {
       foreach (var control in ControlsToSave)
         UserSettings.SaveControlSettings(control);
-      Globals.SetStatuses(UserSettings.Get("Stauses"));
+
       DialogResult = true;
     }
-    private void Button_Click(object sender, RoutedEventArgs e)
+    private void CancelBtnClick(object sender, RoutedEventArgs e)
     {
       DialogResult = false;
     }
