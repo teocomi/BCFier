@@ -34,7 +34,7 @@
                 downloadCount += releases[i].assets[0].download_count;
             }
             var releaseInfo = "Latest version is "+ release.name + ", it was released " + $.timeago(asset.updated_at) + " and downloaded " + downloadCount + " times.";
-            $(".bcfier-download").attr("href", downloadURL);
+            //$(".bcfier-download").attr("href", downloadURL);
             $(".release-info").text(releaseInfo);
             $(".release-info").fadeIn("slow");
         });
