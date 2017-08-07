@@ -298,12 +298,22 @@ namespace Bcfier.Bcf
             }
           }
           bcfissue.Comment = new ObservableCollection<Comment>(bcfissue.Comment.OrderBy(x => x.Date));
+          try
+          {
+            bcfissue.Viewpoints = new ObservableCollection<ViewPoint>(bcfissue.Viewpoints.OrderBy(x => x.Index));
+          }
+          catch { }
           //register the collectionchanged events,
           //it is needed since deserialization overwrites the ones set in the constructor
           bcfissue.RegisterEvents();
           //ViewComment stuff
           bcffile.Issues.Add(bcfissue);
         }
+        try
+        {
+          bcffile.Issues = new ObservableCollection<Markup>(bcffile.Issues.OrderBy(x => x.Topic.Index));
+        }
+        catch { }
       }
       catch (System.Exception ex1)
       {
