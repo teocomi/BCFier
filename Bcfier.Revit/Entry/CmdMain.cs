@@ -15,17 +15,22 @@ namespace Bcfier.Revit.Entry
   [Regeneration(RegenerationOption.Manual)]
   public class CmdMain : IExternalCommand
   {
-#if Version2017
+#if Version2018
+
+    public const string RevitVersion = "2018";
+
+#elif Version2017
 
     public const string RevitVersion = "2017";
+
+#elif Version2016
+
+    public const string RevitVersion = "2016";
 
 #elif Version2015
 
     public const string RevitVersion = "2015";
 
-#elif Version2016
-
-    public const string RevitVersion = "2016";
 
 #endif
 
