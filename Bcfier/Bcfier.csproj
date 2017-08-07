@@ -130,6 +130,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyVersionInfo.cs">
+      <Link>Properties\AssemblyVersionInfo.cs</Link>
+    </Compile>
     <Compile Include="Api\GitHubAsset.cs" />
     <Compile Include="Api\GitHubAuthor.cs" />
     <Compile Include="Api\GitHubRelease.cs" />
