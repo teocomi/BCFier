@@ -7,7 +7,7 @@ img: revit.png
 
 ---
 <p class='lead' markdown='1'>
-Create and open BCF files directly within Autodesk Revit 2015 and 2016. With BCFier you can create isseus of 3D and 2D* views, add multiple views and comments to an issue and easily share them with other team members. BCFier also features a standalone Windows app that lets you review BCF files without the need of third party tools. 
+Create and open BCF files directly within Autodesk Revit. With BCFier you can create isseus of 3D and 2D* views, add multiple views and comments to an issue and easily share them with other team members. BCFier also features a standalone Windows app that lets you review BCF files without the need of third party tools. 
 <br/><br/>
 Check out the [User Guide](/userguide) on how to get started.
 </p>
