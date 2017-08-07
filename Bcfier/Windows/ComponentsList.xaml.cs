@@ -10,11 +10,11 @@ namespace Bcfier.Windows
   /// </summary>
   public partial class ComponentsList : Window
   {
+    //disabled for now
     public ComponentsList(Components components)
     {
       InitializeComponent();
-      //TODO: properly display components info
-      componentsList.ItemsSource = components.Selection;
+      //componentsList.ItemsSource = components.Selection;
 
     }
   }

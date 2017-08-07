@@ -356,6 +356,14 @@ namespace Bcfier.Bcf.Bcf2
 
     private double fieldOfViewField;
 
+    //initialize fields
+    public PerspectiveCamera()
+    {
+      CameraViewPoint = new Point();
+      CameraDirection = new Direction();
+      CameraUpVector = new Direction();
+    }
+
     /// <remarks/>
     public Point CameraViewPoint
     {
@@ -400,6 +408,14 @@ namespace Bcfier.Bcf.Bcf2
     private Direction cameraUpVectorField;
 
     private double viewToWorldScaleField;
+
+    //initialize fields
+    public OrthogonalCamera()
+    {
+      CameraViewPoint = new Point();
+      CameraDirection = new Direction();
+      CameraUpVector = new Direction();
+    }
 
     /// <remarks/>
     public Point CameraViewPoint

@@ -153,53 +153,52 @@ namespace Bcfier.Revit.Data
           .WhereElementIsNotElementType()
           .WhereElementIsViewIndependent()
           .Where(x => x.IsHidden(doc.ActiveView)
-            || !doc.ActiveView.IsElementVisibleInTemporaryViewMode(TemporaryViewMode.TemporaryHideIsolate, x.Id)).ToList();//would need to check how much this is affecting performance
+            || !doc.ActiveView.IsElementVisibleInTemporaryViewMode(TemporaryViewMode.TemporaryHideIsolate, x.Id)).Select(x=>x.Id)
+           ;//would need to check how much this is affecting performance
 
         var selectedElems = uidoc.Selection.GetElementIds();
 
-        //TODO: FIX visibility/selection
-        //include only hidden elements and selected in the BCF
-        //if (visibleElems.Count() > hiddenElems.Count())
-        //{
-        //  foreach (var elem in hiddenElems)
-        //  {
-        //    v.Components.Add(new Component
-        //    {
-        //      OriginatingSystem = versionName,
-        //      IfcGuid = IfcGuid.ToIfcGuid(ExportUtils.GetExportId(doc, elem.Id)),
-        //      Visible = false,
-        //      Selected = false,
-        //      AuthoringToolId = elem.Id.IntegerValue.ToString()
-        //    });
-        //  }
-        //  foreach (var elem in selectedElems)
-        //  {
-        //    v.Components.Add(new Component
-        //    {
-        //      OriginatingSystem = versionName,
-        //      IfcGuid = IfcGuid.ToIfcGuid(ExportUtils.GetExportId(doc, elem)),
-        //      Visible = true,
-        //      Selected = true,
-        //      AuthoringToolId = elem.IntegerValue.ToString()
-        //    });
-        //  }
-        //}
-        //include only visible elements
-        //all the others are hidden
-        //else
-        //{
-        //  foreach (var elem in visibleElems)
-        //  {
-        //    v.Components.Add(new Component
-        //    {
-        //      OriginatingSystem = versionName,
-        //      IfcGuid = IfcGuid.ToIfcGuid(ExportUtils.GetExportId(doc, elem)),
-        //      Visible = true,
-        //      Selected = selectedElems.Contains(elem),
-        //      AuthoringToolId = elem.IntegerValue.ToString()
-        //    });
-        //  }
-        //}
+        v.Components = new Components();
+        v.Components.Visibility = new ComponentVisibility();
+
+        //TODO: set ViewSetupHints
+        //TODO: create clipping planes
+        //list of hidden components is smaller than the list of visible components
+        if (visibleElems.Count() > hiddenElems.Count())
+        {
+          v.Components.Visibility.DefaultVisibility = true;
+          v.Components.Visibility.DefaultVisibilitySpecified = true;
+          v.Components.Visibility.Exceptions = hiddenElems.Select(x => new Component
+          {
+            OriginatingSystem = versionName,
+            IfcGuid = IfcGuid.ToIfcGuid(ExportUtils.GetExportId(doc, x)),
+            AuthoringToolId = x.IntegerValue.ToString()
+          }).ToArray();
+
+        }
+        //list of visible components is smaller or equals the list of hidden components
+        else
+        {
+          v.Components.Visibility.DefaultVisibility = false;
+          v.Components.Visibility.DefaultVisibilitySpecified = true;
+          v.Components.Visibility.Exceptions = visibleElems.Select(x => new Component
+          {
+            OriginatingSystem = versionName,
+            IfcGuid = IfcGuid.ToIfcGuid(ExportUtils.GetExportId(doc, x)),
+            AuthoringToolId = x.IntegerValue.ToString()
+          }).ToArray();
+        }
+
+        //selected elements
+        v.Components.Selection = selectedElems.Select(x => new Component
+        {
+          OriginatingSystem = versionName,
+          IfcGuid = IfcGuid.ToIfcGuid(ExportUtils.GetExportId(doc, x)),
+          AuthoringToolId = x.IntegerValue.ToString()
+        }).ToArray();
+
+       
+
         return v;
 
       }

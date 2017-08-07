@@ -74,12 +74,13 @@
               </Style.Triggers>
             </Style>
           </StackPanel.Style>
+          <!-- components are now disabled
           <themes:ButtonIcon
             Style="{StaticResource OverlayButton}"
             Command="data:Commands.OpenComponents"
             CommandParameter="{Binding Viewpoint}"
             IconPath="{StaticResource IconList}"
-            ToolTip="Show Components" />
+            ToolTip="Show Components" />-->
           <themes:ButtonIcon
             Style="{StaticResource OverlayButton}"
             Command="data:Commands.OpenSnapshot"
