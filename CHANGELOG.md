@@ -1,5 +1,5 @@
 #Changelog
-### BCFier 2.1.0 - 07/08/2017
+### BCFier 2.2.0 - 07/08/2017
 
 #### New Features
 
