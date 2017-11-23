@@ -33,6 +33,7 @@ namespace Bcfier.Revit.Entry
 
 
 #endif
+   
 
     internal static CmdMain ThisCmd = null;
     private static bool _isRunning;
@@ -51,17 +52,18 @@ namespace Bcfier.Revit.Entry
       {
 
         //Version check
+        
         if (!commandData.Application.Application.VersionName.Contains(RevitVersion))
         {
           using (var td = new TaskDialog("Untested version"))
           {
             td.TitleAutoPrefix = false;
             td.MainInstruction = "Untested Revit Version";
-            td.MainContent = "This Add-In was built and tested only for Revit "+ RevitVersion+", proceed at your own risk";
+            td.MainContent = "This Add-In was built and tested only for Revit "+ RevitVersion + ", proceed at your own risk";
             td.Show();
           }
         }
-
+        
         // Form Running?
         if (_isRunning && _extAppBcfier != null && _extAppBcfier.RvtWindow.IsLoaded)
         {
@@ -86,5 +88,4 @@ namespace Bcfier.Revit.Entry
     }
 
   }
-
 }

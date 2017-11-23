@@ -156,9 +156,10 @@ namespace Bcfier.Revit.Entry
         //sheet
         else if (v.SheetCamera != null)
         {
-          IEnumerable<View> viewcollectorSheet = getSheets(doc, v.SheetCamera.SheetID);
+          IEnumerable<View> viewcollectorSheet = getSheets(doc, v.SheetCamera.SheetID, v.SheetCamera.SheetName);
           if (!viewcollectorSheet.Any())
           {
+            
             MessageBox.Show("View " + v.SheetCamera.SheetName + " with Id=" + v.SheetCamera.SheetID + " not found.");
             return;
           }
@@ -265,13 +266,15 @@ namespace Bcfier.Revit.Entry
              let view = elem as View3D
              select view;
     }
-    private IEnumerable<View> getSheets(Document doc, int id)
+    private IEnumerable<View> getSheets(Document doc, int id, string stname)
     {
       ElementId eid = new ElementId(id);
       return from elem in new FilteredElementCollector(doc).OfClass(typeof(View))
              let view = elem as View
-             where view.Id == eid
+             //Get the view with the given Id or given name
+             where view.Id == eid | view.Name == stname
              select view;
+      
     }
 
 
