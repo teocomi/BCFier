@@ -1,9 +1,13 @@
 ![](/Assets/bcfier-text.png)
+
+
+
 ##Intro
+
 BCFier is an extendible and Open Source BCF client. Like IFC is the open standard for Building Information models, [BCF](https://github.com/BuildingSMART/BCF-XML) is the open standard for Building Issues. BCFier is a set of plugins and standalone apps (modules) that handle BCF and integrate directly with BIM tools.
 
 Currently BCFier is composed of the following modules:
-- Autodesk Revit 2015 and 2016 addin
+- Autodesk Revit addin
 - Standalone Windows Viewer
 
 Ready to start developing BCFier? Keep reading!
@@ -11,7 +15,7 @@ Ready to start developing BCFier? Keep reading!
 **If you are looking for a Guide on how to use the installed version of BCFier instedad, refer to the [UserGuide](http://bcfier.com/userguide/)**
 
 ##Disclaimer
-I have only recently started to document this project, please be comprehensive and help by pointing out what is not clear or missing.
+The project in not actively maintained, I will regularly check issues and pull requests but cannot guarantee regular support and maintenance.
 
 ##Getting Started
 
@@ -26,6 +30,7 @@ The control `Bcfier.UserControls.BcfierPanel` contains the logic and UI for the 
 All controls bind to ModelViews defined in `Bcfier.Bcf`, it's not a perfect MVVM models since I use the same classes to serialize/deserialize BCFs, but it works great.
 
 ###Creating a new Module
+
 To create a new Module, for instance, an Achicad plugin, follow these steps:
 - create a new project with the namespace `Bcfier.Archicad`
 - reference the `Bcfier` project
@@ -40,10 +45,21 @@ The settings file is stored in `%localappdata%\BCFier\settings.config` so that i
 The class that handles the settings file is under `Bcfier.Data.Utils.UserSettings`, and stores the file as a `ExeConfigurationFileMap` for easy management. The same class provides methods to automatically save/retrieve settings based on the UserControl name.
 
 ##Autodesk Revit Addin
-The module for Autodesk Revit is in `Bcfier.Revit`, the project builds fine for Revit 2015 and 2016 so for now the same dlls are used for both, in the future we'll need to differenciate.
+The module for Autodesk Revit is in `Bcfier.Revit`,.
 
-##Installer
-The installer uses the free and awesome [InnoSetup](http://www.jrsoftware.org/isinfo.php) to generate .exe files, extending the .iss files is pretty straightforward.
+### Building the Revit Project
+
+Before building the Revit project, select the corresponding build configuration. 
+
+![image](https://user-images.githubusercontent.com/2679513/33550628-93d0661e-d8e6-11e7-819d-b486b55db05c.png)
+
+For each there are snippets of code in Bcfier.Revit.csproj with post built event that copy the dll and manifest to the Revit Addin folder.
+
+![image](https://user-images.githubusercontent.com/2679513/33550664-b19fb028-d8e6-11e7-8453-3210d022d0db.png)
+
+
+
+To seamlessly debug the project set a Debug start action to start your version of revit.exe.ree and awesome [InnoSetup](http://www.jrsoftware.org/isinfo.php) to generate .exe files, extending the .iss files is pretty straightforward.
 
 ##Backlog
 A more detailed list of things that need to be done can be found in the [issues page](https://github.com/teocomi/BCFier/issues), but to start:
