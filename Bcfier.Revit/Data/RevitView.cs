@@ -33,11 +33,13 @@ namespace Bcfier.Revit.Data
         //It's a 2D view
         //not supported by BCF, but I store it under a custom 
         //fields using 2D coordinates and sheet id
+        //and sheet name
         if (uidoc.ActiveView.ViewType != ViewType.ThreeD)
         {
           v.SheetCamera = new SheetCamera
           {
             SheetID = uidoc.ActiveView.Id.IntegerValue,
+            SheetName = uidoc.ActiveView.Name,
             TopLeft = new Point { X = topLeft.X, Y = topLeft.Y, Z = topLeft.Z },
             BottomRight = new Point { X = bottomRight.X, Y = bottomRight.Y, Z = bottomRight.Z }
           };

@@ -142,7 +142,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
   </PropertyGroup>
-   <!-- 2018 -->
+  <!-- 2018 -->
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-2018|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug-2018\</OutputPath>
@@ -180,13 +180,8 @@
     <!-- MULTIVERSION REVIT API REFERENCES START -->
     <!-- DEBUG -->
     <!-- 2015 -->
-    <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Debug-2015'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2015\RevitAPI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug-2015'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2015\RevitAPIUI.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="RevitAPI">
+      <HintPath>C:\Program Files\Autodesk\Revit 2016\RevitAPI.dll</HintPath>
     </Reference>
     <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug-2015'">
       <HintPath>C:\Program Files\Autodesk\Revit 2015\RevitAPIIFC.dll</HintPath>
@@ -218,7 +213,7 @@
       <HintPath>C:\Program Files\Autodesk\Revit 2017\RevitAPIIFC.dll</HintPath>
       <Private>False</Private>
     </Reference>
-     <!-- 2018 -->
+    <!-- 2018 -->
     <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Debug-2018'">
       <HintPath>C:\Program Files\Autodesk\Revit 2018\RevitAPI.dll</HintPath>
       <Private>False</Private>
@@ -271,7 +266,7 @@
       <HintPath>C:\Program Files\Autodesk\Revit 2017\RevitAPIIFC.dll</HintPath>
       <Private>False</Private>
     </Reference>
-      <!-- 2018 -->
+    <!-- 2018 -->
     <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Release-2018'">
       <HintPath>C:\Program Files\Autodesk\Revit 2018\RevitAPI.dll</HintPath>
       <Private>False</Private>
@@ -285,6 +280,9 @@
       <Private>False</Private>
     </Reference>
     <!-- MULTIVERSION REVIT API REFERENCES END -->
+    <Reference Include="RevitAPIUI">
+      <HintPath>C:\Program Files\Autodesk\Revit 2016\RevitAPIUI.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Xml" />
