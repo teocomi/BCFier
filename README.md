@@ -2,7 +2,7 @@
 
 
 
-##Intro
+## Intro
 
 BCFier is an extendible and Open Source BCF client. Like IFC is the open standard for Building Information models, [BCF](https://github.com/BuildingSMART/BCF-XML) is the open standard for Building Issues. BCFier is a set of plugins and standalone apps (modules) that handle BCF and integrate directly with BIM tools.
 
@@ -14,14 +14,14 @@ Ready to start developing BCFier? Keep reading!
 
 **If you are looking for a Guide on how to use the installed version of BCFier instedad, refer to the [UserGuide](http://bcfier.com/userguide/)**
 
-##Disclaimer
+## Disclaimer
 The project in not actively maintained, I will regularly check issues and pull requests but cannot guarantee regular support and maintenance.
 
-##Getting Started
+## Getting Started
 
 To get started fork the repo, if you are going to extend the Revit Project make sure the Autodesk dlls are referenced correctly, otherwise there are no other dependencies that need to be added.
 
-###Structure
+### Structure
 
 The core of BCFier is under `Bcfier`, it contains all the logic and UI that is used by all the different integrations (modules). All modules will reference that project and extend it adding specific commands for the software they are integrating with.
 
@@ -29,7 +29,7 @@ The control `Bcfier.UserControls.BcfierPanel` contains the logic and UI for the 
 
 All controls bind to ModelViews defined in `Bcfier.Bcf`, it's not a perfect MVVM models since I use the same classes to serialize/deserialize BCFs, but it works great.
 
-###Creating a new Module
+### Creating a new Module
 
 To create a new Module, for instance, an Achicad plugin, follow these steps:
 - create a new project with the namespace `Bcfier.Archicad`
@@ -40,11 +40,11 @@ To create a new Module, for instance, an Achicad plugin, follow these steps:
 - create a command for and opening a view (`data:Commands.OpenView`)
 - extend the installer to copy these new dlls where needed
 
-###Settings
+### Settings
 The settings file is stored in `%localappdata%\BCFier\settings.config` so that it can be accessible by all modules, the Settingd Window UI will has different tabs for each module and ideally those will show up only if that specific module is installed.
 The class that handles the settings file is under `Bcfier.Data.Utils.UserSettings`, and stores the file as a `ExeConfigurationFileMap` for easy management. The same class provides methods to automatically save/retrieve settings based on the UserControl name.
 
-##Autodesk Revit Addin
+## Autodesk Revit Addin
 The module for Autodesk Revit is in `Bcfier.Revit`,.
 
 ### Building the Revit Project
@@ -61,7 +61,7 @@ For each there are snippets of code in Bcfier.Revit.csproj with post built event
 
 To seamlessly debug the project set a Debug start action to start your version of revit.exe.ree and awesome [InnoSetup](http://www.jrsoftware.org/isinfo.php) to generate .exe files, extending the .iss files is pretty straightforward.
 
-##Backlog
+## Backlog
 A more detailed list of things that need to be done can be found in the [issues page](https://github.com/teocomi/BCFier/issues), but to start:
 
 **New BCFier features**
@@ -76,10 +76,10 @@ A more detailed list of things that need to be done can be found in the [issues 
 - support for crop boxes
 - a setting to apply vew templates to new view
 
-###Contact
+### Contact
 You can contact Matteo Cominetti at: hello@teocomi.com
 
-###License
+### License
 GNU General Public License v3 Extended
 This program uses the GNU General Public License v3, extended to support the use of BCFier as Plugin of the non-free main software Autodesk Revit.
 See <http://www.gnu.org/licenses/gpl-faq.en.html#GPLPluginsInNF>.
