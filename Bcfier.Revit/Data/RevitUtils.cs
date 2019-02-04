@@ -30,7 +30,14 @@ namespace Bcfier.Revit.Data
       //if BPL is set to 0,0,0 not always it corresponds to Revit's origin
 
       XYZ origin = new XYZ(0, 0, 0);
+#if Version2019
+
+     ProjectPosition position = doc.ActiveProjectLocation.GetProjectPosition(origin);
+
+#else
       ProjectPosition position = doc.ActiveProjectLocation.get_ProjectPosition(origin);
+
+#endif
 
       int i = (negative) ? -1 : 1;
 

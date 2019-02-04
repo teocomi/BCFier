@@ -175,6 +175,39 @@
     <Prefer32Bit>false</Prefer32Bit>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
   </PropertyGroup>
+  <!-- 2019 -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-2019|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug-2019\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Version2019</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RevitVersion>2019</RevitVersion>
+    <AssemblyName>$(AssemblyName)</AssemblyName>
+    <Prefer32Bit>false</Prefer32Bit>
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Program Files\Autodesk\Revit 2019\Revit.exe</StartProgram>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-2019|AnyCPU'">
+    <OutputPath>bin\Release-2019\</OutputPath>
+    <DefineConstants>TRACE;RELEASE;Version2019</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RevitVersion>2019</RevitVersion>
+    <AssemblyName>$(AssemblyName)</AssemblyName>
+    <WarningLevel>0</WarningLevel>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+      None
+    </ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    <Prefer32Bit>false</Prefer32Bit>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+  </PropertyGroup>
   <!-- MULTIVERSION CONFIGURATION END -->
   <ItemGroup>
     <!-- MULTIVERSION REVIT API REFERENCES START -->
@@ -224,6 +257,19 @@
     </Reference>
     <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug-2018'">
       <HintPath>C:\Program Files\Autodesk\Revit 2018\RevitAPIIFC.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <!-- 2019 -->
+    <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Debug-2019'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2019\RevitAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug-2019'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2019\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug-2019'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2019\RevitAPIIFC.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <!-- RELEASE -->
@@ -277,6 +323,19 @@
     </Reference>
     <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Release-2018'">
       <HintPath>C:\Program Files\Autodesk\Revit 2018\RevitAPIIFC.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <!-- 2019 -->
+    <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Release-2019'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2019\RevitAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Release-2019'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2019\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Release-2019'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2019\RevitAPIIFC.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <!-- MULTIVERSION REVIT API REFERENCES END -->
@@ -373,7 +432,7 @@
   <!-- MULTIVERSION POST BUILD EVENTS START -->
   <!-- COPIES ALL DLLS AND .ADDIN MANIFEST TO THE RELATIVE REVIT ADDIN FOLDER -->
   <Target Name="AfterBuild">
-    <CallTarget Condition="'$(Configuration)' == 'Debug-2015' Or '$(Configuration)' == 'Debug-2016' Or '$(Configuration)' == 'Debug-2017' Or '$(Configuration)' == 'Debug-2018'" Targets="AfterBuildDebug" />
+    <CallTarget Condition="'$(Configuration)' == 'Debug-2015' Or '$(Configuration)' == 'Debug-2016' Or '$(Configuration)' == 'Debug-2017' Or '$(Configuration)' == 'Debug-2018' Or '$(Configuration)' == 'Debug-2019'" Targets="AfterBuildDebug" />
   </Target>
   <Target Name="AfterBuildDebug">
     <ItemGroup>
