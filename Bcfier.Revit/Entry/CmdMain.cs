@@ -16,7 +16,11 @@ namespace Bcfier.Revit.Entry
   public class CmdMain : IExternalCommand
   {
 
-#if Version2019
+#if Version2020
+
+    public const string RevitVersion = "2020";
+
+#elif Version2019
 
     public const string RevitVersion = "2019";
 
@@ -36,10 +40,7 @@ namespace Bcfier.Revit.Entry
 
     public const string RevitVersion = "2015";
 
-
 #endif
-
-   
 
     internal static CmdMain ThisCmd = null;
     private static bool _isRunning;

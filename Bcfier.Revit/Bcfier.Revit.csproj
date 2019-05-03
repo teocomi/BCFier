@@ -208,140 +208,41 @@
     <Prefer32Bit>false</Prefer32Bit>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-2020|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug-2020\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Version2020</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RevitVersion>2020</RevitVersion>
+    <AssemblyName>$(AssemblyName)</AssemblyName>
+    <Prefer32Bit>false</Prefer32Bit>
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Program Files\Autodesk\Revit 2020\Revit.exe</StartProgram>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-2020|AnyCPU'">
+    <OutputPath>bin\Release-2020\</OutputPath>
+    <DefineConstants>TRACE;RELEASE;Version2020</DefineConstants>
+    <Optimize>true</Optimize>
+    <WarningLevel>0</WarningLevel>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RevitVersion>2020</RevitVersion>
+    <AssemblyName>$(AssemblyName)</AssemblyName>
+    <WarningLevel>0</WarningLevel>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+      None
+    </ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    <Prefer32Bit>false</Prefer32Bit>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+  </PropertyGroup>
   <!-- MULTIVERSION CONFIGURATION END -->
   <ItemGroup>
-    <!-- MULTIVERSION REVIT API REFERENCES START -->
-    <!-- DEBUG -->
-    <!-- 2015 -->
-    <Reference Include="RevitAPI">
-      <HintPath>C:\Program Files\Autodesk\Revit 2016\RevitAPI.dll</HintPath>
-    </Reference>
-    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug-2015'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2015\RevitAPIIFC.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <!-- 2016 -->
-    <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Debug-2016'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2016\RevitAPI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug-2016'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2016\RevitAPIUI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug-2016'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2016\RevitAPIIFC.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <!-- 2017 -->
-    <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Debug-2017'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2017\RevitAPI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug-2017'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2017\RevitAPIUI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug-2017'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2017\RevitAPIIFC.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <!-- 2018 -->
-    <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Debug-2018'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2018\RevitAPI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug-2018'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2018\RevitAPIUI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug-2018'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2018\RevitAPIIFC.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <!-- 2019 -->
-    <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Debug-2019'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2019\RevitAPI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug-2019'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2019\RevitAPIUI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug-2019'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2019\RevitAPIIFC.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <!-- RELEASE -->
-    <!-- 2015 -->
-    <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Release-2015'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2015\RevitAPI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Release-2015'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2015\RevitAPIUI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Release-2015'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2015\RevitAPIIFC.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <!-- 2016 -->
-    <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Release-2016'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2016\RevitAPI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Release-2016'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2016\RevitAPIUI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Release-2016'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2016\RevitAPIIFC.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <!-- 2017 -->
-    <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Release-2017'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2017\RevitAPI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Release-2017'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2017\RevitAPIUI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Release-2017'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2017\RevitAPIIFC.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <!-- 2018 -->
-    <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Release-2018'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2018\RevitAPI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Release-2018'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2018\RevitAPIUI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Release-2018'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2018\RevitAPIIFC.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <!-- 2019 -->
-    <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Release-2019'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2019\RevitAPI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Release-2019'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2019\RevitAPIUI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Release-2019'">
-      <HintPath>C:\Program Files\Autodesk\Revit 2019\RevitAPIIFC.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <!-- MULTIVERSION REVIT API REFERENCES END -->
-    <Reference Include="RevitAPIUI">
-      <HintPath>C:\Program Files\Autodesk\Revit 2016\RevitAPIUI.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Xml" />
@@ -352,6 +253,133 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+	<!-- Revit package references -->
+	<!-- 2015 -->
+    <Reference Include="AdWindows" Condition="$(Configuration.Contains('2015'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2015.0.1\lib\net45\AdWindows.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPI" Condition="$(Configuration.Contains('2015'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2015.0.1\lib\net45\RevitAPI.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="$(Configuration.Contains('2015'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2015.0.1\lib\net45\RevitAPIUI.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UIFramework" Condition="$(Configuration.Contains('2015'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2015.0.1\lib\net45\UIFramework.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+	<!-- 2016 -->
+    <Reference Include="AdWindows" Condition="$(Configuration.Contains('2016'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2016.0.1\lib\net45\AdWindows.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPI" Condition="$(Configuration.Contains('2016'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2016.0.1\lib\net45\RevitAPI.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="$(Configuration.Contains('2016'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2016.0.1\lib\net45\RevitAPIUI.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UIFramework" Condition="$(Configuration.Contains('2016'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2016.0.1\lib\net45\UIFramework.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+	<!-- 2017 -->
+    <Reference Include="AdWindows" Condition="$(Configuration.Contains('2017'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2017.0.1\lib\net46\AdWindows.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPI" Condition="$(Configuration.Contains('2017'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2017.0.1\lib\net46\RevitAPI.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="$(Configuration.Contains('2017'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2017.0.1\lib\net46\RevitAPIUI.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UIFramework" Condition="$(Configuration.Contains('2017'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2017.0.1\lib\net46\UIFramework.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+	<!-- 2018 -->
+    <Reference Include="AdWindows" Condition="$(Configuration.Contains('2018'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2018.0.1\lib\net46\AdWindows.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPI" Condition="$(Configuration.Contains('2018'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2018.0.1\lib\net46\RevitAPI.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="$(Configuration.Contains('2018'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2018.0.1\lib\net46\RevitAPIUI.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UIFramework" Condition="$(Configuration.Contains('2018'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2018.0.1\lib\net46\UIFramework.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+	<!-- 2019 -->
+    <Reference Include="AdWindows" Condition="$(Configuration.Contains('2019'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2019.0.0\lib\net47\AdWindows.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPI" Condition="$(Configuration.Contains('2019'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2019.0.0\lib\net47\RevitAPI.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="$(Configuration.Contains('2019'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2019.0.0\lib\net47\RevitAPIUI.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UIFramework" Condition="$(Configuration.Contains('2019'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2019.0.0\lib\net47\UIFramework.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+	<!-- 2020 -->
+    <Reference Include="AdWindows" Condition="$(Configuration.Contains('2020'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2020.0.0\lib\net47\AdWindows.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPI" Condition="$(Configuration.Contains('2020'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2020.0.0\lib\net47\RevitAPI.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="$(Configuration.Contains('2020'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2020.0.0\lib\net47\RevitAPIUI.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UIFramework" Condition="$(Configuration.Contains('2020'))">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2020.0.0\lib\net47\UIFramework.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyVersionInfo.cs">
@@ -432,7 +460,7 @@
   <!-- MULTIVERSION POST BUILD EVENTS START -->
   <!-- COPIES ALL DLLS AND .ADDIN MANIFEST TO THE RELATIVE REVIT ADDIN FOLDER -->
   <Target Name="AfterBuild">
-    <CallTarget Condition="'$(Configuration)' == 'Debug-2015' Or '$(Configuration)' == 'Debug-2016' Or '$(Configuration)' == 'Debug-2017' Or '$(Configuration)' == 'Debug-2018' Or '$(Configuration)' == 'Debug-2019'" Targets="AfterBuildDebug" />
+    <CallTarget Condition="'$(Configuration)' == 'Debug-2015' Or '$(Configuration)' == 'Debug-2016' Or '$(Configuration)' == 'Debug-2017' Or '$(Configuration)' == 'Debug-2018' Or '$(Configuration)' == 'Debug-2019' Or '$(Configuration)' == 'Debug-2020'" Targets="AfterBuildDebug" />
   </Target>
   <Target Name="AfterBuildDebug">
     <ItemGroup>

@@ -18,6 +18,8 @@
 #define RevitAddin18  RevitAddinFolder+"\2018\"
 #define RevitFolder19 RevitAddinFolder+"\2019\"+RevitAppName
 #define RevitAddin19  RevitAddinFolder+"\2019\"
+#define RevitFolder20 RevitAddinFolder+"\2020\"+RevitAppName
+#define RevitAddin20  RevitAddinFolder+"\2020\"
 
 #define WinAppName    "Bcfier.Win"
 
@@ -56,6 +58,7 @@ Name: revit16; Description: Addin for Autodesk Revit 2016;  Types: full
 Name: revit17; Description: Addin for Autodesk Revit 2017;  Types: full
 Name: revit18; Description: Addin for Autodesk Revit 2018;  Types: full
 Name: revit19; Description: Addin for Autodesk Revit 2019;  Types: full
+Name: revit20; Description: Addin for Autodesk Revit 2020;  Types: full
 Name: standalone; Description: BCFier for Windows (standalone viewer); Types: full
 
 
@@ -104,6 +107,13 @@ Source: "{#Repository}\{#RevitAppName}\bin\Release-2019\{#RevitAppName}.addin"; 
 Source: "{#Repository}\{#RevitAppName}\bin\Release-2019\Bcfier.dll"; DestDir: "{#RevitFolder19}"; Flags: ignoreversion; Components: revit19
 Source: "{#Repository}\{#RevitAppName}\bin\Release-2019\GongSolutions.WPF.DragDrop.dll"; DestDir: "{#RevitFolder19}"; Flags: ignoreversion; Components: revit19
 Source: "{#Repository}\{#RevitAppName}\bin\Release-2019\RestSharp.dll"; DestDir: "{#RevitFolder19}"; Flags: ignoreversion; Components: revit19
+
+;REVIT 2020                                                                                                                                    
+Source: "{#Repository}\{#RevitAppName}\bin\Release-2020\{#RevitAppName}.dll"; DestDir: "{#RevitFolder20}"; Flags: ignoreversion; Components: revit20  
+Source: "{#Repository}\{#RevitAppName}\bin\Release-2020\{#RevitAppName}.addin"; DestDir: "{#RevitAddin20}"; Flags: ignoreversion; Components: revit20
+Source: "{#Repository}\{#RevitAppName}\bin\Release-2020\Bcfier.dll"; DestDir: "{#RevitFolder20}"; Flags: ignoreversion; Components: revit20
+Source: "{#Repository}\{#RevitAppName}\bin\Release-2020\GongSolutions.WPF.DragDrop.dll"; DestDir: "{#RevitFolder20}"; Flags: ignoreversion; Components: revit20
+Source: "{#Repository}\{#RevitAppName}\bin\Release-2020\RestSharp.dll"; DestDir: "{#RevitFolder20}"; Flags: ignoreversion; Components: revit20
 
 
 
