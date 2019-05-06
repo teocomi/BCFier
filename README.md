@@ -61,6 +61,10 @@ For each there are snippets of code in Bcfier.Revit.csproj with post built event
 
 To seamlessly debug the project set a Debug start action to start your version of revit.exe.ree and awesome [InnoSetup](http://www.jrsoftware.org/isinfo.php) to generate .exe files, extending the .iss files is pretty straightforward.
 
+This project uses the [Revit_All_Main_Versions_API_x64](https://www.nuget.org/packages/Revit_All_Main_Versions_API_x64/) package. This package must be referenced in a version corresponding to the targeted Revit release. To ensure the packages are restored correctly, run the following command in a PowerShell console window at the project root:
+
+    ./build.ps1 Restore
+
 ## Backlog
 A more detailed list of things that need to be done can be found in the [issues page](https://github.com/teocomi/BCFier/issues), but to start:
 
