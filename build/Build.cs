@@ -61,6 +61,7 @@ class Build : NukeBuild
       });
 
   Target Compile => _ => _
+      .After(Clean)
       .DependsOn(Restore)
       .Executes(() =>
       {
@@ -72,6 +73,23 @@ class Build : NukeBuild
               .SetInformationalVersion(GitVersion.InformationalVersion)
               .EnableNoRestore());
       });
+
+  Target Test => _ => _
+       .DependsOn(Clean)
+       .Executes(() =>
+        {
+          // The solution is compiled for the Debug-2020 target for testing
+          MSBuild(c => c
+            .SetSolutionFile(Solution.FileName)
+            .SetConfiguration("Debug-2020"));
+          DotNetTest(c => c
+            .SetNoBuild(true)
+            // The test dlls are copied to the bin/Debug folder
+            .SetConfiguration("Debug")
+            .SetProjectFile(RootDirectory / "Bcfier.Tests" / "Bcfier.Tests.csproj")
+            .SetTestAdapterPath(".")
+            .SetLogger($"xunit;LogFilePath={OutputDirectory / "testresults.xml"}"));
+        });
 
   Target CompileReleaseConfigurations => _ => _
       .DependsOn(Clean)
