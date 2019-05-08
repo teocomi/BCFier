@@ -23,6 +23,7 @@ namespace Bcfier.Bcf
     public string ProjectName { get; set; }
     private string _filename;
     private bool _hasBeenSaved;
+    private bool _isBcfV21;
     private ObservableCollection<Markup> _issues;
     private Markup _selectedIssue;
     private string _textSearch;
@@ -49,6 +50,23 @@ namespace Bcfier.Bcf
         NotifyPropertyChanged("HasBeenSaved");
       }
     }
+
+    public bool IsBcfV21
+    {
+      get
+      {
+        return _isBcfV21;
+      }
+      set
+      {
+        if (value != _isBcfV21)
+        {
+          _isBcfV21 = value;
+          NotifyPropertyChanged(nameof(IsBcfV21));
+        }
+      }
+    }
+
     public Guid Id
     {
       get

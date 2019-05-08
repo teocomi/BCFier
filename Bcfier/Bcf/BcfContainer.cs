@@ -192,7 +192,7 @@ namespace Bcfier.Bcf
       try
       {
         var openFileDialog1 = new Microsoft.Win32.OpenFileDialog();
-        openFileDialog1.Filter = "BIM Collaboration Format (*.bcfzip)|*.bcfzip";
+        openFileDialog1.Filter = "BCF v2.0 (*.bcfzip)|*.bcfzip|BCF v2.1 (*.bcf)|*.bcf";
         openFileDialog1.DefaultExt = ".bcfzip";
         openFileDialog1.Multiselect = true;
         openFileDialog1.RestoreDirectory = true;
@@ -222,12 +222,39 @@ namespace Bcfier.Bcf
       var bcffile = new BcfFile();
       try
       {
-        if (!File.Exists(bcfzipfile) || !String.Equals(Path.GetExtension(bcfzipfile), ".bcfzip", StringComparison.InvariantCultureIgnoreCase))
+        if (!File.Exists(bcfzipfile))
+        {
           return bcffile;
-
+        }
 
         bcffile.Filename = Path.GetFileNameWithoutExtension(bcfzipfile);
         bcffile.Fullname = bcfzipfile;
+
+        if (bcfzipfile.EndsWith(".bcf", StringComparison.InvariantCultureIgnoreCase))
+        {
+          bcffile.IsBcfV21 = true;
+          // The '.bcf' file ending indicates a BCF v2.1 file. This is not yet supported, so we're using the
+          // iabi.BCF package to convert BCF v2.1 to v2.0
+          using (var bcfv21fs = File.OpenRead(bcfzipfile))
+          {
+            var bcfv21 = iabi.BCF.BCFv21.BCFv21Container.ReadStream(bcfv21fs);
+            var bcfv2 = new iabi.BCF.Converter.V21ToV2(bcfv21).Convert();
+            bcfzipfile = Path.Combine(Path.GetTempPath(), "BCFier", Guid.NewGuid().ToString());
+            if (!Directory.Exists(Path.GetDirectoryName(bcfzipfile)))
+            {
+              Directory.CreateDirectory(Path.GetDirectoryName(bcfzipfile));
+            }
+            using (var bcfV2fs = File.Create(bcfzipfile))
+            {
+              bcfv2.WriteStream(bcfV2fs);
+            }
+          }
+        }
+        else if (!string.Equals(Path.GetExtension(bcfzipfile), ".bcfzip", StringComparison.InvariantCultureIgnoreCase))
+        {
+          // If the file is neither .bcf or .bcfzip, we're aborting
+          return bcffile;
+        }
 
         using (ZipArchive archive = ZipFile.OpenRead(bcfzipfile))
         {
@@ -357,7 +384,7 @@ namespace Bcfier.Bcf
           ExtensionSchema = ""
 
         };
-        var bcfVersion = new Bcf2.Version { VersionId = "2.1", DetailedVersion = "2.1" };
+        var bcfVersion = new Bcf2.Version { VersionId = "2.0", DetailedVersion = "2.0" };
 
         var serializerP = new XmlSerializer(typeof(ProjectExtension));
         Stream writerP = new FileStream(Path.Combine(bcffile.TempPath, "project.bcfp"), FileMode.Create);
@@ -423,10 +450,31 @@ namespace Bcfier.Bcf
         if (File.Exists(filename))
           File.Delete(filename);
 
-        //added encoder to address backslashes issue #11
-        //issue: https://github.com/teocomi/BCFier/issues/11
-        //ref: http://stackoverflow.com/questions/27289115/system-io-compression-zipfile-net-4-5-output-zip-in-not-suitable-for-linux-mac
-        ZipFile.CreateFromDirectory(bcffile.TempPath, filename, CompressionLevel.Optimal, false, new ZipEncoder());
+        var shouldSaveAsBcfv21 = filename.EndsWith(".bcf", StringComparison.InvariantCultureIgnoreCase);
+        if (shouldSaveAsBcfv21)
+        {
+          // If the file was originally BCF v2.1, we're saving it again as such.
+          // This is currently implemented by saving the file as BCF v2.0 to a temp path,
+          // then using the iabi.BCF package to upgrade the format to v2.1
+          var bcfv20TempPath = Path.Combine(Path.GetTempPath(), "BCFier", Guid.NewGuid() + ".bcfzip");
+          ZipFile.CreateFromDirectory(bcffile.TempPath, bcfv20TempPath, CompressionLevel.Optimal, false, new ZipEncoder());
+          using (var v20Stream = File.OpenRead(bcfv20TempPath))
+          {
+            var bcfv20 = iabi.BCF.BCFv2.BCFv2Container.ReadStream(v20Stream);
+            using (var v21Stream = File.Create(filename))
+            {
+              var bcfv21 = new iabi.BCF.Converter.V2ToV21(bcfv20).Convert();
+              bcfv21.WriteStream(v21Stream);
+            }
+          }
+        }
+        else
+        {
+          //added encoder to address backslashes issue #11
+          //issue: https://github.com/teocomi/BCFier/issues/11
+          //ref: http://stackoverflow.com/questions/27289115/system-io-compression-zipfile-net-4-5-output-zip-in-not-suitable-for-linux-mac
+          ZipFile.CreateFromDirectory(bcffile.TempPath, filename, CompressionLevel.Optimal, false, new ZipEncoder());
+        }
 
         //Open browser at location
         Uri uri2 = new Uri(filename);
@@ -456,11 +504,11 @@ namespace Bcfier.Bcf
     {
       var saveFileDialog = new Microsoft.Win32.SaveFileDialog
       {
-        Title = "Save as BCF report file (.bcfzip)",
+        Title = "Save as BCF report file (.bcfzip, -bcf)",
         FileName = filename,
         DefaultExt = ".bcfzip",
-        Filter = "BIM Collaboration Format (*.bcfzip)|*.bcfzip"
-      };
+        Filter = "BCF v2.0 (*.bcfzip)|*.bcfzip|BCF v2.1 (*.bcf)|*.bcf"
+    };
 
       //if it goes fine I return the filename, otherwise empty
       var result = saveFileDialog.ShowDialog();
