@@ -240,7 +240,12 @@
     <Compile Include="Data\ValueConverters\IntVisibConverter.cs" />
     <Compile Include="Data\ValueConverters\PathToImageConv.cs" />
     <Compile Include="OpenProjectApi\HttpClientAuthenticationExtensions.cs" />
+    <Compile Include="OpenProjectApi\HttpClientExtensions.cs" />
     <Compile Include="OpenProjectApi\HttpClientFactory.cs" />
+    <Compile Include="OpenProjectApi\JsonSerializationDefaults.cs" />
+    <Compile Include="OpenProjectApi\Models\Project.cs" />
+    <Compile Include="OpenProjectApi\OpenProjectClient.cs" />
+    <Compile Include="OpenProjectApi\ResponseWrapper.cs" />
     <Compile Include="Themes\ButtonIcon.cs" />
     <Compile Include="Themes\LabelSelectable.cs" />
     <Compile Include="Themes\IssueListStyle.xaml.cs">
