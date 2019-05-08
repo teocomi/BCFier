@@ -68,52 +68,38 @@ Name: "{app}"; Permissions: everyone-full
 [Files]
 ;STANDALONE
 Source: "{#Repository}\{#WinAppName}\bin\Release\{#WinAppName}.exe"; DestDir: "{app}"; Flags: ignoreversion; Permissions: everyone-full; Components: standalone
-Source: "{#Repository}\{#WinAppName}\bin\Release\Bcfier.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: standalone
-Source: "{#Repository}\{#WinAppName}\bin\Release\GongSolutions.WPF.DragDrop.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: standalone
-Source: "{#Repository}\{#WinAppName}\bin\Release\RestSharp.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: standalone
+Source: "{#Repository}\{#WinAppName}\bin\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: standalone
 Source: "{#Repository}\Assets\BCF.ico"; DestDir: "{app}"; Flags: ignoreversion; Components: standalone
 
 ;REVIT 2015                                                                                                                                        
 Source: "{#Repository}\{#RevitAppName}\bin\Release-2015\{#RevitAppName}.dll"; DestDir: "{#RevitFolder15}"; Flags: ignoreversion; Components: revit15  
 Source: "{#Repository}\{#RevitAppName}\bin\Release-2015\{#RevitAppName}.addin"; DestDir: "{#RevitAddin15}"; Flags: ignoreversion; Components: revit15
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2015\Bcfier.dll"; DestDir: "{#RevitFolder15}"; Flags: ignoreversion; Components: revit15
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2015\GongSolutions.WPF.DragDrop.dll"; DestDir: "{#RevitFolder15}"; Flags: ignoreversion; Components: revit15
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2015\RestSharp.dll"; DestDir: "{#RevitFolder15}"; Flags: ignoreversion; Components: revit15
+Source: "{#Repository}\{#RevitAppName}\bin\Release-2015\*.dll"; DestDir: "{#RevitFolder15}"; Flags: ignoreversion; Components: revit15
 
 ;REVIT 2016                                                                                                                                        
 Source: "{#Repository}\{#RevitAppName}\bin\Release-2016\{#RevitAppName}.dll"; DestDir: "{#RevitFolder16}"; Flags: ignoreversion; Components: revit16  
 Source: "{#Repository}\{#RevitAppName}\bin\Release-2016\{#RevitAppName}.addin"; DestDir: "{#RevitAddin16}"; Flags: ignoreversion; Components: revit16
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2016\Bcfier.dll"; DestDir: "{#RevitFolder16}"; Flags: ignoreversion; Components: revit16
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2016\GongSolutions.WPF.DragDrop.dll"; DestDir: "{#RevitFolder16}"; Flags: ignoreversion; Components: revit16
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2016\RestSharp.dll"; DestDir: "{#RevitFolder16}"; Flags: ignoreversion; Components: revit16
+Source: "{#Repository}\{#RevitAppName}\bin\Release-2016\*.dll"; DestDir: "{#RevitFolder16}"; Flags: ignoreversion; Components: revit16
 
 ;REVIT 2017                                                                                                                                     
 Source: "{#Repository}\{#RevitAppName}\bin\Release-2017\{#RevitAppName}.dll"; DestDir: "{#RevitFolder17}"; Flags: ignoreversion; Components: revit17  
 Source: "{#Repository}\{#RevitAppName}\bin\Release-2017\{#RevitAppName}.addin"; DestDir: "{#RevitAddin17}"; Flags: ignoreversion; Components: revit17
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2017\Bcfier.dll"; DestDir: "{#RevitFolder17}"; Flags: ignoreversion; Components: revit17
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2017\GongSolutions.WPF.DragDrop.dll"; DestDir: "{#RevitFolder17}"; Flags: ignoreversion; Components: revit17
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2017\RestSharp.dll"; DestDir: "{#RevitFolder17}"; Flags: ignoreversion; Components: revit17
+Source: "{#Repository}\{#RevitAppName}\bin\Release-2017\*.dll"; DestDir: "{#RevitFolder17}"; Flags: ignoreversion; Components: revit17
 
 ;REVIT 2018                                                                                                                                    
 Source: "{#Repository}\{#RevitAppName}\bin\Release-2018\{#RevitAppName}.dll"; DestDir: "{#RevitFolder18}"; Flags: ignoreversion; Components: revit18  
 Source: "{#Repository}\{#RevitAppName}\bin\Release-2018\{#RevitAppName}.addin"; DestDir: "{#RevitAddin18}"; Flags: ignoreversion; Components: revit18
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2018\Bcfier.dll"; DestDir: "{#RevitFolder18}"; Flags: ignoreversion; Components: revit18
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2018\GongSolutions.WPF.DragDrop.dll"; DestDir: "{#RevitFolder18}"; Flags: ignoreversion; Components: revit18
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2018\RestSharp.dll"; DestDir: "{#RevitFolder18}"; Flags: ignoreversion; Components: revit18
+Source: "{#Repository}\{#RevitAppName}\bin\Release-2018\*.dll"; DestDir: "{#RevitFolder18}"; Flags: ignoreversion; Components: revit18
 
 ;REVIT 2019                                                                                                                                    
 Source: "{#Repository}\{#RevitAppName}\bin\Release-2019\{#RevitAppName}.dll"; DestDir: "{#RevitFolder19}"; Flags: ignoreversion; Components: revit19  
 Source: "{#Repository}\{#RevitAppName}\bin\Release-2019\{#RevitAppName}.addin"; DestDir: "{#RevitAddin19}"; Flags: ignoreversion; Components: revit19
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2019\Bcfier.dll"; DestDir: "{#RevitFolder19}"; Flags: ignoreversion; Components: revit19
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2019\GongSolutions.WPF.DragDrop.dll"; DestDir: "{#RevitFolder19}"; Flags: ignoreversion; Components: revit19
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2019\RestSharp.dll"; DestDir: "{#RevitFolder19}"; Flags: ignoreversion; Components: revit19
+Source: "{#Repository}\{#RevitAppName}\bin\Release-2019\*.dll"; DestDir: "{#RevitFolder19}"; Flags: ignoreversion; Components: revit19
 
 ;REVIT 2020                                                                                                                                    
 Source: "{#Repository}\{#RevitAppName}\bin\Release-2020\{#RevitAppName}.dll"; DestDir: "{#RevitFolder20}"; Flags: ignoreversion; Components: revit20  
 Source: "{#Repository}\{#RevitAppName}\bin\Release-2020\{#RevitAppName}.addin"; DestDir: "{#RevitAddin20}"; Flags: ignoreversion; Components: revit20
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2020\Bcfier.dll"; DestDir: "{#RevitFolder20}"; Flags: ignoreversion; Components: revit20
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2020\GongSolutions.WPF.DragDrop.dll"; DestDir: "{#RevitFolder20}"; Flags: ignoreversion; Components: revit20
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2020\RestSharp.dll"; DestDir: "{#RevitFolder20}"; Flags: ignoreversion; Components: revit20
+Source: "{#Repository}\{#RevitAppName}\bin\Release-2020\*.dll"; DestDir: "{#RevitFolder20}"; Flags: ignoreversion; Components: revit20
 
 
 
