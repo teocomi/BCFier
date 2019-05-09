@@ -1,5 +1,9 @@
 root = true
 
+[*.xaml]
+indent_size = 2
+trim_trailing_whitespace = true
+
 [*.cs]
 indent_size = 2
 trim_trailing_whitespace = true
