@@ -65,6 +65,30 @@ This project uses the [Revit_All_Main_Versions_API_x64](https://www.nuget.org/pa
 
     ./build.ps1 Restore
 
+## OpenProject Connection
+
+BCFier now supports a direct connection to [OpenProject](https://www.openproject.org/) to exchange BCF issues.
+
+### HowTo
+
+To connect to OpenProject, you need to specify the OpenProject _BaseUrl_ and your personal _AccessToken_ in the settings:
+
+![image](./Docs/Images/open_project_settings.png)
+
+The _BaseUrl_ should be the domain of the OpenProject instance you're connecting to, e.g. `https://community.openproject.com/`. You can create the _AccessToken_ in your account in OpenProject.
+
+![image](./Docs/Images/open_project_sync.png)
+
+After you have configured the connection to OpenProject, you can open the sync window, select a project and then download any Work Package that is of type BCF.
+
+### Planned
+
+The roadmap is roughly:
+
+1. Add upload to OpenProject
+2. Use project settings from OpenProject
+3. Add support for the BCF REST API to be compatible with all BCF server implementations
+
 ## Backlog
 A more detailed list of things that need to be done can be found in the [issues page](https://github.com/teocomi/BCFier/issues), but to start:
 

@@ -40,7 +40,7 @@ namespace Bcfier.OpenProjectApi
     /// </summary>
     /// <param name="response"></param>
     /// <returns></returns>
-    public static async Task<ResponseWrapper> GetResponseWrapper(HttpResponseMessage response)
+    public static async Task<ResponseWrapper> GetResponseWrapperAsync(HttpResponseMessage response)
     {
       var wrapper = new ResponseWrapper(response);
       if (!response.IsSuccessStatusCode)
@@ -97,7 +97,7 @@ namespace Bcfier.OpenProjectApi
     /// </summary>
     /// <param name="response"></param>
     /// <returns></returns>
-    public static async Task<ResponseWrapper<T>> GetResponseWrapper(HttpResponseMessage response)
+    public static async Task<ResponseWrapper<T>> GetResponseWrapperAsync(HttpResponseMessage response)
     {
       var wrapper = new ResponseWrapper<T>(response);
       if (response.IsSuccessStatusCode)
@@ -111,13 +111,17 @@ namespace Bcfier.OpenProjectApi
           // The actual format used is HAL, see http://stateless.co/hal_specification.html
           if (jObject["_embedded"] != null
             && jObject["_type"] != null
-            && jObject["_type"].ToString() == "Collection")
+            && jObject["_type"].ToString().EndsWith("Collection"))
           {
-            wrapper.Result = jObject["_embedded"]["elements"].ToObject<T>(JsonSerializationDefaults.JsonSerializer);
+            var valueJson = jObject["_embedded"]["elements"].ToString();
+            // This is using the regular JsonConvert.DeserializeObject<T>() instead of directly calling
+            // jObject.ToObject<T>() because some OpenProject models have a custom JsonConverter registered
+            wrapper.Result = JsonConvert.DeserializeObject<T>(valueJson, JsonSerializationDefaults.JsonSerializerSettings);
           }
           else if (jObject["_embedded"] != null)
           {
-            wrapper.Result = jObject["_embedded"].ToObject<T>(JsonSerializationDefaults.JsonSerializer);
+            var valueJson = jObject["_embedded"].ToString();
+            wrapper.Result = JsonConvert.DeserializeObject<T>(valueJson, JsonSerializationDefaults.JsonSerializerSettings);
           }
           else
           {

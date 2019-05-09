@@ -25,7 +25,7 @@ namespace Bcfier.Windows
     public Settings()
     {
       InitializeComponent();
-      ControlsToSave = new List<Control> { BCFusername, checkupdates, editSnap, useDefPhoto, Stauses, Types, alwaysNewView };
+      ControlsToSave = new List<Control> { BCFusername, checkupdates, editSnap, useDefPhoto, Stauses, Types, alwaysNewView, OpenProjectAccessToken, OpenProjectBaseUrl };
       foreach (var control in ControlsToSave)
         UserSettings.LoadControlSettings(control);
 

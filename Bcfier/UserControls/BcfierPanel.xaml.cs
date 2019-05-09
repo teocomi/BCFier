@@ -18,6 +18,7 @@ using Bcfier.Data.Utils;
 using Bcfier.Windows;
 using Bcfier.Data;
 using Version = System.Version;
+using Bcfier.ViewModels;
 
 namespace Bcfier.UserControls
 {
@@ -53,12 +54,29 @@ namespace Bcfier.UserControls
         }
 
       };
+      OpenProjectBtn.Click += delegate
+      {
+        var openProjectApiBaseUrl = UserSettings.Get("OpenProjectBaseUrl");
+        var openProjectAccessToken = UserSettings.Get("OpenProjectAccessToken");
+        if (!string.IsNullOrWhiteSpace(openProjectApiBaseUrl)
+          && !string.IsNullOrWhiteSpace(openProjectAccessToken))
+        {
+          var viewModel = new OpenProjectSyncViewModel(openProjectApiBaseUrl,
+            openProjectAccessToken,
+            _bcf.OpenFile);
+          var openProjectSyncWindow = new OpenProjectSync(viewModel);
+          viewModel.OnCloseWindowRequested += (s, e) => openProjectSyncWindow.Close();
+          openProjectSyncWindow.ShowDialog();
+        }
+        else
+        {
+          MessageBox.Show("Please configure the connection to OpenProject in the settings menu");
+        }
+      };
       HelpBtn.Click += HelpBtnOnClick;
       //set version
       LabelVersion.Content = "BCFier " +
                          System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-
-
 
       if (UserSettings.GetBool("checkupdates"))
         CheckUpdates();

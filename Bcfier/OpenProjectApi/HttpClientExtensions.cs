@@ -30,7 +30,7 @@ namespace Bcfier.OpenProjectApi
         Content = GetJsonContent(payload)
       };
       var response = await client.SendAsync(request);
-      return await ResponseWrapper<TResponse>.GetResponseWrapper(response);
+      return await ResponseWrapper<TResponse>.GetResponseWrapperAsync(response);
     }
 
     /// <summary>
@@ -49,7 +49,7 @@ namespace Bcfier.OpenProjectApi
         Content = GetJsonContent(payload)
       };
       var response = await client.SendAsync(request);
-      return await ResponseWrapper<TResponse>.GetResponseWrapper(response);
+      return await ResponseWrapper<TResponse>.GetResponseWrapperAsync(response);
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ namespace Bcfier.OpenProjectApi
     {
       var request = new HttpRequestMessage(HttpMethod.Get, url);
       var response = await client.SendAsync(request);
-      return await ResponseWrapper<TResponse>.GetResponseWrapper(response);
+      return await ResponseWrapper<TResponse>.GetResponseWrapperAsync(response);
     }
 
     private static HttpContent GetJsonContent<T>(T payload)

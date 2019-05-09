@@ -15,7 +15,6 @@ namespace Bcfier.Windows
     {
       InitializeComponent();
       //componentsList.ItemsSource = components.Selection;
-
     }
   }
 }

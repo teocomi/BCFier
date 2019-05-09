@@ -95,6 +95,13 @@
         Content="Help"
         IconPath="{StaticResource IconHelp}"
         ToolTip="Help" />
+      <themes:ButtonIcon
+        x:Name="OpenProjectBtn"
+        HorizontalAlignment="Left"
+        Style="{StaticResource MainMenuButton}"
+        Content="OpenProject"
+        IconPath="{StaticResource IconUpload}"
+        ToolTip="Connect to OpenProject" />
       <Label
         Name="LabelVersion"
         HorizontalAlignment="Right"

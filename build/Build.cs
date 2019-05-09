@@ -76,6 +76,7 @@ class Build : NukeBuild
 
   Target Test => _ => _
        .DependsOn(Clean)
+       .DependsOn(Restore)
        .Executes(() =>
         {
           // The solution is compiled for the Debug-2020 target for testing

@@ -193,7 +193,6 @@
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Security" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -226,6 +225,7 @@
     <Compile Include="Data\AttachedProperties\CtrlEnterKeyDown.cs" />
     <Compile Include="Data\AttachedProperties\NavigationService.cs" />
     <Compile Include="Data\Globals.cs" />
+    <Compile Include="Data\RelayCommand.cs" />
     <Compile Include="Data\Utils\IfcGuid.cs" />
     <Compile Include="Data\Utils\RelativeDate.cs" />
     <Compile Include="Data\ValueConverters\DateConverter.cs" />
@@ -244,6 +244,10 @@
     <Compile Include="OpenProjectApi\HttpClientFactory.cs" />
     <Compile Include="OpenProjectApi\JsonSerializationDefaults.cs" />
     <Compile Include="OpenProjectApi\Models\Project.cs" />
+    <Compile Include="OpenProjectApi\Models\WorkPackage.cs" />
+    <Compile Include="OpenProjectApi\Models\WorkPackageDescription.cs" />
+    <Compile Include="OpenProjectApi\WorkPackageJsonConverter.cs" />
+    <Compile Include="OpenProjectApi\Models\WorkPackageLink.cs" />
     <Compile Include="OpenProjectApi\OpenProjectClient.cs" />
     <Compile Include="OpenProjectApi\ResponseWrapper.cs" />
     <Compile Include="Themes\ButtonIcon.cs" />
@@ -262,11 +266,15 @@
     <Compile Include="UserControls\AddView.xaml.cs">
       <DependentUpon>AddView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\OpenProjectSyncViewModel.cs" />
     <Compile Include="Windows\ComponentsList.xaml.cs">
       <DependentUpon>ComponentsList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\NewVersion.xaml.cs">
       <DependentUpon>NewVersion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\OpenProjectSync.xaml.cs">
+      <DependentUpon>OpenProjectSync.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
@@ -331,6 +339,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\NewVersion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\OpenProjectSync.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
