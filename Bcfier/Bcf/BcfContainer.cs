@@ -267,9 +267,12 @@ namespace Bcfier.Bcf
         if (File.Exists(projectFile))
         {
           var project = DeserializeProject(projectFile);
-          var g = Guid.NewGuid();
-          Guid.TryParse(project.Project.ProjectId, out g);
-          bcffile.ProjectId = g;
+          if (project.Project != null)
+          {
+            var g = Guid.NewGuid();
+            Guid.TryParse(project.Project.ProjectId, out g);
+            bcffile.ProjectId = g;
+          }
         }
          
 
