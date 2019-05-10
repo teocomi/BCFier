@@ -1,4 +1,4 @@
-﻿using Bcfier.OpenProjectApi.Models;
+using Bcfier.OpenProjectApi.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -47,7 +47,7 @@ namespace Bcfier.OpenProjectApi
     {
       var client = HttpClientFactory.GetHttpClient(_openProjectAccessToken);
       var url = $"{_baseUrl}/projects/{projectId}/work_packages.bcf";
-      var query = "?filters=[{\"id\":{\"operator\":\"=\",\"values\":[" + workPackageId + "]}}]";
+      var query = "?filters=[{\"status\":{\"operator\":\"*\",\"values\":[]}},{\"id\":{\"operator\":\"=\",\"values\":[" + workPackageId + "]}}]";
       url += query;
       var response = await client.GetAsync(url);
       var responseWrapper = await ResponseWrapper.GetResponseWrapperAsync(response);
