@@ -125,6 +125,15 @@ namespace Bcfier.Data.Utils
           if (!string.IsNullOrEmpty(value))
             textbox.Text = value;
         }
+        else if (control.GetType() == typeof(PasswordBox))
+        {
+          var passwordBox = control as PasswordBox;
+          if (passwordBox == null)
+            return;
+          var value = Get(passwordBox.Name);
+          if (!string.IsNullOrEmpty(value))
+            passwordBox.Password = value;
+        }
         else if (control.GetType() == typeof(TextPlaceholder))
         {
           var textbox = control as TextPlaceholder;
@@ -185,6 +194,13 @@ namespace Bcfier.Data.Utils
           if (textbox == null)
             return;
           Set(textbox.Name, textbox.Text);
+        }
+        else if (control.GetType() == typeof(PasswordBox))
+        {
+          var passwordBox = control as PasswordBox;
+          if (passwordBox == null)
+            return;
+          Set(passwordBox.Name, passwordBox.Password);
         }
         else if (control.GetType() == typeof(TextPlaceholder))
         {
