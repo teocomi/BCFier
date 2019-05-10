@@ -1,4 +1,4 @@
-using Bcfier.OpenProjectApi.Models;
+﻿using Bcfier.OpenProjectApi.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -41,6 +41,17 @@ namespace Bcfier.OpenProjectApi
       var bcfTopicFilter = "&filters=[{\"status\":{\"operator\":\"*\",\"values\":[]}},{\"type\":{\"operator\":\"=\",\"values\":[\"7\"]}}]&sortBy=[[\"createdAt\",\"desc\"]]";
       url += bcfTopicFilter;
       return client.GetJsonAsync<List<WorkPackage>>(url);
+    }
+
+    public async Task<ResponseWrapper> DownloadAllBcfWorkPackagesInProject(int projectId)
+    {
+      var client = HttpClientFactory.GetHttpClient(_openProjectAccessToken);
+      var url = $"{_baseUrl}/projects/{projectId}/work_packages.bcf";
+      var query = "?filters=[{\"status\":{\"operator\":\"*\",\"values\":[]}},{\"type\":{\"operator\":\"=\",\"values\":[\"7\"]}}]";
+      url += query;
+      var response = await client.GetAsync(url);
+      var responseWrapper = await ResponseWrapper.GetResponseWrapperAsync(response);
+      return responseWrapper;
     }
 
     public async Task<ResponseWrapper> GetBcfWorkPackageAsBcfXmlAsync(int projectId, int workPackageId)

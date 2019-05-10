@@ -25,6 +25,7 @@
       <Grid Margin="5">
         <Grid.RowDefinitions>
           <RowDefinition Height="auto" />
+          <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*" />
@@ -37,6 +38,11 @@
                   DisplayMemberPath="Name"
                   SelectedItem="{Binding SelectedProject}"
                   Visibility="{Binding ProjectsLoaded, Converter={StaticResource BoolVisibConverter}}"/>
+        <Button Grid.Row="1"
+                Margin="5"
+                IsEnabled="{Binding ProjectIsSelected}"
+                Command="{Binding OpenAllWorkPackagesInProjectCommand}"
+                Content="Open all Work Packages in project"/>
       </Grid>
     </GroupBox>
     <GroupBox Margin="5" Header="Work Packages" Grid.Row="1">

@@ -32,6 +32,7 @@ namespace Bcfier.ViewModels
       _openBcfFileByFileName = openBcfFileByFileName;
       _openProjectClient = new OpenProjectClient(_openProjectAccessToken, _openProjectApiBaseUrl);
       SelectWorkPackageCommand = new RelayCommand(DownloadWorkPackageAsBcf);
+      OpenAllWorkPackagesInProjectCommand = new RelayCommand(DownloadAllWorkPackagesAsBcf);
       LoadProjects();
       this.PropertyChanged += (s, e) =>
         {
@@ -70,6 +71,22 @@ namespace Bcfier.ViewModels
       }
     }
 
+    public Project SelectedProject
+    {
+      get => _selectedProject;
+      set
+      {
+        if (_selectedProject != value)
+        {
+          _selectedProject = value;
+          NotifyPropertyChanged(nameof(SelectedProject));
+          NotifyPropertyChanged(nameof(ProjectIsSelected));
+        }
+      }
+    }
+
+    public bool ProjectIsSelected => SelectedProject != null;
+
     public WorkPackage SelectedWorkPackage
     {
       get => _selectedWorkPackage;
@@ -86,6 +103,7 @@ namespace Bcfier.ViewModels
     public ObservableCollection<WorkPackage> WorkPackages { get; } = new ObservableCollection<WorkPackage>();
 
     public ICommand SelectWorkPackageCommand { get; }
+    public ICommand OpenAllWorkPackagesInProjectCommand { get; }
 
     private void DownloadWorkPackageAsBcf()
     {
@@ -114,17 +132,31 @@ namespace Bcfier.ViewModels
       OnCloseWindowRequested?.Invoke(this, new EventArgs());
     }
 
-    public Project SelectedProject
+    private void DownloadAllWorkPackagesAsBcf()
     {
-      get => _selectedProject;
-      set
+      DownloadAllWorkPackagesAsBcfAsync();
+    }
+
+    private async Task DownloadAllWorkPackagesAsBcfAsync()
+    {
+      var wpDownload = await _openProjectClient
+        .DownloadAllBcfWorkPackagesInProject(SelectedProject.Id);
+
+      // The '.bcf' file extension indicates that this is a BCF XML v2.1, the format that's currently exported by Open Project.
+      // This is relevant later down since we're using the original methods to load a BCF XML file via a temp file
+      var tempPath = Path.Combine(Path.GetTempPath(), "BCFier", Guid.NewGuid().ToString(), (SelectedProject?.Name?? string.Empty) + ".bcf");
+      if (!Directory.Exists(Path.GetDirectoryName(tempPath)))
       {
-        if (_selectedProject != value)
-        {
-          _selectedProject = value;
-          NotifyPropertyChanged(nameof(SelectedProject));
-        }
+        Directory.CreateDirectory(Path.GetDirectoryName(tempPath));
       }
+      using (var fileStream = File.Create(tempPath))
+      {
+        await wpDownload.Response.Content.CopyToAsync(fileStream);
+      }
+
+      _openBcfFileByFileName(tempPath);
+
+      OnCloseWindowRequested?.Invoke(this, new EventArgs());
     }
 
     private async Task LoadProjects()
