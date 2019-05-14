@@ -352,28 +352,32 @@ namespace Bcfier.Bcf
       return bcffile;
     }
 
+    private static bool SaveBcfFile(BcfFile bcffile)
+    {
+      if (bcffile.Issues.Count == 0)
+      {
+        MessageBox.Show("The current BCF Report is empty.", "No Issue", MessageBoxButton.OK, MessageBoxImage.Error);
+        return false;
+      }
+      if (!Directory.Exists(bcffile.TempPath))
+        Directory.CreateDirectory(bcffile.TempPath);
+      // Show save file dialog box
+      string name = !string.IsNullOrEmpty(bcffile.Filename)
+          ? bcffile.Filename
+          : "New BCF Report";
+      string filename = SaveBcfDialog(name);
+      return SaveBcfFile(bcffile, filename);
+    }
+
     /// <summary>
     /// Serializes to a bcfzip and saves it to disk
     /// </summary>
     /// <param name="bcffile"></param>
     /// <returns></returns>
-    private static bool SaveBcfFile(BcfFile bcffile)
+    public static bool SaveBcfFile(BcfFile bcffile, string filename)
     {
       try
       {
-        if (bcffile.Issues.Count == 0)
-        {
-          MessageBox.Show("The current BCF Report is empty.", "No Issue", MessageBoxButton.OK, MessageBoxImage.Error);
-          return false;
-        }
-        if (!Directory.Exists(bcffile.TempPath))
-          Directory.CreateDirectory(bcffile.TempPath);
-        // Show save file dialog box
-        string name = !string.IsNullOrEmpty(bcffile.Filename)
-            ? bcffile.Filename
-            : "New BCF Report";
-        string filename = SaveBcfDialog(name);
-
         // Process save file dialog box results
         if (string.IsNullOrWhiteSpace(filename))
           return false;

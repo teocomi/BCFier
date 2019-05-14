@@ -1,5 +1,7 @@
 ﻿using Bcfier.OpenProjectApi.Models;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Bcfier.OpenProjectApi
@@ -63,6 +65,27 @@ namespace Bcfier.OpenProjectApi
       var response = await client.GetAsync(url);
       var responseWrapper = await ResponseWrapper.GetResponseWrapperAsync(response);
       return responseWrapper;
+    }
+
+    public async Task<ResponseWrapper> UploadBcfXmlToOpenProjectAsync(int projectId, Stream bcfXmlV21)
+    {
+      var client = HttpClientFactory.GetHttpClient(_openProjectAccessToken);
+      var url = $"{_baseUrl}/api/v3/projects/{projectId}/bcf_xml";
+
+      var multiPartFormContent = new MultipartFormDataContent();
+      var streamContent = new StreamContent(bcfXmlV21);
+      streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+      var fileName = "bcf_xml_file";
+      multiPartFormContent.Add(streamContent, fileName, fileName);
+
+      var request = new HttpRequestMessage(HttpMethod.Post, url)
+      {
+        Content = multiPartFormContent
+      };
+
+      var response = await client.SendAsync(request);
+
+      return await ResponseWrapper.GetResponseWrapperAsync(response);
     }
   }
 }

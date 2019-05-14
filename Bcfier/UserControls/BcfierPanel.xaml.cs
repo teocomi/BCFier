@@ -19,6 +19,7 @@ using Bcfier.Windows;
 using Bcfier.Data;
 using Version = System.Version;
 using Bcfier.ViewModels;
+using Bcfier.OpenProjectApi;
 
 namespace Bcfier.UserControls
 {
@@ -43,6 +44,7 @@ namespace Bcfier.UserControls
       //OpenProjectBtn.Click += OnOpenWebProject;
       SaveBcfBtn.Click += delegate { _bcf.SaveFile(SelectedBcf()); };
       MergeBcfBtn.Click += delegate { _bcf.MergeFiles(SelectedBcf()); };
+      var selectedOpenProjectProjectId = -1;
       SettingsBtn.Click += delegate
       {
         var s = new Settings();
@@ -66,7 +68,49 @@ namespace Bcfier.UserControls
             _bcf.OpenFile);
           var openProjectSyncWindow = new OpenProjectSync(viewModel);
           viewModel.OnCloseWindowRequested += (s, e) => openProjectSyncWindow.Close();
+          viewModel.PropertyChanged += (s, e) =>
+          {
+            if (e.PropertyName == nameof(OpenProjectSyncViewModel.SelectedProject)
+            && viewModel.SelectedProject != null)
+            {
+              selectedOpenProjectProjectId = viewModel.SelectedProject.Id;
+            }
+          };
           openProjectSyncWindow.ShowDialog();
+        }
+        else
+        {
+          MessageBox.Show("Please configure the connection to OpenProject in the settings menu");
+        }
+      };
+      SyncOpenProjectButton.Click += async delegate
+      {
+        var openProjectApiBaseUrl = UserSettings.Get("OpenProjectBaseUrl");
+        var openProjectAccessToken = UserSettings.Get("OpenProjectAccessToken");
+        if (!string.IsNullOrWhiteSpace(openProjectApiBaseUrl)
+          && !string.IsNullOrWhiteSpace(openProjectAccessToken))
+        {
+          if (_bcf.SelectedReportIndex < 0)
+          {
+            MessageBox.Show("Please make sure to have an active Bcf issue opened before syncing to OpenProject");
+            return;
+          }
+
+          if (selectedOpenProjectProjectId < 0)
+          {
+            MessageBox.Show("Please make sure to have an active, selected project in OpenProject");
+            return;
+          }
+
+          var bcf = _bcf.BcfFiles[_bcf.SelectedReportIndex];
+          var tempPath = Path.Combine(Path.GetTempPath(), "BCFier", Guid.NewGuid() + ".bcf");
+          BcfContainer.SaveBcfFile(bcf, tempPath);
+          using (var tempBcfv21Stream = File.OpenRead(tempPath))
+          {
+            var openProjectClient = new OpenProjectClient(openProjectAccessToken, openProjectApiBaseUrl);
+            var response = await openProjectClient.UploadBcfXmlToOpenProjectAsync(selectedOpenProjectProjectId, tempBcfv21Stream)
+              .ConfigureAwait(false);
+          }
         }
         else
         {

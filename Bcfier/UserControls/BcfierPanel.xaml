@@ -102,6 +102,13 @@
         Content="OpenProject"
         IconPath="{StaticResource IconUpload}"
         ToolTip="Connect to OpenProject" />
+      <themes:ButtonIcon
+        x:Name="SyncOpenProjectButton"
+        HorizontalAlignment="Left"
+        Style="{StaticResource MainMenuButton}"
+        Content="Sync to OpenProject"
+        IconPath="{StaticResource IconUpload}"
+        ToolTip="Sync to OpenProject" />
       <Label
         Name="LabelVersion"
         HorizontalAlignment="Right"
