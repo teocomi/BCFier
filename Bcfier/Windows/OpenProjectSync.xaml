@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:src="clr-namespace:Bcfier.Data.ValueConverters"
+        xmlns:themes="clr-namespace:Bcfier.Themes"
         mc:Ignorable="d"
         Title="Sync with OpenProject"
         Width="550"
@@ -49,9 +50,17 @@
       <Grid Margin="5">
         <Grid.RowDefinitions>
           <RowDefinition Height="auto" />
+          <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
+        <themes:TextPlaceholder
+                Height="25"
+                Margin="5"
+                HorizontalAlignment="Stretch"
+                Placeholder="Filter Issues"
+                Text="{Binding IssueFilter, UpdateSourceTrigger=PropertyChanged}"/>
         <ListBox ItemsSource="{Binding WorkPackages}"
-                 SelectedItem="{Binding SelectedWorkPackage}">
+                 SelectedItem="{Binding SelectedWorkPackage}"
+                 Grid.Row="1">
           <ListBox.ItemTemplate>
             <DataTemplate>
               <Grid>

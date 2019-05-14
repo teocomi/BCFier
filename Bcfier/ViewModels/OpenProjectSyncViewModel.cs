@@ -8,6 +8,8 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Bcfier.ViewModels
@@ -22,6 +24,8 @@ namespace Bcfier.ViewModels
     private List<Project> _projects;
     private Project _selectedProject;
     private WorkPackage _selectedWorkPackage;
+    private string _issueFilter;
+    private readonly Timer _filterRefreshTimer = new Timer(500);
 
     public OpenProjectSyncViewModel(string openProjectApiBaseUrl,
       string openProjectAccessToken,
@@ -34,12 +38,33 @@ namespace Bcfier.ViewModels
       SelectWorkPackageCommand = new RelayCommand(DownloadWorkPackageAsBcf);
       OpenAllWorkPackagesInProjectCommand = new RelayCommand(DownloadAllWorkPackagesAsBcf);
       LoadProjects();
-      this.PropertyChanged += (s, e) =>
+
+      var shouldRequeryDueToTextFilterChange = false;
+      _filterRefreshTimer.Elapsed += (s, e) =>
+        {
+          if (shouldRequeryDueToTextFilterChange)
+          {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+              WorkPackages.Clear();
+            });
+            
+            LoadWorkPackages();
+            shouldRequeryDueToTextFilterChange = false;
+          }
+        };
+      _filterRefreshTimer.Start();
+
+      PropertyChanged += (s, e) =>
         {
           if (e.PropertyName == nameof(SelectedProject))
           {
             WorkPackages.Clear();
             LoadWorkPackages();
+          }
+          else if (e.PropertyName == nameof(IssueFilter))
+          {
+            shouldRequeryDueToTextFilterChange = true;
           }
         };
     }
@@ -100,6 +125,19 @@ namespace Bcfier.ViewModels
       }
     }
 
+    public string IssueFilter
+    {
+      get => _issueFilter;
+      set
+      {
+        if (_issueFilter != value)
+        {
+          _issueFilter = value;
+          NotifyPropertyChanged(nameof(IssueFilter));
+        }
+      }
+    }
+
     public ObservableCollection<WorkPackage> WorkPackages { get; } = new ObservableCollection<WorkPackage>();
 
     public ICommand SelectWorkPackageCommand { get; }
@@ -144,7 +182,7 @@ namespace Bcfier.ViewModels
 
       // The '.bcf' file extension indicates that this is a BCF XML v2.1, the format that's currently exported by Open Project.
       // This is relevant later down since we're using the original methods to load a BCF XML file via a temp file
-      var tempPath = Path.Combine(Path.GetTempPath(), "BCFier", Guid.NewGuid().ToString(), (SelectedProject?.Name?? string.Empty) + ".bcf");
+      var tempPath = Path.Combine(Path.GetTempPath(), "BCFier", Guid.NewGuid().ToString(), (SelectedProject?.Name ?? string.Empty) + ".bcf");
       if (!Directory.Exists(Path.GetDirectoryName(tempPath)))
       {
         Directory.CreateDirectory(Path.GetDirectoryName(tempPath));
@@ -182,23 +220,29 @@ namespace Bcfier.ViewModels
       }
 
       var currentPage = 1;
-      var pageSize = 200;
+      var pageSize = 500;
       var canLoadMore = true;
+      var userTextQuery = IssueFilter;
       while (canLoadMore)
       {
         canLoadMore = false;
         var workPackagesResult = await _openProjectClient.GetBcfWorkPackagesForProjectAsync(selectedProject.Id,
           pageSize,
-          currentPage++);
+          currentPage++,
+          userTextQuery);
         if (workPackagesResult.IsSuccess)
         {
-          if (selectedProject == SelectedProject)
+          if (selectedProject == SelectedProject && userTextQuery == IssueFilter)
           {
             // This guards against stale work packages, e.g. a request for work packages
             // that finishes after the user has changed the selected project
+            // Guards also against changed IssueFilters
             foreach (var newWorkPackage in workPackagesResult.Result)
             {
-              WorkPackages.Add(newWorkPackage);
+              Application.Current.Dispatcher.Invoke(() =>
+              {
+                WorkPackages.Add(newWorkPackage);
+              });
             }
             NotifyPropertyChanged(nameof(WorkPackages));
             if (workPackagesResult.Result.Count >= pageSize)

@@ -34,13 +34,31 @@ namespace Bcfier.OpenProjectApi
 
     public Task<ResponseWrapper<List<WorkPackage>>> GetBcfWorkPackagesForProjectAsync(int projectId,
       int pageSize,
-      int pageNumber)
+      int pageNumber,
+      string userTextQuery = null)
     {
       var client = HttpClientFactory.GetHttpClient(_openProjectAccessToken);
       var url = $"{_apiBaseUrl}/projects/{projectId}/work_packages";
       var query = $"?pageSize={pageSize}&offset={pageNumber}";
       url += query;
-      var bcfTopicFilter = "&filters=[{\"status\":{\"operator\":\"*\",\"values\":[]}},{\"type\":{\"operator\":\"=\",\"values\":[\"7\"]}}]&sortBy=[[\"createdAt\",\"desc\"]]";
+
+      var textFilter = string.Empty;
+      if (!string.IsNullOrWhiteSpace(userTextQuery))
+      {
+        var jsonFilter = Newtonsoft.Json.JsonConvert.SerializeObject(new
+        {
+          values = new[] { userTextQuery },
+          @operator = "**"
+        });
+
+        textFilter = ",{\"search\":" + jsonFilter + "}";
+      }
+
+      var bcfTopicFilter = "&filters=[" +
+        "{\"status\":{\"operator\":\"*\",\"values\":[]}}," +
+        "{\"type\":{\"operator\":\"=\",\"values\":[\"7\"]}}" +
+         textFilter +
+        "]&sortBy=[[\"createdAt\",\"desc\"]]";
       url += bcfTopicFilter;
       return client.GetJsonAsync<List<WorkPackage>>(url);
     }
