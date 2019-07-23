@@ -56,7 +56,7 @@ namespace Bcfier.OpenProjectApi
 
       var bcfTopicFilter = "&filters=[" +
         "{\"status\":{\"operator\":\"*\",\"values\":[]}}," +
-        "{\"type\":{\"operator\":\"=\",\"values\":[\"7\"]}}" +
+        "{\"bcfIssueAssociated\":{\"operator\":\"=\",\"values\":[\"t\"]}}" +
          textFilter +
         "]&sortBy=[[\"createdAt\",\"desc\"]]";
       url += bcfTopicFilter;
@@ -67,7 +67,7 @@ namespace Bcfier.OpenProjectApi
     {
       var client = HttpClientFactory.GetHttpClient(_openProjectAccessToken);
       var url = $"{_baseUrl}/projects/{projectId}/work_packages.bcf";
-      var query = "?filters=[{\"status\":{\"operator\":\"*\",\"values\":[]}},{\"type\":{\"operator\":\"=\",\"values\":[\"7\"]}}]";
+      var query = "?filters=[{\"status\":{\"operator\":\"*\",\"values\":[]}},{\"bcfIssueAssociated\":{\"operator\":\"=\",\"values\":[\"t\"]}}]";
       url += query;
       var response = await client.GetAsync(url);
       var responseWrapper = await ResponseWrapper.GetResponseWrapperAsync(response);
