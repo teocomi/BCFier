@@ -155,7 +155,7 @@ namespace Bcfier.ViewModels
 
       // The '.bcf' file extension indicates that this is a BCF XML v2.1, the format that's currently exported by Open Project.
       // This is relevant later down since we're using the original methods to load a BCF XML file via a temp file
-      var tempPath = Path.Combine(Path.GetTempPath(), "BCFier", Guid.NewGuid().ToString(), (SelectedWorkPackage.Subject ?? string.Empty) + ".bcf");
+      var tempPath = Path.Combine(Path.GetTempPath(), "BCFier", Guid.NewGuid().ToString() + ".bcf");
       if (!Directory.Exists(Path.GetDirectoryName(tempPath)))
       {
         Directory.CreateDirectory(Path.GetDirectoryName(tempPath));
