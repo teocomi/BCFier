@@ -1,4 +1,4 @@
-﻿using Bcfier.OpenProjectApi.Models;
+using Bcfier.OpenProjectApi.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
@@ -12,7 +12,8 @@ namespace Bcfier.OpenProjectApi
 
     private readonly string _openProjectAccessToken;
     private readonly string _baseUrl = DEFAULT_BASE_URL;
-    private readonly string _apiBaseUrl = DEFAULT_BASE_URL + "/api/v3";
+    private readonly string _apiV3BaseUrl = DEFAULT_BASE_URL + "/api/v3";
+    private readonly string _bcfXmlApiV1BaseUrl = DEFAULT_BASE_URL + "/bcf_xml_api/v1";
 
     public OpenProjectClient(string openProjectAccessToken,
       string customBaseUrl = null)
@@ -21,14 +22,15 @@ namespace Bcfier.OpenProjectApi
       if (customBaseUrl != null)
       {
         _baseUrl = customBaseUrl.TrimEnd('/');
-        _apiBaseUrl = _baseUrl + "/api/v3";
+        _apiV3BaseUrl = _baseUrl + "/api/v3";
+        _bcfXmlApiV1BaseUrl = _baseUrl + "/bcf_xml_api/v1";
       }
     }
 
     public Task<ResponseWrapper<List<Project>>> GetAllProjectsAsync()
     {
       var client = HttpClientFactory.GetHttpClient(_openProjectAccessToken);
-      var url = $"{_apiBaseUrl}/projects?pageSize=50&offset=1";
+      var url = $"{_apiV3BaseUrl}/projects?pageSize=50&offset=1";
       return client.GetJsonAsync<List<Project>>(url);
     }
 
@@ -38,7 +40,7 @@ namespace Bcfier.OpenProjectApi
       string userTextQuery = null)
     {
       var client = HttpClientFactory.GetHttpClient(_openProjectAccessToken);
-      var url = $"{_apiBaseUrl}/projects/{projectId}/work_packages";
+      var url = $"{_apiV3BaseUrl}/projects/{projectId}/work_packages";
       var query = $"?pageSize={pageSize}&offset={pageNumber}";
       url += query;
 
@@ -66,7 +68,7 @@ namespace Bcfier.OpenProjectApi
     public async Task<ResponseWrapper> DownloadAllBcfWorkPackagesInProject(int projectId)
     {
       var client = HttpClientFactory.GetHttpClient(_openProjectAccessToken);
-      var url = $"{_baseUrl}/projects/{projectId}/work_packages.bcf";
+      var url = $"{_bcfXmlApiV1BaseUrl}/projects/{projectId}/bcf_xml";
       var query = "?filters=[{\"status\":{\"operator\":\"*\",\"values\":[]}},{\"bcfIssueAssociated\":{\"operator\":\"=\",\"values\":[\"t\"]}}]";
       url += query;
       var response = await client.GetAsync(url);
@@ -77,7 +79,7 @@ namespace Bcfier.OpenProjectApi
     public async Task<ResponseWrapper> GetBcfWorkPackageAsBcfXmlAsync(int projectId, int workPackageId)
     {
       var client = HttpClientFactory.GetHttpClient(_openProjectAccessToken);
-      var url = $"{_baseUrl}/projects/{projectId}/work_packages.bcf";
+      var url = $"{_bcfXmlApiV1BaseUrl}/projects/{projectId}/bcf_xml";
       var query = "?filters=[{\"status\":{\"operator\":\"*\",\"values\":[]}},{\"id\":{\"operator\":\"=\",\"values\":[" + workPackageId + "]}}]";
       url += query;
       var response = await client.GetAsync(url);
@@ -88,7 +90,7 @@ namespace Bcfier.OpenProjectApi
     public async Task<ResponseWrapper> UploadBcfXmlToOpenProjectAsync(int projectId, Stream bcfXmlV21)
     {
       var client = HttpClientFactory.GetHttpClient(_openProjectAccessToken);
-      var url = $"{_baseUrl}/api/v3/projects/{projectId}/bcf_xml";
+      var url = $"{_bcfXmlApiV1BaseUrl}/projects/{projectId}/bcf_xml";
 
       var multiPartFormContent = new MultipartFormDataContent();
       var streamContent = new StreamContent(bcfXmlV21);
