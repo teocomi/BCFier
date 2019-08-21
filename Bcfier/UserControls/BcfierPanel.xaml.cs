@@ -103,6 +103,13 @@ namespace Bcfier.UserControls
           }
 
           var bcf = _bcf.BcfFiles[_bcf.SelectedReportIndex];
+          foreach (var issue in bcf.Issues)
+          {
+            // TODO: As discussed in the opf call on 05.08.2019, as a temporary workaround, the modified date
+            // is always set to the current date when syncing to OpenProject.
+            // This should be removed once proper support to track changes within BCF files is implemented
+            issue.Topic.ModifiedDate = DateTime.UtcNow;
+          }
           var tempPath = Path.Combine(Path.GetTempPath(), "BCFier", Guid.NewGuid() + ".bcf");
           BcfContainer.SaveBcfFile(bcf, tempPath);
           using (var tempBcfv21Stream = File.OpenRead(tempPath))
