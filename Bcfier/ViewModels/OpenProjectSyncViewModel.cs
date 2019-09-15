@@ -44,11 +44,18 @@ namespace Bcfier.ViewModels
         {
           if (shouldRequeryDueToTextFilterChange)
           {
-            Application.Current.Dispatcher.Invoke(() =>
+            try
             {
+              Application.Current.Dispatcher.Invoke(() =>
+              {
+                WorkPackages.Clear();
+              });
+            }
+            catch
+            {
+              // We might not have Application.Current in Revit
               WorkPackages.Clear();
-            });
-            
+            }
             LoadWorkPackages();
             shouldRequeryDueToTextFilterChange = false;
           }
@@ -239,10 +246,18 @@ namespace Bcfier.ViewModels
             // Guards also against changed IssueFilters
             foreach (var newWorkPackage in workPackagesResult.Result)
             {
-              Application.Current.Dispatcher.Invoke(() =>
+              try
               {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                  WorkPackages.Add(newWorkPackage);
+                });
+              }
+              catch
+              {
+                // We might not have Application.Current in Revit
                 WorkPackages.Add(newWorkPackage);
-              });
+              }
             }
             NotifyPropertyChanged(nameof(WorkPackages));
             if (workPackagesResult.Result.Count >= pageSize)
