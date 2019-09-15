@@ -13,6 +13,10 @@ namespace Bcfier.Api
 {
   public static class GitHubRest
   {
+    // TODO
+    // This is used for auto update checks and is currently still point to the original repository,
+    // should be pointed towards the OPF repo
+
     internal static RestClient Client
     {
       get { return new RestClient(@"https://api.github.com/"); } 
