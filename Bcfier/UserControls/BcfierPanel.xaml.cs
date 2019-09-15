@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -109,6 +109,7 @@ namespace Bcfier.UserControls
             // is always set to the current date when syncing to OpenProject.
             // This should be removed once proper support to track changes within BCF files is implemented
             issue.Topic.ModifiedDate = DateTime.UtcNow;
+            issue.Topic.ModifiedDateSpecified = true;
           }
           var tempPath = Path.Combine(Path.GetTempPath(), "BCFier", Guid.NewGuid() + ".bcf");
           BcfContainer.SaveBcfFile(bcf, tempPath);
