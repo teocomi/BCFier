@@ -325,7 +325,7 @@ namespace Bcfier.UserControls
 
         if (SelectedBcf() == null)
           return;
-        var issue = new Markup(DateTime.Now);
+        var issue = new Markup(DateTime.UtcNow);
         SelectedBcf().Issues.Add(issue);
         SelectedBcf().SelectedIssue = issue;
 
