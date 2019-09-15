@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -326,6 +326,11 @@ namespace Bcfier.UserControls
         if (SelectedBcf() == null)
           return;
         var issue = new Markup(DateTime.UtcNow);
+
+        // TODO
+        // Author
+        // Status, Type -> Defaults, first from values
+
         SelectedBcf().Issues.Add(issue);
         SelectedBcf().SelectedIssue = issue;
 
