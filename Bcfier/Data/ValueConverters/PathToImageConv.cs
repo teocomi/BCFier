@@ -12,7 +12,6 @@ namespace Bcfier.Data.ValueConverters
   [ValueConversion(typeof(String), typeof(BitmapImage))]
   public class PathToImageConv : IValueConverter
   {
-    // TODO ADD STREAM TO IMAGE CONVERTER
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
       if (value == null)
