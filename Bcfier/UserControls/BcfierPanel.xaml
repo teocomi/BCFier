@@ -21,6 +21,7 @@
         <ResourceDictionary Source="../Themes/ButtonStyles.xaml" />
       </ResourceDictionary.MergedDictionaries>
       <src:BoolStarConverter x:Key="BoolStarConverter" />
+      <src:InvertedBoolStarConverter x:Key="InvertedBoolStarConverter" />
       <src:BoolVisibConverter x:Key="BoolVisibConverter" />
     </ResourceDictionary>
   </UserControl.Resources>
@@ -115,7 +116,8 @@
         VerticalAlignment="Center"
         Foreground="{StaticResource BackgroundDark}"
         FontSize="10"
-        Content="BCFier v0.0.1" />
+        Content="{Binding BcfierVersion}"
+        />
     </DockPanel>
     <TabControl
       Name="BcfTabControl"
@@ -129,7 +131,7 @@
       Background="{StaticResource BackgroundLight}"
       BorderThickness="0"
       ItemsSource="{Binding BcfFiles}"
-      SelectedIndex="{Binding SelectedReportIndex}">
+      SelectedItem="{Binding SelectedBcfFile}">
       <TabControl.Resources>
         <Style TargetType="TabItem">
           <Setter Property="Template">
@@ -191,11 +193,11 @@
             <TextBlock
               Foreground="White"
               FontWeight="Bold"
-              Text="{Binding Filename}" />
+              Text="{Binding FileName}" />
             <TextBlock
               VerticalAlignment="Center"
               Foreground="White"
-              Text="{Binding HasBeenSaved, Converter={StaticResource BoolStarConverter}}" />
+              Text="{Binding IsModified, Converter={StaticResource InvertedBoolStarConverter}}" />
             <themes:ButtonIcon
               Name="CloseButton"
               Margin="5,0,0,0"

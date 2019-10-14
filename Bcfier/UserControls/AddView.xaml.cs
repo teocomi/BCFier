@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Bcfier.Bcf.Bcf2;
 using Bcfier.Data.Utils;
 
 namespace Bcfier.UserControls
@@ -17,25 +16,27 @@ namespace Bcfier.UserControls
   public partial class AddView : UserControl
   {
     internal string TempFolder;
-    internal Markup Issue;
+    public ViewModels.Bcf.BcfIssueViewModel BcfIssue { get; set; }
+    private byte[] snapshot;
 
     public AddView()
     {
       InitializeComponent();
     }
 
-    public AddView(Markup issue, string bcfTempFolder)
+    public AddView(ViewModels.Bcf.BcfIssueViewModel bcfIssue, string bcfTempFolder)
     {
       try
       {
         InitializeComponent();
-        Issue = issue;
         TempFolder = bcfTempFolder;
       }
       catch (System.Exception ex1)
       {
         MessageBox.Show("exception: " + ex1);
       }
+
+      BcfIssue = bcfIssue;
     }
 
     #region events
@@ -67,6 +68,12 @@ namespace Bcfier.UserControls
     internal void AddViewpoint(string imagePath)
     {
       SnapshotImg.Source = ImagingUtils.ImageSourceFromPath(imagePath);
+      using (var fs = File.OpenRead(imagePath))
+      {
+        var memStream = new MemoryStream();
+        fs.CopyTo(memStream);
+        snapshot = memStream.ToArray();
+      }
     }
 
     private void Button_Cancel(object sender, RoutedEventArgs e)
@@ -78,32 +85,30 @@ namespace Bcfier.UserControls
 
     private void Button_OK(object sender, RoutedEventArgs e)
     {
-      var view = new ViewPoint(!Issue.Viewpoints.Any());
+      var viewpoint = new ViewModels.Bcf.BcfViewpointViewModel();
 
-      if (!Directory.Exists(Path.Combine(TempFolder, Issue.Topic.Guid)))
-        Directory.CreateDirectory(Path.Combine(TempFolder, Issue.Topic.Guid));
+      if (!Directory.Exists(Path.Combine(TempFolder, BcfIssue.Markup.BcfTopic.Id.ToString())))
+        Directory.CreateDirectory(Path.Combine(TempFolder, BcfIssue.Markup.BcfTopic.Id.ToString()));
 
 
       if (!string.IsNullOrEmpty(CommentBox.Text))
       {
-        var c = new Comment
+        var c = new ViewModels.Bcf.BcfCommentviewModel
         {
-          Comment1 = CommentBox.Text,
+          Text = CommentBox.Text,
           Author = Utils.GetUsername(),
           //Status = comboStatuses.SelectedValue.ToString(),
           //VerbalStatus = VerbalStatus.Text,
-          Date = DateTime.Now,
-          Viewpoint = new CommentViewpoint { Guid = view.Guid }
+          CreationDate = DateTime.UtcNow,
+          ViewpointId = viewpoint.Id
         };
-        Issue.Comment.Add(c);
+        BcfIssue.Markup.Comments.Add(c);
       }
-      //first save the image, then update path
-      var path = Path.Combine(TempFolder, Issue.Topic.Guid, view.Snapshot);
-      ImagingUtils.SaveImageSource(SnapshotImg.Source, path);
-      view.SnapshotPath = path;
+
+      viewpoint.Snapshot = snapshot;
 
       //neede for UI binding
-      Issue.Viewpoints.Add(view);
+      BcfIssue.Viewpoints.Add(viewpoint);
 
       var win = Window.GetWindow(this);
       if (win != null)

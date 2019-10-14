@@ -5,9 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using Bcfier.Bcf.Bcf2;
 using Bcfier.Data.Utils;
-using Point = Bcfier.Bcf.Bcf2.Point;
+using Bcfier.ViewModels.Bcf;
 
 namespace Bcfier.Revit.Data
 {
@@ -18,34 +17,20 @@ namespace Bcfier.Revit.Data
     //Generate a VisualizationInfo of the current view
     //</summary>
     //<returns></returns>
-    public static VisualizationInfo GenerateViewpoint(UIDocument uidoc)
+    public static BcfViewpointViewModel GenerateViewpoint(UIDocument uidoc)
     {
       try
       {
         var doc = uidoc.Document;
 
-        var v = new VisualizationInfo();
+        var v = new BcfViewpointViewModel();
 
         //Corners of the active UI view
         var topLeft = uidoc.GetOpenUIViews()[0].GetZoomCorners()[0];
         var bottomRight = uidoc.GetOpenUIViews()[0].GetZoomCorners()[1];
 
-        //It's a 2D view
-        //not supported by BCF, but I store it under a custom 
-        //fields using 2D coordinates and sheet id
-        //and sheet name
-        if (uidoc.ActiveView.ViewType != ViewType.ThreeD)
-        {
-          v.SheetCamera = new SheetCamera
-          {
-            SheetID = uidoc.ActiveView.Id.IntegerValue,
-            SheetName = uidoc.ActiveView.Name,
-            TopLeft = new Point { X = topLeft.X, Y = topLeft.Y, Z = topLeft.Z },
-            BottomRight = new Point { X = bottomRight.X, Y = bottomRight.Y, Z = bottomRight.Z }
-          };
-        }
         //It's a 3d view
-        else
+        if (uidoc.ActiveView.ViewType == ViewType.ThreeD)
         {
           var viewCenter = new XYZ();
           var view3D = (View3D)uidoc.ActiveView;
@@ -81,26 +66,17 @@ namespace Bcfier.Revit.Data
             XYZ up = t.UpDirection;
 
 
-            v.OrthogonalCamera = new OrthogonalCamera
+            v.OrthogonalCamera = new BcfViewpointOrthogonalCameraViewModel
             {
-              CameraViewPoint =
-              {
-                X = c.X.ToMeters(),
-                Y = c.Y.ToMeters(),
-                Z = c.Z.ToMeters()
-              },
-              CameraUpVector =
-              {
-                X = up.X.ToMeters(),
-                Y = up.Y.ToMeters(),
-                Z = up.Z.ToMeters()
-              },
-              CameraDirection =
-              {
-                X = vi.X.ToMeters() * -1,
-                Y = vi.Y.ToMeters() * -1,
-                Z = vi.Z.ToMeters() * -1
-              },
+              ViewPointX = c.X.ToMeters(),
+              ViewPointY = c.Y.ToMeters(),
+              ViewPointZ = c.Z.ToMeters(),
+              UpX = up.X.ToMeters(),
+              UpY = up.Y.ToMeters(),
+              UpZ = up.Z.ToMeters(),
+              DirectionX = vi.X.ToMeters() * -1,
+              DirectionY = vi.Y.ToMeters() * -1,
+              DirectionZ = vi.Z.ToMeters() * -1,
               ViewToWorldScale = zoomValue
             };
           }
@@ -118,26 +94,17 @@ namespace Bcfier.Revit.Data
             XYZ vi = t.ForwardDirection;
             XYZ up = t.UpDirection;
 
-            v.PerspectiveCamera = new PerspectiveCamera
+            v.PerspectiveCamera = new BcfViewpointPerspectiveCameraViewModel
             {
-              CameraViewPoint =
-              {
-                X = c.X.ToMeters(),
-                Y = c.Y.ToMeters(),
-                Z = c.Z.ToMeters()
-              },
-              CameraUpVector =
-              {
-                X = up.X.ToMeters(),
-                Y = up.Y.ToMeters(),
-                Z = up.Z.ToMeters()
-              },
-              CameraDirection =
-              {
-                X = vi.X.ToMeters() * -1,
-                Y = vi.Y.ToMeters() * -1,
-                Z = vi.Z.ToMeters() * -1
-              },
+              ViewPointX = c.X.ToMeters(),
+              ViewPointY = c.Y.ToMeters(),
+              ViewPointZ = c.Z.ToMeters(),
+              UpX = up.X.ToMeters(),
+              UpY = up.Y.ToMeters(),
+              UpZ = up.Z.ToMeters(),
+              DirectionX = vi.X.ToMeters() * -1,
+              DirectionY = vi.Y.ToMeters() * -1,
+              DirectionZ = vi.Z.ToMeters() * -1,
               FieldOfView = zoomValue
             };
           }
@@ -145,7 +112,6 @@ namespace Bcfier.Revit.Data
         }
         //COMPONENTS PART
         string versionName = doc.Application.VersionName;
-        v.Components = new Components();
 
         var visibleElems = new FilteredElementCollector(doc, doc.ActiveView.Id)
           .WhereElementIsNotElementType()
@@ -160,46 +126,42 @@ namespace Bcfier.Revit.Data
 
         var selectedElems = uidoc.Selection.GetElementIds();
 
-        v.Components = new Components();
-        v.Components.Visibility = new ComponentVisibility();
-
         //TODO: set ViewSetupHints
         //TODO: create clipping planes
         //list of hidden components is smaller than the list of visible components
-        if (visibleElems.Count() > hiddenElems.Count())
+        foreach (var hiddenComponent in hiddenElems)
         {
-          v.Components.Visibility.DefaultVisibility = true;
-          v.Components.Visibility.DefaultVisibilitySpecified = true;
-          v.Components.Visibility.Exceptions = hiddenElems.Select(x => new Component
+          v.Components.Add(new BcfViewpointComponentViewModel
           {
+            IsVisible = false,
             OriginatingSystem = versionName,
-            IfcGuid = IfcGuid.ToIfcGuid(ExportUtils.GetExportId(doc, x)),
-            AuthoringToolId = x.IntegerValue.ToString()
-          }).ToArray();
-
-        }
-        //list of visible components is smaller or equals the list of hidden components
-        else
-        {
-          v.Components.Visibility.DefaultVisibility = false;
-          v.Components.Visibility.DefaultVisibilitySpecified = true;
-          v.Components.Visibility.Exceptions = visibleElems.Select(x => new Component
-          {
-            OriginatingSystem = versionName,
-            IfcGuid = IfcGuid.ToIfcGuid(ExportUtils.GetExportId(doc, x)),
-            AuthoringToolId = x.IntegerValue.ToString()
-          }).ToArray();
+            IfcGuid = IfcGuid.ToIfcGuid(ExportUtils.GetExportId(doc, hiddenComponent)),
+            AuthoringToolId = hiddenComponent.IntegerValue.ToString()
+          });
         }
 
-        //selected elements
-        v.Components.Selection = selectedElems.Select(x => new Component
+        foreach (var visibleComponent in visibleElems)
         {
-          OriginatingSystem = versionName,
-          IfcGuid = IfcGuid.ToIfcGuid(ExportUtils.GetExportId(doc, x)),
-          AuthoringToolId = x.IntegerValue.ToString()
-        }).ToArray();
+          v.Components.Add(new BcfViewpointComponentViewModel
+          {
+            IsVisible = true,
+            OriginatingSystem = versionName,
+            IfcGuid = IfcGuid.ToIfcGuid(ExportUtils.GetExportId(doc, visibleComponent)),
+            AuthoringToolId = visibleComponent.IntegerValue.ToString()
+          });
+        }
 
-       
+        foreach (var selectedComponent in selectedElems)
+        {
+          v.Components.Add(new BcfViewpointComponentViewModel
+          {
+            IsSelected = true,
+            IsVisible = true,
+            OriginatingSystem = versionName,
+            IfcGuid = IfcGuid.ToIfcGuid(ExportUtils.GetExportId(doc, selectedComponent)),
+            AuthoringToolId = selectedComponent.IntegerValue.ToString()
+          });
+        }
 
         return v;
 

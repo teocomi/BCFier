@@ -21,8 +21,5 @@ namespace Bcfier.Data.ValueConverters
 
       throw new NotImplementedException();
     }
-
-
   }
-
 }

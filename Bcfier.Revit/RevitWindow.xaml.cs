@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using Bcfier.Bcf.Bcf2;
 using Bcfier.Revit.Data;
 using Bcfier.Revit.Entry;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using Component = Bcfier.Bcf.Bcf2.Component;
-using Point = Bcfier.Bcf.Bcf2.Point;
 using Bcfier.Data.Utils;
+using System.IO;
+using Bcfier.ViewModels.Bcf;
 
 namespace Bcfier.Revit
 {
@@ -62,7 +60,7 @@ namespace Bcfier.Revit
       {
         if (Bcfier.SelectedBcf() == null)
           return;
-        var view = e.Parameter as ViewPoint;
+        var view = e.Parameter as BcfViewpointViewModel;
         if (view == null)
           return;
         UIDocument uidoc = uiapp.ActiveUIDocument;
@@ -85,7 +83,7 @@ namespace Bcfier.Revit
           }
 
         }
-        Handler.v = view.VisInfo;
+        Handler.v = view;
         ExtEvent.Raise();
       }
       catch (System.Exception ex1)
@@ -105,30 +103,38 @@ namespace Bcfier.Revit
 
         if (Bcfier.SelectedBcf() == null)
           return;
-        var issue = e.Parameter as Markup;
+        var issue = e.Parameter as BcfIssueViewModel;
         if (issue == null)
         {
           MessageBox.Show("No Issue selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
           return;
         }
 
-        var dialog = new AddViewRevit(issue, Bcfier.SelectedBcf().TempPath, uiapp.ActiveUIDocument.Document);
+        var dialog = new AddViewRevit(issue, Path.Combine(Path.GetTempPath(), Bcfier.SelectedBcf().Id.ToString()), uiapp.ActiveUIDocument.Document);
         dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         dialog.ShowDialog();
         if (dialog.DialogResult.HasValue && dialog.DialogResult.Value)
         {
           //generate and set the VisInfo
-          issue.Viewpoints.Last().VisInfo = RevitView.GenerateViewpoint(uiapp.ActiveUIDocument);
+          var generatedViewpoint = RevitView.GenerateViewpoint(uiapp.ActiveUIDocument);
+          issue.Viewpoints.Add(generatedViewpoint);
 
           //get filename
           UIDocument uidoc = uiapp.ActiveUIDocument;
 
-          if (uidoc.Document.Title != null)
-            issue.Header[0].Filename = uidoc.Document.Title;
-          else
-            issue.Header[0].Filename = "Unknown";
+          var headerFile = issue.Markup.HeaderFiles.FirstOrDefault();
+          if (headerFile == null)
+          {
+            headerFile = new BcfHeaderFileViewModel();
+            issue.Markup.HeaderFiles.Add(headerFile);
+          }
 
-          Bcfier.SelectedBcf().HasBeenSaved = false;
+          if (uidoc.Document.Title != null)
+            headerFile.FileName = uidoc.Document.Title;
+          else
+            headerFile.FileName = "Unknown";
+
+          Bcfier.SelectedBcf().IsModified = true;
         }
 
       }

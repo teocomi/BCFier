@@ -170,6 +170,9 @@
     <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dangl.Common, Version=1.5.0.0, Culture=neutral, PublicKeyToken=1e67b3ad1938d67e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dangl.Common.1.5.0\lib\net45\Dangl.Common.dll</HintPath>
+    </Reference>
     <Reference Include="GongSolutions.Wpf.DragDrop, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\gong-wpf-dragdrop.1.1.0\lib\net45\GongSolutions.Wpf.DragDrop.dll</HintPath>
       <Private>True</Private>
@@ -214,14 +217,33 @@
     <Compile Include="Api\GitHubRelease.cs" />
     <Compile Include="Api\GitHubRest.cs" />
     <Compile Include="Api\StatHat.cs" />
-    <Compile Include="Bcf\Bcf2\Markup.cs" />
-    <Compile Include="Bcf\Bcf2\Project.cs" />
-    <Compile Include="Bcf\Bcf2\Version.cs" />
-    <Compile Include="Bcf\Bcf2\ViewComment.cs" />
-    <Compile Include="Bcf\Bcf2\ViewPointExtended.cs" />
-    <Compile Include="Bcf\Bcf2\Visinfo.cs" />
-    <Compile Include="Bcf\BcfContainer.cs" />
-    <Compile Include="Bcf\BcfFile.cs" />
+    <Compile Include="Bcf\IO\BcfFileConverter.cs" />
+    <Compile Include="Bcf\IO\BcfLocalFileLoader.cs" />
+    <Compile Include="Bcf\IO\BcfLocalFileSaver.cs" />
+    <Compile Include="Data\ValueConverters\InvertedBoolStarConverter.cs" />
+    <Compile Include="ViewModels\Bcf\BcfCommentviewModel.cs" />
+    <Compile Include="Bcf\IO\BcfFileLoader.cs" />
+    <Compile Include="ViewModels\Bcf\BcfFileViewModel.cs" />
+    <Compile Include="ViewModels\Bcf\BcfHeaderFileViewModel.cs" />
+    <Compile Include="ViewModels\Bcf\BcfIssueViewModel.cs" />
+    <Compile Include="ViewModels\ChangeListeners\BcfIssueViewModelChangeListener.cs" />
+    <Compile Include="Bcf\IO\BcfLoaderException.cs" />
+    <Compile Include="ViewModels\Bcf\BcfMarkupViewModel.cs" />
+    <Compile Include="ViewModels\Bcf\BcfMarkupViewpointReferenceViewModel.cs" />
+    <Compile Include="ViewModels\Bcf\BcfPointOrVectorViewModel.cs" />
+    <Compile Include="ViewModels\Bcf\BcfTopicViewModel.cs" />
+    <Compile Include="Bcf\IO\BcfV21Loader.cs" />
+    <Compile Include="Bcf\IO\BcfV2Loader.cs" />
+    <Compile Include="ViewModels\Bcf\BcfVersion.cs" />
+    <Compile Include="ViewModels\Bcf\BcfViewpointCameraViewModelBase.cs" />
+    <Compile Include="ViewModels\Bcf\BcfViewpointClippingPlaneViewModel.cs" />
+    <Compile Include="ViewModels\Bcf\BcfViewpointComponentViewModel.cs" />
+    <Compile Include="ViewModels\Bcf\BcfViewpointLineViewModel.cs" />
+    <Compile Include="ViewModels\Bcf\BcfViewpointOrthogonalCameraViewModel.cs" />
+    <Compile Include="ViewModels\Bcf\BcfViewpointPerspectiveCameraViewModel.cs" />
+    <Compile Include="ViewModels\Bcf\BcfViewpointViewModel.cs" />
+    <Compile Include="ViewModels\ChangeListeners\ChangeListener.cs" />
+    <Compile Include="ViewModels\ChangeListeners\CollectionChangeListener.cs" />
     <Compile Include="Data\AttachedProperties\CtrlEnterKeyDown.cs" />
     <Compile Include="Data\AttachedProperties\NavigationService.cs" />
     <Compile Include="Data\Globals.cs" />
@@ -267,6 +289,7 @@
       <DependentUpon>AddView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\OpenProjectSyncViewModel.cs" />
+    <Compile Include="ViewModels\PanelViewModel.cs" />
     <Compile Include="Windows\ComponentsList.xaml.cs">
       <DependentUpon>ComponentsList.xaml</DependentUpon>
     </Compile>

@@ -2,7 +2,6 @@
 using System.Windows;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using Bcfier.Bcf.Bcf2;
 
 namespace Bcfier.Revit
 {
@@ -14,12 +13,12 @@ namespace Bcfier.Revit
 
     private Document doc = null;
 
-    public AddViewRevit(Markup issue, string bcfTempFolder, Document _doc)
+    public AddViewRevit(ViewModels.Bcf.BcfIssueViewModel bcfIssue, string bcfTempFolder, Document _doc)
     {
       try
       {
         this.InitializeComponent();
-        AddViewControl.Issue = issue;
+        AddViewControl.BcfIssue = bcfIssue;
         AddViewControl.TempFolder = bcfTempFolder;
         doc = _doc;
 

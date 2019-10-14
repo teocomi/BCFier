@@ -1,4 +1,87 @@
-﻿<bcf:BcfFile 
+﻿<vm:BcfFileViewModel 
+  xmlns="clr-namespace:Bcfier"
+  xmlns:vm="clr-namespace:Bcfier.ViewModels.Bcf"
+  xmlns:bcf="clr-namespace:Bcfier.Bcf"
+  xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+  <vm:BcfFileViewModel.BcfIssuesFiltered>
+    <vm:BcfIssueViewModel>
+      <vm:BcfIssueViewModel.Markup>
+        <vm:BcfMarkupViewModel>
+          <vm:BcfMarkupViewModel.BcfTopic>
+            <vm:BcfTopicViewModel
+              Title="Topic of first issue created for Design Time"
+              Status="Open"
+              Type="Issue"
+              Description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+              >
+            </vm:BcfTopicViewModel>
+          </vm:BcfMarkupViewModel.BcfTopic>
+          <vm:BcfMarkupViewModel.Comments>
+            <vm:BcfCommentviewModel
+              Author="John Smith"
+              Text="Comment linked to a viewpoint"
+              CreationDate="2015-01-13T12:08:26Z"
+              ViewpointId="3cc48663-ca13-4866-b90f-72bf53dabb9e"
+              >
+            </vm:BcfCommentviewModel>
+            <vm:BcfCommentviewModel
+              Author="Mark Green"
+              Text="Another comment linked to a viewpoint"
+              CreationDate="2015-01-13T12:08:26Z"
+              ViewpointId="3cc48663-ca13-4866-b90f-72bf53dabb9e"
+              >
+            </vm:BcfCommentviewModel>
+            <vm:BcfCommentviewModel
+              Author="John Smith"
+              Text="Comment not linked to a viewpoint"
+              CreationDate="2015-02-13T12:08:26Z"
+              >
+            </vm:BcfCommentviewModel>
+          </vm:BcfMarkupViewModel.Comments>
+        </vm:BcfMarkupViewModel>
+      </vm:BcfIssueViewModel.Markup>
+      <vm:BcfIssueViewModel.Viewpoints>
+        <vm:BcfViewpointViewModel Id="3cc48663-ca13-4866-b90f-72bf53dabb9e">
+        </vm:BcfViewpointViewModel>
+        <vm:BcfViewpointViewModel Id="d917f96a-d460-4a15-9541-469b64229887">
+        </vm:BcfViewpointViewModel>
+      </vm:BcfIssueViewModel.Viewpoints>
+    </vm:BcfIssueViewModel>
+
+
+    
+    <vm:BcfIssueViewModel>
+      <vm:BcfIssueViewModel.Markup>
+        <vm:BcfMarkupViewModel>
+          <vm:BcfMarkupViewModel.BcfTopic>
+            <vm:BcfTopicViewModel
+              Title="Second issue for Design Time"
+              Status="In Progress"
+              Description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+              >
+            </vm:BcfTopicViewModel>
+          </vm:BcfMarkupViewModel.BcfTopic>
+          <vm:BcfMarkupViewModel.Comments>
+            <vm:BcfCommentviewModel
+              Author="John Smith"
+              Text="Comment not linked to a viewpoint"
+              CreationDate="2015-02-13T12:08:26Z"
+              >
+            </vm:BcfCommentviewModel>
+          </vm:BcfMarkupViewModel.Comments>
+        </vm:BcfMarkupViewModel>
+      </vm:BcfIssueViewModel.Markup>
+      <vm:BcfIssueViewModel.Viewpoints>
+        <vm:BcfViewpointViewModel Id="3cc48663-ca13-4866-b90f-72bf53dabb9e">
+        </vm:BcfViewpointViewModel>
+        <vm:BcfViewpointViewModel Id="d917f96a-d460-4a15-9541-469b64229887">
+        </vm:BcfViewpointViewModel>
+      </vm:BcfIssueViewModel.Viewpoints>
+    </vm:BcfIssueViewModel>
+  </vm:BcfFileViewModel.BcfIssuesFiltered>
+
+  <!--<bcf:BcfFile 
   xmlns="clr-namespace:Bcfier"
   xmlns:bcf="clr-namespace:Bcfier.Bcf"
   xmlns:bcf2="clr-namespace:Bcfier.Bcf.Bcf2"
@@ -80,4 +163,4 @@
       </bcf2:Markup.Viewpoints>
     </bcf2:Markup>
   </bcf:BcfFile.Issues>
-</bcf:BcfFile> 
+</bcf:BcfFile>-->

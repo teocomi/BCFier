@@ -13,13 +13,13 @@ using System.Windows.Input;
 using System.Xml.Linq;
 using Bcfier.Api;
 using Bcfier.Bcf;
-using Bcfier.Bcf.Bcf2;
 using Bcfier.Data.Utils;
 using Bcfier.Windows;
 using Bcfier.Data;
 using Version = System.Version;
 using Bcfier.ViewModels;
 using Bcfier.OpenProjectApi;
+using Bcfier.ViewModels.Bcf;
 
 namespace Bcfier.UserControls
 {
@@ -29,21 +29,47 @@ namespace Bcfier.UserControls
   public partial class BcfierPanel : UserControl
   {
     //my data context
-    private readonly BcfContainer _bcf = new BcfContainer();
-
-
+    //private readonly BcfContainer _bcf = new BcfContainer();
+    private readonly PanelViewModel _panelViewModel = new PanelViewModel();
 
     public BcfierPanel()
     {
       InitializeComponent();
-      DataContext = _bcf;
-      _bcf.UpdateDropdowns();
+      DataContext = _panelViewModel;
+      PropagateAvailableStatiAndTypes();
       //top menu buttons and events
-      NewBcfBtn.Click += delegate { _bcf.NewFile(); OnAddIssue(null, null); };
-      OpenBcfBtn.Click += delegate { _bcf.OpenFile(); _bcf.UpdateDropdowns(); };
+      //NewBcfBtn.Click += delegate { _bcf.NewFile(); OnAddIssue(null, null); };
+      NewBcfBtn.Click += delegate
+      {
+        var newBcfFile = new ViewModels.Bcf.BcfFileViewModel();
+        _panelViewModel.BcfFiles.Add(newBcfFile);
+        _panelViewModel.SelectedBcfFile = newBcfFile;
+
+        OnAddIssue(null, null);
+      };
+      OpenBcfBtn.Click += delegate
+      {
+        var newBcfFiles = BcfLocalFileLoader.OpenFileDialogAndLoadBcfFile();
+        if (newBcfFiles.Any())
+        {
+          foreach (var newBcfFile in newBcfFiles)
+          {
+            _panelViewModel.BcfFiles.Add(newBcfFile);
+          }
+          _panelViewModel.SelectedBcfFile = newBcfFiles.Last();
+          PropagateAvailableStatiAndTypes();
+        }
+      };
       //OpenProjectBtn.Click += OnOpenWebProject;
-      SaveBcfBtn.Click += delegate { _bcf.SaveFile(SelectedBcf()); };
-      MergeBcfBtn.Click += delegate { _bcf.MergeFiles(SelectedBcf()); };
+      SaveBcfBtn.Click += delegate
+      {
+        if (_panelViewModel.SelectedBcfFile != null)
+        {
+          BcfLocalFileSaver.SaveBcfFileLocally(_panelViewModel.SelectedBcfFile);
+        }
+      };
+      // TODO CHECK THIS -> WHAT IS MERGE SUPPOSED TO DO WTH A SINGLE FILE?
+      //MergeBcfBtn.Click += delegate { _bcf.MergeFiles(SelectedBcf()); };
       var selectedOpenProjectProjectId = -1;
       SettingsBtn.Click += delegate
       {
@@ -52,7 +78,7 @@ namespace Bcfier.UserControls
         //update bcfs with new statuses and types
         if (s.DialogResult.HasValue && s.DialogResult.Value)
         {
-          _bcf.UpdateDropdowns();
+          PropagateAvailableStatiAndTypes();
         }
 
       };
@@ -65,7 +91,13 @@ namespace Bcfier.UserControls
         {
           var viewModel = new OpenProjectSyncViewModel(openProjectApiBaseUrl,
             openProjectAccessToken,
-            _bcf.OpenFile);
+            filename =>
+            {
+              var bcfFile = BcfLocalFileLoader.OpenLocalBcfFile(filename);
+              _panelViewModel.BcfFiles.Add(bcfFile);
+              _panelViewModel.SelectedBcfFile = bcfFile;
+              PropagateAvailableStatiAndTypes();
+            });
           var openProjectSyncWindow = new OpenProjectSync(viewModel);
           viewModel.OnCloseWindowRequested += (s, e) => openProjectSyncWindow.Close();
           viewModel.PropertyChanged += (s, e) =>
@@ -90,7 +122,7 @@ namespace Bcfier.UserControls
         if (!string.IsNullOrWhiteSpace(openProjectApiBaseUrl)
           && !string.IsNullOrWhiteSpace(openProjectAccessToken))
         {
-          if (_bcf.SelectedReportIndex < 0)
+          if (_panelViewModel.SelectedBcfFile == null)
           {
             MessageBox.Show("Please make sure to have an active Bcf issue opened before syncing to OpenProject");
             return;
@@ -102,23 +134,11 @@ namespace Bcfier.UserControls
             return;
           }
 
-          var bcf = _bcf.BcfFiles[_bcf.SelectedReportIndex];
-          foreach (var issue in bcf.Issues)
-          {
-            // TODO: As discussed in the opf call on 05.08.2019, as a temporary workaround, the modified date
-            // is always set to the current date when syncing to OpenProject.
-            // This should be removed once proper support to track changes within BCF files is implemented
-            issue.Topic.ModifiedDate = DateTime.UtcNow;
-            issue.Topic.ModifiedDateSpecified = true;
-          }
-          var tempPath = Path.Combine(Path.GetTempPath(), "BCFier", Guid.NewGuid() + ".bcf");
-          BcfContainer.SaveBcfFile(bcf, tempPath);
-          using (var tempBcfv21Stream = File.OpenRead(tempPath))
-          {
-            var openProjectClient = new OpenProjectClient(openProjectAccessToken, openProjectApiBaseUrl);
-            var response = await openProjectClient.UploadBcfXmlToOpenProjectAsync(selectedOpenProjectProjectId, tempBcfv21Stream)
-              .ConfigureAwait(false);
-          }
+          var bcfConverter = new BcfFileConverter(_panelViewModel.SelectedBcfFile);
+          var bcfStream = bcfConverter.GetBcfFileStream(ViewModels.Bcf.BcfVersion.V21);
+          var openProjectClient = new OpenProjectClient(openProjectAccessToken, openProjectApiBaseUrl);
+          var response = await openProjectClient.UploadBcfXmlToOpenProjectAsync(selectedOpenProjectProjectId, bcfStream)
+            .ConfigureAwait(false);
         }
         else
         {
@@ -126,28 +146,52 @@ namespace Bcfier.UserControls
         }
       };
       HelpBtn.Click += HelpBtnOnClick;
-      //set version
-      LabelVersion.Content = "BCFier " +
-                         System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
 
       if (UserSettings.GetBool("checkupdates"))
         CheckUpdates();
 
     }
 
+    private void PropagateAvailableStatiAndTypes()
+    {
+      var availableStati = UserSettings.Get("Stauses").Split(',');
+      var availableTypes = UserSettings.Get("Types").Split(',');
 
-    private bool CheckSaveBcf(BcfFile bcf)
+      foreach (var bcfFile in _panelViewModel.BcfFiles)
+      {
+        foreach (var bcfIssue in bcfFile.BcfIssues)
+        {
+          bcfIssue.Markup.BcfTopic.AvailableStati.Clear();
+          foreach (var availableStatus in availableStati.Select(s => s.Trim()).Where(s => !string.IsNullOrWhiteSpace(s)))
+          {
+            bcfIssue.Markup.BcfTopic.AvailableStati.Add(availableStatus);
+          }
+
+          bcfIssue.Markup.BcfTopic.AvailableTypes.Clear();
+          foreach (var availableType in availableTypes.Select(s => s.Trim()).Where(s => !string.IsNullOrWhiteSpace(s)))
+          {
+            bcfIssue.Markup.BcfTopic.AvailableTypes.Add(availableType);
+          }
+        }
+      }
+
+      // TODO
+      // throw new NotImplementedException();
+    }
+
+
+    private bool CheckSaveBcf(BcfFileViewModel bcfFile)
     {
       try
       {
-        if (BcfTabControl.SelectedIndex != -1 && bcf != null && !bcf.HasBeenSaved && bcf.Issues.Any())
+        if (BcfTabControl.SelectedIndex != -1 && bcfFile != null && bcfFile.IsModified && bcfFile.BcfIssues.Any())
         {
 
-          MessageBoxResult answer = MessageBox.Show(bcf.Filename + " has been modified.\nDo you want to save changes?", "Save Report?",
+          MessageBoxResult answer = MessageBox.Show(bcfFile.FileName + " has been modified.\nDo you want to save changes?", "Save Report?",
           MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.Cancel);
           if (answer == MessageBoxResult.Yes)
           {
-            _bcf.SaveFile(bcf);
+            BcfLocalFileSaver.SaveBcfFileLocally(bcfFile);
             return false;
           }
           if (answer == MessageBoxResult.Cancel)
@@ -175,7 +219,7 @@ namespace Bcfier.UserControls
           return;
 
         var selItems = e.Parameter as IList;
-        var issues = selItems.Cast<Markup>().ToList();
+        var issues = selItems.Cast<BcfIssueViewModel>().ToList();
         if (!issues.Any())
         {
           MessageBox.Show("No Issue selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -185,14 +229,18 @@ namespace Bcfier.UserControls
             String.Format("Are you sure you want to delete {0} Issue{1}?\n{2}", 
             issues.Count, 
             (issues.Count > 1) ? "s" : "",
-            "\n - " + string.Join("\n - ", issues.Select(x => x.Topic.Title))),
+            "\n - " + string.Join("\n - ", issues.Select(x => x.Markup.BcfTopic.Title))),
             String.Format("Delete Issue{0}?", (issues.Count > 1) ? "s" : ""), 
             MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (answer == MessageBoxResult.No)
           return;
 
-        SelectedBcf().RemoveIssues(issues);
-
+        foreach (var issueToRemove in issues)
+        {
+          _panelViewModel.SelectedBcfFile
+            .BcfIssues
+            .Remove(issueToRemove);
+        }
       }
       catch (System.Exception ex1)
       {
@@ -208,8 +256,8 @@ namespace Bcfier.UserControls
         if (SelectedBcf() == null)
           return;
         var values = (object[])e.Parameter;
-        var view = values[0] as ViewPoint;
-        var issue = values[1] as Markup;
+        var view = values[0] as BcfViewpointViewModel;
+        var issue = values[1] as BcfIssueViewModel;
         var content = values[2].ToString();
         //var status = (values[3] == null) ? "" : values[3].ToString();
         //var verbalStatus = values[4].ToString();
@@ -220,22 +268,18 @@ namespace Bcfier.UserControls
         }
 
 
-        Comment c = new Comment();
-        c.Guid = Guid.NewGuid().ToString();
-        c.Comment1 = content;
+        var c = new BcfCommentviewModel();
+        c.Text = content;
         //c.Topic = new CommentTopic();
         //c.Topic.Guid = issue.Topic.Guid;
-        c.Date = DateTime.Now;
+        c.CreationDate = DateTime.UtcNow;
         //c.VerbalStatus = verbalStatus;
         //c.Status = status;
         c.Author = Utils.GetUsername();
 
-        c.Viewpoint = new CommentViewpoint();
-        c.Viewpoint.Guid = (view != null) ? view.Guid : "";
+        c.ViewpointId = view?.Id;
 
-        issue.Comment.Add(c);
-
-        SelectedBcf().HasBeenSaved = false;
+        issue.Markup.Comments.Add(c);
 
       }
       catch (System.Exception ex1)
@@ -250,9 +294,9 @@ namespace Bcfier.UserControls
         if (SelectedBcf() == null)
           return;
         var values = (object[])e.Parameter;
-        var comment = values[0] as Comment;
+        var comment = values[0] as BcfCommentviewModel;
         //  var comments = selItems.Cast<Comment>().ToList();
-        var issue = (Markup)values[1];
+        var issue = (BcfIssueViewModel)values[1];
         if (issue == null)
         {
           MessageBox.Show("No Issue selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -273,7 +317,10 @@ namespace Bcfier.UserControls
         if (answer == MessageBoxResult.No)
           return;
 
-        SelectedBcf().RemoveComment(comment, issue);
+        _panelViewModel.SelectedBcfFile.SelectedBcfIssue
+          .Markup
+          .Comments
+          .Remove(comment);
       }
       catch (System.Exception ex1)
       {
@@ -289,8 +336,9 @@ namespace Bcfier.UserControls
         if (SelectedBcf() == null)
           return;
         var values = (object[])e.Parameter;
-        var view = values[0] as ViewPoint;
-        var issue = (Markup)values[1];
+        // TODO THIS IS PROBABLY ANOTHER CLASS
+        var view = values[0] as BcfViewpointViewModel;
+        var issue = (BcfIssueViewModel)values[1];
         if (issue == null)
         {
           MessageBox.Show("No Issue selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -311,7 +359,22 @@ namespace Bcfier.UserControls
         if (answer == MessageBoxResult.No)
           delComm = false;
 
-        SelectedBcf().RemoveView(view, issue, delComm);
+        _panelViewModel.SelectedBcfFile.SelectedBcfIssue.Viewpoints.Remove(view);
+        if (delComm)
+        {
+          var commentsToRemove = _panelViewModel.SelectedBcfFile.SelectedBcfIssue
+            .Markup
+            .Comments
+            .Where(c => c.ViewpointId == view.Id)
+            .ToList();
+          foreach (var commentToRemove in commentsToRemove)
+          {
+            _panelViewModel.SelectedBcfFile.SelectedBcfIssue
+              .Markup
+              .Comments
+              .Remove(commentToRemove);
+          }
+        }
       }
       catch (System.Exception ex1)
       {
@@ -325,14 +388,21 @@ namespace Bcfier.UserControls
 
         if (SelectedBcf() == null)
           return;
-        var issue = new Markup(DateTime.UtcNow);
+        var issue = new BcfIssueViewModel();
+        issue.DisableListeningForChanges = true;
+        issue.Markup = new BcfMarkupViewModel
+        {
+          BcfTopic = new BcfTopicViewModel()
+        };
+        issue.DisableListeningForChanges = false;
 
         // TODO
         // Author
         // Status, Type -> Defaults, first from values
 
-        SelectedBcf().Issues.Add(issue);
-        SelectedBcf().SelectedIssue = issue;
+        _panelViewModel.SelectedBcfFile.BcfIssues.Add(issue);
+        _panelViewModel.SelectedBcfFile.SelectedBcfIssue = issue;
+        this.PropagateAvailableStatiAndTypes();
 
       }
       catch (System.Exception ex1)
@@ -342,7 +412,7 @@ namespace Bcfier.UserControls
     }
     private void HasIssueSelected(object sender, CanExecuteRoutedEventArgs e)
     {
-      if (SelectedBcf().SelectedIssue != null)
+      if (_panelViewModel.SelectedBcfFile != null)
         e.CanExecute = true;
       else
         e.CanExecute = false;
@@ -350,9 +420,14 @@ namespace Bcfier.UserControls
     }
     private void OnOpenSnapshot(object sender, ExecutedRoutedEventArgs e)
     {
+      // TODO WHAT DOES THIS DO?
+      throw new NotImplementedException();
+
+      /*
       try
       {
-        var view = e.Parameter as ViewPoint;
+
+        var view = e.Parameter as BcfViewpointViewModel;
         if (view == null || !File.Exists(view.SnapshotPath))
         {
           MessageBox.Show("The selected Snapshot does not exist", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -371,18 +446,19 @@ namespace Bcfier.UserControls
       {
         MessageBox.Show("exception: " + ex1);
       }
+      */
     }
     private void OnOpenComponents(object sender, ExecutedRoutedEventArgs e)
     {
       try
       {
-        var view = e.Parameter as ViewPoint;
+        var view = e.Parameter as BcfViewpointViewModel;
         if (view == null)
         {
           MessageBox.Show("The selected ViewPoint is null", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
           return;
         }
-        var dialog = new ComponentsList(view.VisInfo.Components);
+        var dialog = new ComponentsList(view);
         dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         dialog.Show();
       }
@@ -396,17 +472,19 @@ namespace Bcfier.UserControls
       try
       {
         var guid = Guid.Parse(e.Parameter.ToString());
-        var bcfs = _bcf.BcfFiles.Where(x => x.Id.Equals(guid));
-        if (!bcfs.Any())
+        var bcfFiles = _panelViewModel.BcfFiles.Where(x => x.Id.Equals(guid));
+        if (!bcfFiles.Any())
           return;
-        var bcf = bcfs.First();
+        var bcfFile = bcfFiles.First();
 
-        if (CheckSaveBcf(bcf))
-          _bcf.CloseFile(bcf);
+        if (CheckSaveBcf(bcfFile))
+        {
+          _panelViewModel.BcfFiles.Remove(bcfFile);
+        }
       }
-      catch (System.Exception ex1)
+      catch (Exception ex)
       {
-        MessageBox.Show("exception: " + ex1);
+        MessageBox.Show("Exception: " + Environment.NewLine + ex);
       }
     }
 
@@ -433,24 +511,25 @@ namespace Bcfier.UserControls
 
     public void BcfFileClicked(string path)
     {
-      _bcf.OpenFile(path);
+      // This is called when the program is started and a path to a BCF file is passed as an argument
+      var bcfFile = BcfLocalFileLoader.OpenLocalBcfFile(path);
+      _panelViewModel.BcfFiles.Add(bcfFile);
+      _panelViewModel.SelectedBcfFile = bcfFile;
+      PropagateAvailableStatiAndTypes();
     }
+
     //prompt to save bcf
     //delete temp folders
     public bool onClosing(CancelEventArgs e)
     {
-      foreach (var bcf in _bcf.BcfFiles)
+      foreach (var bcfFile in _panelViewModel.BcfFiles)
       {
         //does not need to be saved, or user has saved it
-        if (CheckSaveBcf(bcf))
+        if (!CheckSaveBcf(bcfFile))
         {
-          //delete temp folder
-          Utils.DeleteDirectory(bcf.TempPath);
-        }
-        else
           return true;
+        }
       }
-
 
       return false;
     }
@@ -532,13 +611,18 @@ namespace Bcfier.UserControls
           foreach (var f in files)
           {
             if (File.Exists(f))
-              _bcf.OpenFile(f);
+            {
+              var newBcfFile = BcfLocalFileLoader.OpenLocalBcfFile(f);
+              _panelViewModel.BcfFiles.Add(newBcfFile);
+              _panelViewModel.SelectedBcfFile = newBcfFile;
+              PropagateAvailableStatiAndTypes();
+            }
           }
         }
       }
-      catch (System.Exception ex1)
+      catch (Exception ex)
       {
-        MessageBox.Show("exception: " + ex1);
+        MessageBox.Show("Exception: " + Environment.NewLine + ex);
       }
     }
     private void Window_DragOver(object sender, DragEventArgs e)
@@ -569,14 +653,11 @@ namespace Bcfier.UserControls
     }
     #endregion
     #region shortcuts
-    public BcfFile SelectedBcf()
+    public BcfFileViewModel SelectedBcf()
     {
-      if (BcfTabControl.SelectedIndex == -1 || _bcf.BcfFiles.Count <= BcfTabControl.SelectedIndex)
-        return null;
-      return _bcf.BcfFiles.ElementAt(BcfTabControl.SelectedIndex);
+      return _panelViewModel.SelectedBcfFile;
     }
     #endregion
-
 
   }
 }

@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Bcfier.Bcf;
 using Bcfier.Themes;
+using Bcfier.ViewModels.Bcf;
 using GongSolutions.Wpf.DragDrop;
 
 
@@ -29,7 +30,9 @@ namespace Bcfier.UserControls
       //so that in the designer it still binds to the "Issues" collection
       //allowing for Design time preview
       //the binding to View is needed for filtering the collection
-      IssueList.SetBinding(ItemsControl.ItemsSourceProperty, "View");
+
+
+      IssueList.SetBinding(ItemsControl.ItemsSourceProperty, nameof(BcfFileViewModel.BcfIssuesFiltered));
       ((INotifyCollectionChanged)IssueList.Items).CollectionChanged += IssueList_CollectionChanged;
 
      
@@ -49,15 +52,16 @@ namespace Bcfier.UserControls
     {
       if (IssueList.SelectedIndex == -1)
         return;
-      var bcf = this.DataContext as BcfFile;
+      var bcf = this.DataContext as BcfFileViewModel;
       if (bcf == null)
         return;
       //if (e.Key != Key.Up && e.Key != Key.Down && e.Key != Key.Left && e.Key != Key.Right)
-      bcf.HasBeenSaved = false;
+      bcf.IsModified = true;
     }
 
     private void BcfReportPanel_OnLoaded(object sender, RoutedEventArgs e)
     {
+      "".ToString();
     }
 
 

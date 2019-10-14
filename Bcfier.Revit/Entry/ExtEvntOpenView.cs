@@ -6,9 +6,9 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using Bcfier.Bcf.Bcf2;
 using Bcfier.Data.Utils;
 using Bcfier.Revit.Data;
+using Bcfier.ViewModels.Bcf;
 
 namespace Bcfier.Revit.Entry
 {
@@ -17,7 +17,7 @@ namespace Bcfier.Revit.Entry
   /// </summary>
   public class ExtEvntOpenView : IExternalEventHandler
   {
-    public VisualizationInfo v;
+    public BcfViewpointViewModel v;
 
     /// <summary>
     /// External Event Implementation
@@ -34,13 +34,19 @@ namespace Bcfier.Revit.Entry
         // IS ORTHOGONAL
         if (v.OrthogonalCamera != null)
         {
-          if (v.OrthogonalCamera.CameraViewPoint == null || v.OrthogonalCamera.CameraUpVector == null || v.OrthogonalCamera.CameraDirection == null)
+          if (v.OrthogonalCamera == null)
             return;
           //type = "OrthogonalCamera";
           var zoom = v.OrthogonalCamera.ViewToWorldScale.ToFeet();
-          var cameraDirection = RevitUtils.GetRevitXYZ(v.OrthogonalCamera.CameraDirection);
-          var cameraUpVector = RevitUtils.GetRevitXYZ(v.OrthogonalCamera.CameraUpVector);
-          var cameraViewPoint = RevitUtils.GetRevitXYZ(v.OrthogonalCamera.CameraViewPoint);
+          var cameraDirection = RevitUtils.GetRevitXYZ(v.OrthogonalCamera.DirectionX,
+            v.OrthogonalCamera.DirectionY,
+            v.OrthogonalCamera.DirectionZ);
+          var cameraUpVector = RevitUtils.GetRevitXYZ(v.OrthogonalCamera.UpX,
+            v.OrthogonalCamera.UpY,
+            v.OrthogonalCamera.UpZ);
+          var cameraViewPoint = RevitUtils.GetRevitXYZ(v.OrthogonalCamera.ViewPointX,
+            v.OrthogonalCamera.ViewPointY,
+            v.OrthogonalCamera.ViewPointZ);
           var orient3D = RevitUtils.ConvertBasePoint(doc, cameraViewPoint, cameraDirection, cameraUpVector, true);
 
           View3D orthoView = null;
@@ -98,7 +104,7 @@ namespace Bcfier.Revit.Entry
         //perspective
         else if (v.PerspectiveCamera != null)
         {
-          if (v.PerspectiveCamera.CameraViewPoint == null || v.PerspectiveCamera.CameraUpVector == null || v.PerspectiveCamera.CameraDirection == null)
+          if (v.PerspectiveCamera == null)
             return;
 
           //not used since the fov cannot be changed in Revit
@@ -108,9 +114,15 @@ namespace Bcfier.Revit.Entry
           //double z = 18 / Math.Tan(25 / 2 * Math.PI / 180);
           //double factor = z1 - z;
 
-          var cameraDirection = RevitUtils.GetRevitXYZ(v.PerspectiveCamera.CameraDirection);
-          var cameraUpVector = RevitUtils.GetRevitXYZ(v.PerspectiveCamera.CameraUpVector);
-          var cameraViewPoint = RevitUtils.GetRevitXYZ(v.PerspectiveCamera.CameraViewPoint);
+          var cameraDirection = RevitUtils.GetRevitXYZ(v.PerspectiveCamera.DirectionX,
+            v.PerspectiveCamera.DirectionY,
+            v.PerspectiveCamera.DirectionZ);
+          var cameraUpVector = RevitUtils.GetRevitXYZ(v.PerspectiveCamera.UpX,
+            v.PerspectiveCamera.UpY,
+            v.PerspectiveCamera.UpZ);
+          var cameraViewPoint = RevitUtils.GetRevitXYZ(v.PerspectiveCamera.ViewPointX,
+            v.PerspectiveCamera.ViewPointY,
+            v.PerspectiveCamera.ViewPointZ);
           var orient3D = RevitUtils.ConvertBasePoint(doc, cameraViewPoint, cameraDirection, cameraUpVector, true);
 
 
@@ -153,24 +165,6 @@ namespace Bcfier.Revit.Entry
           }
           uidoc.ActiveView = perspView;
         }
-        //sheet
-        else if (v.SheetCamera != null)
-        {
-          IEnumerable<View> viewcollectorSheet = getSheets(doc, v.SheetCamera.SheetID, v.SheetCamera.SheetName);
-          if (!viewcollectorSheet.Any())
-          {
-            
-            MessageBox.Show("View " + v.SheetCamera.SheetName + " with Id=" + v.SheetCamera.SheetID + " not found.");
-            return;
-          }
-          uidoc.ActiveView = viewcollectorSheet.First();
-          uidoc.RefreshActiveView();
-
-          XYZ m_xyzTl = new XYZ(v.SheetCamera.TopLeft.X, v.SheetCamera.TopLeft.Y, v.SheetCamera.TopLeft.Z);
-          XYZ m_xyzBr = new XYZ(v.SheetCamera.BottomRight.X, v.SheetCamera.BottomRight.Y, v.SheetCamera.BottomRight.Z);
-          uidoc.GetOpenUIViews().First().ZoomAndCenterRectangle(m_xyzTl, m_xyzBr);
-
-        }
         //no view included
         else
           return;
@@ -189,44 +183,26 @@ namespace Bcfier.Revit.Entry
         .ToElementIds()
         .Where(e => doc.GetElement(e).CanBeHidden(doc.ActiveView)); //might affect performance, but it's necessary
 
-
-        bool canSetVisibility = (v.Components.Visibility != null &&
-          v.Components.Visibility.DefaultVisibilitySpecified &&
-          v.Components.Visibility.Exceptions.Any())
-          ;
-        bool canSetSelection = (v.Components.Selection != null && v.Components.Selection.Any());
-
-       
-
         //loop elements
         foreach (var e in visibleElems)
         {
           var guid = IfcGuid.ToIfcGuid(ExportUtils.GetExportId(doc, e));
 
-          if (canSetVisibility)
+          if (v.Components.Any(c => !c.IsVisible && c.IfcGuid == guid))
           {
-            if (v.Components.Visibility.DefaultVisibility)
-            {
-              if (v.Components.Visibility.Exceptions.Any(x => x.IfcGuid == guid))
-                elementsToHide.Add(e);
-            }
-            else
-            {
-              if (v.Components.Visibility.Exceptions.Any(x => x.IfcGuid == guid))
-                elementsToShow.Add(e);
-            }
+            elementsToHide.Add(e);
           }
 
-          if (canSetSelection)
+          if (v.Components.Any(c => c.IsVisible && c.IfcGuid == guid))
           {
-            if (v.Components.Selection.Any(x => x.IfcGuid == guid))
-              elementsToSelect.Add(e);
+            elementsToShow.Add(e);
+          }
+
+          if (v.Components.Any(c => c.IsSelected && c.IfcGuid == guid))
+          {
+            elementsToShow.Add(e);
           }
         }
-
- 
-
-
 
         using (var trans = new Transaction(uidoc.Document))
         {

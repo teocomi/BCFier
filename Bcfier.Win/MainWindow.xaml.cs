@@ -5,9 +5,8 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Bcfier.Bcf.Bcf2;
 using Bcfier.UserControls;
-
+using Bcfier.ViewModels.Bcf;
 
 namespace Bcfier.Win
 {
@@ -49,14 +48,14 @@ namespace Bcfier.Win
 
         if (Bcfier.SelectedBcf() == null)
           return;
-        var issue = e.Parameter as Markup;
+        var issue = e.Parameter as BcfIssueViewModel;
         if (issue == null)
         {
           MessageBox.Show("No Issue selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
           return;
         }
 
-        var addView = new AddView(issue, Bcfier.SelectedBcf().TempPath);
+        var addView = new AddView(issue, Path.Combine(Path.GetTempPath(), issue.Markup.BcfTopic.Id.ToString()));
         var win = new Window
         {
           Content = addView,
@@ -66,12 +65,12 @@ namespace Bcfier.Win
         };
         win.ShowDialog();
         if (win.DialogResult.HasValue && win.DialogResult.Value)
-          Bcfier.SelectedBcf().HasBeenSaved = false;
+          Bcfier.SelectedBcf().IsModified = true;
 
       }
-      catch (System.Exception ex1)
+      catch (Exception ex)
       {
-        MessageBox.Show("exception: " + ex1);
+        MessageBox.Show("Exception: " + Environment.NewLine + ex);
       }
     }
     #endregion

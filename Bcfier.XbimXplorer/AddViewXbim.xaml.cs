@@ -3,7 +3,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Bcfier.Bcf.Bcf2;
+using Bcfier.ViewModels.Bcf;
 using log4net;
 using Xbim.Presentation;
 
@@ -17,12 +17,12 @@ namespace Bcfier.XbimXplorer
         private static readonly ILog Log = LogManager.GetLogger(nameof(AddViewXbim));
         private readonly DrawingControl3D _control;
 
-        public AddViewXbim(Markup issue, string bcfTempFolder, DrawingControl3D control)
+        public AddViewXbim(BcfIssueViewModel bcfIssue, string bcfTempFolder, DrawingControl3D control)
         {
             try
             {
                 InitializeComponent();
-                AddViewControl.Issue = issue;
+                AddViewControl.BcfIssue = bcfIssue;
                 AddViewControl.TempFolder = bcfTempFolder;
                 _control = control;
 

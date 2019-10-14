@@ -97,6 +97,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dangl.Common, Version=1.5.0.0, Culture=neutral, PublicKeyToken=1e67b3ad1938d67e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dangl.Common.1.5.0\lib\net45\Dangl.Common.dll</HintPath>
+    </Reference>
     <Reference Include="Esent.Interop, Version=1.9.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\ManagedEsent.1.9.4\lib\net40\Esent.Interop.dll</HintPath>
       <Private>True</Private>

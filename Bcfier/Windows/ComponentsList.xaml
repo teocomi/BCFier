@@ -20,6 +20,7 @@
       Grid.Row="1"
       Margin="0"
       BorderThickness="0"
+      ItemsSource="{Binding Components}"
       SelectionMode="Extended">
       <ListView.Resources>
         <Style TargetType="{x:Type GridViewColumnHeader}">
@@ -68,7 +69,7 @@
                   Background="Transparent"
                   BorderThickness="0"
                   IsReadOnly="True"
-                  Text="{Binding Selected}" />
+                  Text="{Binding IsSelected}" />
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
@@ -79,7 +80,7 @@
                   Background="Transparent"
                   BorderThickness="0"
                   IsReadOnly="True"
-                  Text="{Binding Visible}" />
+                  Text="{Binding IsVisible}" />
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>

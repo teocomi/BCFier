@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Windows;
-using Bcfier.Bcf.Bcf2;
-
+﻿using System.Windows;
+using Bcfier.ViewModels.Bcf;
 
 namespace Bcfier.Windows
 {
@@ -11,9 +9,10 @@ namespace Bcfier.Windows
   public partial class ComponentsList : Window
   {
     //disabled for now
-    public ComponentsList(Components components)
+    public ComponentsList(BcfViewpointViewModel bcfViewpoint)
     {
       InitializeComponent();
+      this.DataContext = bcfViewpoint;
       //componentsList.ItemsSource = components.Selection;
     }
   }

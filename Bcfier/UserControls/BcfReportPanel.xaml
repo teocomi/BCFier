@@ -44,6 +44,7 @@
         <RowDefinition Height="auto" />
         <RowDefinition Height="*" />
         <RowDefinition Height="auto" />
+        <!--<RowDefinition Height="auto" />-->
       </Grid.RowDefinitions>
       <themes:TextPlaceholder
         x:Name="SearchBox"
@@ -65,10 +66,9 @@
         AlternationCount="2"
         IsSynchronizedWithCurrentItem="True"
         ItemContainerStyle="{StaticResource IssueListStyle}"
-        ItemsSource="{Binding Issues}"
+        ItemsSource="{Binding BcfIssuesFiltered}"
         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-        SelectedIndex="0"
-        SelectedItem="{Binding SelectedIssue}"
+        SelectedItem="{Binding SelectedBcfIssue}"
         SelectionMode="Extended"
         dd:DragDrop.IsDragSource="True"
         dd:DragDrop.IsDropTarget="True"
@@ -94,7 +94,7 @@
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                   <Image
                     Style="{StaticResource ImageNullSource}"
-                    Source="{Binding Viewpoints[0].SnapshotPath, Converter={StaticResource PathToImageConv}, UpdateSourceTrigger=PropertyChanged}"
+                    Source="{Binding Viewpoints[0].Snapshot, Converter={StaticResource PathToImageConv}, UpdateSourceTrigger=PropertyChanged}"
                     Stretch="Fill" />
                 </StackPanel>
               </Grid>
@@ -103,7 +103,7 @@
                   Margin="2,2,2,0"
                   VerticalAlignment="Bottom"
                   FontWeight="Bold"
-                  Content="{Binding Topic.Title, TargetNullValue='New Issue'}" />
+                  Content="{Binding Markup.BcfTopic.Title, TargetNullValue='New Issue'}" />
               </Grid>
               <Border
                 Grid.Row="1"
@@ -117,8 +117,8 @@
                     VerticalAlignment="Bottom"
                     FontSize="11"
                     FontStyle="Italic"
-                    Content="{Binding Topic.CreationDate, Converter={StaticResource DateConverter}, ConverterParameter='relative'}"
-                    ToolTip="{Binding Topic.CreationDate, Converter={StaticResource DateConverter}}" />
+                    Content="{Binding Markup.BcfTopic.CreationDate, Converter={StaticResource DateConverter}, ConverterParameter='relative'}"
+                    ToolTip="{Binding Markup.BcfTopic.CreationDate, Converter={StaticResource DateConverter}}" />
                   <Path
                     Width="11"
                     Height="11"
@@ -142,20 +142,20 @@
                     Fill="{StaticResource PrimaryLight}"
                     Data="{StaticResource IconComment}"
                     Stretch="Uniform"
-                    ToolTip="{Binding Comment.Count, Converter={StaticResource IntPluralConverter}, ConverterParameter='%0% Comment%s%'}"
+                    ToolTip="{Binding Markup.Comments.Count, Converter={StaticResource IntPluralConverter}, ConverterParameter='%0% Comment%s%'}"
                     UseLayoutRounding="False" />
                   <Label
                     VerticalAlignment="Bottom"
                     FontSize="11"
-                    Content="{Binding Comment.Count}"
-                    ToolTip="{Binding Comment.Count, Converter={StaticResource IntPluralConverter}, ConverterParameter='%0% Comment%s%'}" />
+                    Content="{Binding Markup.Comments.Count}"
+                    ToolTip="{Binding Markup.Comments.Count, Converter={StaticResource IntPluralConverter}, ConverterParameter='%0% Comment%s%'}" />
                   <Label
                     VerticalAlignment="Bottom"
                     FontSize="11"
                     FontWeight="Bold"
-                    Content="{Binding Topic.TopicStatus}"
+                    Content="{Binding Markup.BcfTopic.Status}"
                     ToolTip="Status" />
-                  
+
                 </DockPanel>
               </Border>
             </Grid>
@@ -272,7 +272,7 @@
           FontWeight="Bold"
           Binding.SourceUpdated="TextBox_OnTextChanged"
           Placeholder="Issue Title"
-          Text="{Binding Topic.Title, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" />
+          Text="{Binding Markup.BcfTopic.Title, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" />
         <StackPanel
           Grid.Row="1"
           Grid.ColumnSpan="2"
@@ -281,19 +281,9 @@
             VerticalAlignment="Bottom"
             FontSize="11"
             FontStyle="Italic"
-            Content="{Binding Topic.CreationDate, Converter={StaticResource DateConverter}}" />
-          <ComboBox Margin="2" Width="95" ItemsSource="{Binding Topic.TopicStatusesCollection}" SelectedItem="{Binding Topic.TopicStatus}"></ComboBox>
-          <ComboBox Margin="2" Width="95" ItemsSource="{Binding Topic.TopicTypesCollection}" SelectedItem="{Binding Topic.TopicType, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></ComboBox>
-          <!--<themes:TextPlaceholder
-            VerticalAlignment="Bottom"
-            BorderBrush="{StaticResource BackgroundDark}"
-            FontSize="11"
-            Width="100"
-            FontWeight="Bold"
-            Placeholder="Status"
-            Text="{Binding Topic.TopicType, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"
-            ToolTip="Status" />-->
-
+            Content="{Binding Markup.BcfTopic.CreationDate, Converter={StaticResource DateConverter}}" />
+          <ComboBox Margin="2" Width="95" ItemsSource="{Binding Markup.BcfTopic.AvailableStati}" SelectedItem="{Binding Markup.BcfTopic.Status}"></ComboBox>
+          <ComboBox Margin="2" Width="95" ItemsSource="{Binding Markup.BcfTopic.AvailableTypes}" SelectedItem="{Binding Markup.BcfTopic.Type, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></ComboBox>
         </StackPanel>
         <themes:TextPlaceholder
           Grid.Row="2"
@@ -304,7 +294,7 @@
           AcceptsReturn="True"
           Binding.SourceUpdated="TextBox_OnTextChanged"
           Placeholder="Description"
-          Text="{Binding Topic.Description, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+          Text="{Binding Markup.BcfTopic.Description, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
           TextWrapping="Wrap" />
         <themes:ButtonIcon
           Grid.Row="3"
@@ -326,20 +316,6 @@
           IconColor="{StaticResource PrimaryLight}"
           IconPath="{StaticResource IconAdd}" />
       </Grid>
-      <!-- <StackPanel Orientation="Horizontal" Grid.Row="1"  >
-
-        <Button Margin="5" Cursor="Hand" ToolTip="Click to open Snapshot"
-                Visibility="{Binding  ElementName=IssueList, Path=SelectedItems.Count, Converter={StaticResource IntVisibConverter}}"
-                HorizontalAlignment="Stretch"   Grid.Row="0" VerticalAlignment="Stretch" Height="60"  Name="OpenImageBtn"
-                Tag="{Binding snapshot}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-            <Grid>
-              <Image Height="60" Width="100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                   Source="{Binding snapshot, Converter={StaticResource PathToImageConv}}" />
-            </Grid>
-          </Button>-->
-      <!--<StackPanel Orientation="Vertical">
-          </StackPanel>
-      </StackPanel>-->
       <!--  VIEWPOINT  -->
       <ListView
         Name="ViewCommList"
@@ -351,38 +327,10 @@
         BorderThickness="0"
         ItemContainerStyle="{StaticResource ViewCommentListStyle}"
         ItemTemplate="{StaticResource ViewCommentDataTemplate}"
-        ItemsSource="{Binding ElementName=IssueList, Path=SelectedItem.ViewComments}"
+        ItemsSource="{Binding ElementName=IssueList, Path=SelectedItem.Markup.Comments}"
         ScrollViewer.CanContentScroll="False"
         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
         ScrollViewer.VerticalScrollBarVisibility="Visible" />
-      <!--  VIEWPOINTS CONTROLS  -->
-      <!--<DockPanel  >
-        <util:ButtonIcon Command="data:Commands.AddView" CommandParameter="{Binding ElementName=IssueList, Path=SelectedItem}" ToolTip="Add View" DockPanel.Dock="Left" Name="AddViewBtn" Margin="2" Style="{StaticResource IssuesSelectedEnablerStyle}"
-                    Content="Add View" IconColor="Green" IconPath="{StaticResource IconAdd}"/>
-        <util:ButtonIcon Command="data:Commands.DeleteViews" ToolTip="Delete selected view" DockPanel.Dock="Left" Margin="2"  Name="DelViewBtn" HorizontalAlignment="Left"
-                    Style="{StaticResource ViewSelectedEnablerStyle}"
-                    Content="Delete View" IconColor="Red" IconPath="{StaticResource IconDelete}">
-          <Button.CommandParameter>
-            <MultiBinding Converter="{StaticResource MultiCommandConverter}">
-              <Binding ElementName="ViewpointList" Path="SelectedItems" />
-              <Binding ElementName="IssueList" Path="SelectedItem" />
-            </MultiBinding>
-          </Button.CommandParameter>
-        </util:ButtonIcon>
-        <util:ButtonIcon Command="data:Commands.OpenView" ToolTip="Open View in the 3D space"  Name="Open3DViewBtn" Margin="2" HorizontalAlignment="Stretch"
-                  Content="Open View" IconColor="#00A2E1" IconPath="{StaticResource IconView}"  Style="{StaticResource ViewSelectedEnablerStyle}">
-          <Button.CommandParameter>
-            <MultiBinding Converter="{StaticResource MultiCommandConverter}">
-              <Binding ElementName="ViewpointList" Path="SelectedItem" />
-              <Binding ElementName="IssueList" Path="SelectedItem" />
-            </MultiBinding>
-          </Button.CommandParameter>
-        </util:ButtonIcon>
-        <util:ButtonIcon Command="data:Commands.OpenComponents" CommandParameter="{Binding ElementName=ViewpointList, Path=SelectedItem}"
-                         ToolTip="Show list of elements attached to the view"  Name="ComponentsShowBtn" Margin="2" Content="Elements List"
-                            HorizontalAlignment="Left"  IconColor="#00A2E1" IconPath="{StaticResource IconList}"
-                           Style="{StaticResource ViewSelectedEnablerStyle}"/>
-      </DockPanel>-->
     </Grid>
   </Grid>
 </UserControl>

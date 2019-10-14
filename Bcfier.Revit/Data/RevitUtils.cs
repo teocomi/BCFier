@@ -1,7 +1,5 @@
 ﻿using System;
 using Autodesk.Revit.DB;
-using Bcfier.Bcf.Bcf2;
-using Point = Bcfier.Bcf.Bcf2.Point;
 
 namespace Bcfier.Revit.Data
 {
@@ -76,14 +74,9 @@ namespace Bcfier.Revit.Data
       return new XYZ(X.ToFeet(), Y.ToFeet(), Z.ToFeet());
     }
 
-    public static XYZ GetRevitXYZ(Direction d)
+    public static XYZ GetRevitXYZ(ViewModels.Bcf.BcfPointOrVectorViewModel d)
     {
       return new XYZ(d.X.ToFeet(),d.Y.ToFeet(),d.Z.ToFeet());
-    }
-
-    public static XYZ GetRevitXYZ(Point d)
-    {
-      return new XYZ(d.X.ToFeet(), d.Y.ToFeet(), d.Z.ToFeet());
     }
 
     /// <summary>
