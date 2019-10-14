@@ -68,8 +68,6 @@ namespace Bcfier.UserControls
           BcfLocalFileSaver.SaveBcfFileLocally(_panelViewModel.SelectedBcfFile);
         }
       };
-      // TODO CHECK THIS -> WHAT IS MERGE SUPPOSED TO DO WTH A SINGLE FILE?
-      //MergeBcfBtn.Click += delegate { _bcf.MergeFiles(SelectedBcf()); };
       var selectedOpenProjectProjectId = -1;
       SettingsBtn.Click += delegate
       {
@@ -336,7 +334,6 @@ namespace Bcfier.UserControls
         if (SelectedBcf() == null)
           return;
         var values = (object[])e.Parameter;
-        // TODO THIS IS PROBABLY ANOTHER CLASS
         var view = values[0] as BcfViewpointViewModel;
         var issue = (BcfIssueViewModel)values[1];
         if (issue == null)

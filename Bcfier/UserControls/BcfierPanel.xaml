@@ -78,12 +78,6 @@
         ToolTip="Open a BCF..." />
       <!--<themes:ButtonIcon ToolTip="Open a Web Project..."  x:Name="OpenProjectBtn" Content="Open Project" IconPath="{StaticResource IconOpenFile}" Style="{StaticResource MainMenuButton}"/>-->
       <themes:ButtonIcon
-        x:Name="MergeBcfBtn"
-        Style="{StaticResource CanSaveEnablerStyle}"
-        Content="Merge..."
-        IconPath="{StaticResource IconMergeFile}"
-        ToolTip="Merge one or more BCFs with the current one" />
-      <themes:ButtonIcon
         x:Name="SettingsBtn"
         Style="{StaticResource MainMenuButton}"
         Content="Settings"
