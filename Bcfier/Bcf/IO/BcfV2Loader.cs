@@ -143,7 +143,8 @@ namespace Bcfier.Bcf
         Type = bcfTopic.TopicType
       };
 
-      if (bcfTopic.ShouldSerializeModifiedDate())
+      if (bcfTopic.ShouldSerializeModifiedDate()
+        && bcfTopic.ModifiedDate != DateTime.MinValue)
       {
         topic.ModifiedDate = bcfTopic.ModifiedDate;
       }

@@ -1,6 +1,7 @@
 ﻿using Bcfier.Bcf;
 using System;
 using System.IO;
+using System.Linq;
 using Xunit;
 
 namespace Bcfier.Tests.Bcf
@@ -38,11 +39,21 @@ namespace Bcfier.Tests.Bcf
           Assert.NotNull(actual);
           Assert.False(actual.IsModified);
           Assert.NotEmpty(actual.BcfIssues);
-          foreach (var bcfIssue in actual.BcfIssues)
-          {
-            // TODO TEST MODIFIED DATE
-            Assert.False(bcfIssue.IsModified);
-          }
+
+          // Checking modified dates on the topics -> They should not be updated in import
+          Assert.Equal(2, actual.BcfIssues.Count);
+          Assert.False(actual.BcfIssues[0].IsModified);
+          Assert.False(actual.BcfIssues[1].IsModified);
+          Assert.Null(actual.BcfIssues[0].Markup.BcfTopic.ModifiedDate);
+          Assert.Equal(new DateTime(2015,6,21,14,22,47, DateTimeKind.Utc), actual.BcfIssues[1].Markup.BcfTopic.ModifiedDate);
+
+          // Checking modified dates on the comments -> They should not be updated in import
+          var comments = actual.BcfIssues.SelectMany(bcfIssue => bcfIssue.Markup.Comments).ToList();
+          Assert.Equal(4, comments.Count);
+          Assert.Null(comments[0].ModifiedDate);
+          Assert.Null(comments[1].ModifiedDate);
+          Assert.Null(comments[2].ModifiedDate);
+          Assert.Equal(new DateTime(2015,8,31,16,7,11, DateTimeKind.Utc), comments[3].ModifiedDate);
         }
       }
 
@@ -56,11 +67,21 @@ namespace Bcfier.Tests.Bcf
           Assert.NotNull(actual);
           Assert.False(actual.IsModified);
           Assert.NotEmpty(actual.BcfIssues);
-          foreach (var bcfIssue in actual.BcfIssues)
-          {
-            // TODO TEST MODIFIED DATE
-            Assert.False(bcfIssue.IsModified);
-          }
+
+          // Checking modified dates on the topics -> They should not be updated in import
+          Assert.Equal(2, actual.BcfIssues.Count);
+          Assert.False(actual.BcfIssues[0].IsModified);
+          Assert.False(actual.BcfIssues[1].IsModified);
+          Assert.Null(actual.BcfIssues[0].Markup.BcfTopic.ModifiedDate);
+          Assert.Equal(new DateTime(2015, 6, 21, 14, 22, 47, DateTimeKind.Utc), actual.BcfIssues[1].Markup.BcfTopic.ModifiedDate);
+
+          // Checking modified dates on the comments -> They should not be updated in import
+          var comments = actual.BcfIssues.SelectMany(bcfIssue => bcfIssue.Markup.Comments).ToList();
+          Assert.Equal(4, comments.Count);
+          Assert.Null(comments[0].ModifiedDate);
+          Assert.Null(comments[1].ModifiedDate);
+          Assert.Null(comments[2].ModifiedDate);
+          Assert.Equal(new DateTime(2015, 8, 31, 16, 7, 11, DateTimeKind.Utc), comments[3].ModifiedDate);
         }
       }
 
