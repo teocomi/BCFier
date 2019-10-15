@@ -390,10 +390,6 @@ namespace Bcfier.UserControls
         };
         issue.DisableListeningForChanges = false;
 
-        // TODO
-        // Author
-        // Status, Type -> Defaults, first from values
-
         _panelViewModel.SelectedBcfFile.BcfIssues.Add(issue);
         _panelViewModel.SelectedBcfFile.SelectedBcfIssue = issue;
         this.PropagateAvailableStatiAndTypes();
@@ -414,7 +410,7 @@ namespace Bcfier.UserControls
     }
     private void OnOpenSnapshot(object sender, ExecutedRoutedEventArgs e)
     {
-      // TODO WHAT DOES THIS DO?
+      // TODO -> This is currently not supported
       throw new NotImplementedException();
 
       /*
