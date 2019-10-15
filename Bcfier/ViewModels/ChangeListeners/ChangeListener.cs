@@ -40,7 +40,6 @@ namespace Bcfier.ViewModels.ChangeListeners
         var childCollectionChanged = childCollection.GetValue(notifyPropertyChanged) as INotifyCollectionChanged;
         if (childCollectionChanged != null)
         {
-          // TODO THROW WHEN NULL -> SHOULD NEVER BE NULL BY CONVENTIONS IN THIS PROJECT
           var collectionChangeListener = new CollectionChangeListener(childCollectionChanged);
           _collectionChangeListenersByPropertyName.Add(childCollection.Name, collectionChangeListener);
           collectionChangeListener.PropertyChanged += (s, e) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ChildModified)));

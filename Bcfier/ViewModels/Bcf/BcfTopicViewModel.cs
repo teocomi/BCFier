@@ -86,7 +86,6 @@ namespace Bcfier.ViewModels.Bcf
 
     public ObservableCollection<string> Labels { get; } = new ObservableCollection<string>();
 
-    // TODO SET THEM
     public ObservableCollection<string> AvailableStati { get; } = new ObservableCollection<string>();
     public ObservableCollection<string> AvailableTypes { get; } = new ObservableCollection<string>();
   }
