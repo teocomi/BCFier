@@ -8,10 +8,4 @@ namespace Bcfier.WebViewIntegration
     public Viewpoint_GET Viewpoint { get; set; }
     public Components Components { get; set; }
   }
-
-  public class ViewpointGeneratedApiMessage
-  {
-    public ViewpointApiMessage Viewpoint { get; set; }
-    public string SnapshotPngBase64 { get; set; }
-  }
 }

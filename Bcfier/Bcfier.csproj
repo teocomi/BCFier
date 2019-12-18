@@ -456,6 +456,7 @@
     <Compile Include="WebViewIntegration\MessageSerializer.cs" />
     <Compile Include="WebViewIntegration\MessageTypes.cs" />
     <Compile Include="WebViewIntegration\ViewpointApiMessage.cs" />
+    <Compile Include="WebViewIntegration\ViewpointGeneratedApiMessage.cs" />
     <Compile Include="WebViewIntegration\WebUIMessageEventArgs.cs" />
     <Compile Include="Windows\ComponentsList.xaml.cs">
       <DependentUpon>ComponentsList.xaml</DependentUpon>
