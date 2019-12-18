@@ -23,6 +23,7 @@ using Bcfier.ViewModels.Bcf;
 using CefSharp;
 using Bcfier.WebViewIntegration;
 using CefSharp.Wpf;
+using Newtonsoft.Json;
 
 namespace Bcfier.UserControls
 {
@@ -46,7 +47,13 @@ namespace Bcfier.UserControls
 
       _browserManager = new BrowserManager(Browser);
 
-           
+      // TODO this is for quick testing to ensure a 'loaded' event is sent to OpenProject at the start
+      JavaScriptBridge.Instance
+        .SendMessageToOpenProject(MessageTypes.REVIT_LOADED, string.Empty, JsonConvert.SerializeObject(new
+        {
+          Title = "Demo.ifc"
+        }));
+
 
       if (UserSettings.GetBool("checkupdates"))
         CheckUpdates();
