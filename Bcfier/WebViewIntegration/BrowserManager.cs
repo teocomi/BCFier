@@ -42,10 +42,11 @@ window.RevitBridge.sendMessageToOpenProject = (message) => {console.log(JSON.par
 
             JavaScriptBridge.Instance.OnWebUIMessageSent += (sender, eventArgs) =>
               {
-                var messageData = JsonConvert.SerializeObject(new { eventArgs.MessageType, eventArgs.TrackingId, eventArgs.MessagePayload }, jsonSerializerSettings)
-                  .Replace("\"", "\\\"");
+                
+                var messageData = JsonConvert.SerializeObject(new { eventArgs.MessageType, eventArgs.TrackingId, eventArgs.MessagePayload }, jsonSerializerSettings);
+                var encodedMessage = JsonConvert.ToString(messageData);
                 _webBrowser.GetMainFrame()
-                  .ExecuteJavaScriptAsync($"bcfierBridge.sendMessageToOpenProject(\"{messageData}\")");
+                  .ExecuteJavaScriptAsync($"RevitBridge.sendMessageToOpenProject({encodedMessage})");
               };
 
 
