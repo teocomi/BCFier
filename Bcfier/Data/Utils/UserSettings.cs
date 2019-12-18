@@ -8,6 +8,8 @@ namespace Bcfier.Data.Utils
 {
   public static class UserSettings
   {
+    public static string BCFierAppDataFolder { get; } = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BCFier");
+
     /// <summary>
     /// Retrives the user setting with the specified key, if nothing is found returns an empty string
     /// </summary>
@@ -99,7 +101,7 @@ namespace Bcfier.Data.Utils
     private static Configuration GetConfig()
     {
       string _settings =
-        System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BCFier",
+        System.IO.Path.Combine(BCFierAppDataFolder,
           "settings.config");
       var configMap = new ExeConfigurationFileMap {ExeConfigFilename = _settings};
       var config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);

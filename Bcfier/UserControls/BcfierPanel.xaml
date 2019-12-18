@@ -8,6 +8,7 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:src="clr-namespace:Bcfier.Data.ValueConverters"
   xmlns:themes="clr-namespace:Bcfier.Themes"
+  xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
   AllowDrop="True"
   DragEnter="Window_DragEnter"
   DragLeave="Window_DragLeave"
@@ -25,210 +26,24 @@
       <src:BoolVisibConverter x:Key="BoolVisibConverter" />
     </ResourceDictionary>
   </UserControl.Resources>
-  <UserControl.CommandBindings>
-    <CommandBinding
-      CanExecute="HasIssueSelected"
-      Command="data:Commands.DeleteIssues"
-      Executed="OnDeleteIssues" />
-    <CommandBinding Command="data:Commands.AddComment" Executed="OnAddComment" />
-    <CommandBinding Command="data:Commands.DeleteComments" Executed="OnDeleteComment" />
-    <!--<CommandBinding Command="data:Commands.AddView" Executed="OnAddView" />-->
-    <CommandBinding Command="data:Commands.AddIssue" Executed="OnAddIssue" />
-    <CommandBinding Command="data:Commands.DeleteViews" Executed="OnDeleteView" />
-    <!--<CommandBinding Command="data:Commands.OpenView" Executed="OnOpenView" />-->
-    <CommandBinding Command="data:Commands.OpenSnapshot" Executed="OnOpenSnapshot" />
-    <CommandBinding Command="data:Commands.OpenComponents" Executed="OnOpenComponents" />
-    <CommandBinding Command="data:Commands.CloseBcf" Executed="OnCloseBcf" />
-  </UserControl.CommandBindings>
   <Grid Background="{StaticResource BackgroundLight}">
     <Grid.RowDefinitions>
-      <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" />
     </Grid.ColumnDefinitions>
-    <Canvas
-      Name="whitespace"
-      Grid.RowSpan="6"
-      Grid.ColumnSpan="6"
-      Panel.ZIndex="100"
-      Background="WhiteSmoke"
-      Opacity=".70"
-      Visibility="Collapsed" />
-    <!--  MENU        ******************************************************************************************************************************  -->
-    <DockPanel Grid.ColumnSpan="3" Background="{StaticResource SecondaryLight}">
-      <themes:ButtonIcon
-        x:Name="NewBcfBtn"
-        Style="{StaticResource MainMenuButton}"
-        Content="New BCF"
-        IconPath="{StaticResource IconNewFile}"
-        ToolTip="New BCF Report" />
-      <themes:ButtonIcon
-        x:Name="SaveBcfBtn"
-        Style="{StaticResource CanSaveEnablerStyle}"
-        Content="Save as..."
-        IconPath="{StaticResource IconSaveFile}"
-        ToolTip="Save BCF as..." />
-      <themes:ButtonIcon
-        x:Name="OpenBcfBtn"
-        Style="{StaticResource MainMenuButton}"
-        Content="Open BCF"
-        IconPath="{StaticResource IconOpenFile}"
-        ToolTip="Open a BCF..." />
-      <!--<themes:ButtonIcon ToolTip="Open a Web Project..."  x:Name="OpenProjectBtn" Content="Open Project" IconPath="{StaticResource IconOpenFile}" Style="{StaticResource MainMenuButton}"/>-->
-      <themes:ButtonIcon
-        x:Name="SettingsBtn"
-        Style="{StaticResource MainMenuButton}"
-        Content="Settings"
-        IconPath="{StaticResource IconSettings}"
-        ToolTip="Settings..." />
-      <themes:ButtonIcon
-        x:Name="HelpBtn"
-        HorizontalAlignment="Left"
-        Style="{StaticResource MainMenuButton}"
-        Content="Help"
-        IconPath="{StaticResource IconHelp}"
-        ToolTip="Help" />
-      <themes:ButtonIcon
-        x:Name="OpenProjectBtn"
-        HorizontalAlignment="Left"
-        Style="{StaticResource MainMenuButton}"
-        Content="OpenProject"
-        IconPath="{StaticResource IconUpload}"
-        ToolTip="Connect to OpenProject" />
-      <themes:ButtonIcon
-        x:Name="SyncOpenProjectButton"
-        HorizontalAlignment="Left"
-        Style="{StaticResource MainMenuButton}"
-        Content="Sync to OpenProject"
-        IconPath="{StaticResource IconUpload}"
-        ToolTip="Sync to OpenProject" />
-      <Label
-        Name="LabelVersion"
-        HorizontalAlignment="Right"
-        VerticalAlignment="Center"
-        Foreground="{StaticResource BackgroundDark}"
-        FontSize="10"
-        Content="{Binding BcfierVersion}"
-        />
-    </DockPanel>
-    <TabControl
-      Name="BcfTabControl"
-      Grid.Row="1"
-      Margin="0"
-      Padding="0"
-      HorizontalAlignment="Stretch"
-      VerticalAlignment="Stretch"
-      HorizontalContentAlignment="Stretch"
-      VerticalContentAlignment="Stretch"
-      Background="{StaticResource BackgroundLight}"
-      BorderThickness="0"
-      ItemsSource="{Binding BcfFiles}"
-      SelectedItem="{Binding SelectedBcfFile}">
-      <TabControl.Resources>
-        <Style TargetType="TabItem">
-          <Setter Property="Template">
-            <Setter.Value>
-              <ControlTemplate TargetType="TabItem">
-                <Grid Name="Panel">
-                  <ContentPresenter
-                    x:Name="ContentSite"
-                    Margin="10,2"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    ContentSource="Header" />
-                </Grid>
-                <ControlTemplate.Triggers>
-                  <Trigger Property="IsSelected" Value="True">
-                    <Setter TargetName="Panel" Property="Background" Value="{StaticResource PrimaryLight}" />
-                  </Trigger>
-                  <Trigger Property="IsSelected" Value="False">
-                    <Setter TargetName="Panel" Property="Background" Value="{StaticResource PrimaryDark}" />
-                  </Trigger>
-                </ControlTemplate.Triggers>
-              </ControlTemplate>
-            </Setter.Value>
-          </Setter>
-        </Style>
-        <Style TargetType="{x:Type TabControl}">
-          <Setter Property="Template">
-            <Setter.Value>
-              <ControlTemplate TargetType="TabControl">
-                <Grid UseLayoutRounding="True">
-                  <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="5" />
-                    <RowDefinition Height="*" />
-                  </Grid.RowDefinitions>
-                  <TabPanel
-                    Grid.Row="0"
-                    Panel.ZIndex="1"
-                    Background="{StaticResource PrimaryDark}"
-                    IsItemsHost="True" />
-                  <Border Grid.Row="1" Background="{StaticResource PrimaryLight}" />
-                  <Border
-                    Grid.Row="2"
-                    Panel.ZIndex="0"
-                    Background="{TemplateBinding Background}"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="0">
-                    <ContentPresenter Margin="0" ContentSource="SelectedContent" />
-                  </Border>
-                </Grid>
-              </ControlTemplate>
-            </Setter.Value>
-          </Setter>
-        </Style>
-      </TabControl.Resources>
-      <TabControl.ItemTemplate>
-        <DataTemplate>
-          <StackPanel Margin="2,2,0,2" Orientation="Horizontal">
-            <TextBlock
-              Foreground="White"
-              FontWeight="Bold"
-              Text="{Binding FileName}" />
-            <TextBlock
-              VerticalAlignment="Center"
-              Foreground="White"
-              Text="{Binding IsModified, Converter={StaticResource InvertedBoolStarConverter}}" />
-            <themes:ButtonIcon
-              Name="CloseButton"
-              Margin="5,0,0,0"
-              Padding="0"
-              BorderThickness="0"
-              Command="data:Commands.CloseBcf"
-              CommandParameter="{Binding Id}"
-              IconColor="DarkGray"
-              IconMarginVertical="0"
-              IconPath="{StaticResource IconXClose}"
-              IconSizeVertical="8"
-              IsVertical="True" />
-          </StackPanel>
-        </DataTemplate>
-      </TabControl.ItemTemplate>
-      <TabControl.ContentTemplate>
-        <DataTemplate>
-          <ctr:BcfReportPanel HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" />
-        </DataTemplate>
-      </TabControl.ContentTemplate>
-    </TabControl>
-    <TextBlock
-      Grid.Row="1"
-      Padding="40"
-      HorizontalAlignment="Center"
-      VerticalAlignment="Center"
-      Foreground="{StaticResource BackgroundDark}"
-      FontSize="40"
-      FontWeight="Bold"
-      TextAlignment="Center"
-      Visibility="{Binding ElementName=BcfTabControl, Path=HasItems, Converter={StaticResource BoolVisibConverter}, ConverterParameter='opposite'}">
-      Drag&amp;Drop one
-      <LineBreak />
-      or more BCF files
-      <LineBreak />
-      to open them
-    </TextBlock>
+
+    <wpf:ChromiumWebBrowser x:Name="Browser"
+                            Address="https://bcf.openproject-edge.com"
+                            >
+      <!--Address="https://www.whatismybrowser.com/detect/what-is-my-user-agent"-->
+      <!---->
+    </wpf:ChromiumWebBrowser>
+
+
+
+
   </Grid>
 </UserControl>
 

@@ -30,7 +30,6 @@ namespace Bcfier.Revit
       {
         TaskDialog.Show("Error!", "exception: " + ex1);
       }
-
     }
 
     private void GetRevitSnapshot()

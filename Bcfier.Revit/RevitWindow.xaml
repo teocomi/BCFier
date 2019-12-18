@@ -11,10 +11,6 @@
   Closing="Window_Closing"
   Icon="Assets/icon.ico"
   Loaded="RevitWindow_OnLoaded">
-  <Window.CommandBindings>
-    <CommandBinding Command="data:Commands.OpenView" Executed="OnOpenView" />
-    <CommandBinding Command="data:Commands.AddView" Executed="OnAddView" />
-  </Window.CommandBindings>
   <Grid>
     <ctr:BcfierPanel
       x:Name="Bcfier"

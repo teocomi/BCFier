@@ -20,6 +20,9 @@ using Version = System.Version;
 using Bcfier.ViewModels;
 using Bcfier.OpenProjectApi;
 using Bcfier.ViewModels.Bcf;
+using CefSharp;
+using Bcfier.WebViewIntegration;
+using CefSharp.Wpf;
 
 namespace Bcfier.UserControls
 {
@@ -31,119 +34,19 @@ namespace Bcfier.UserControls
     //my data context
     //private readonly BcfContainer _bcf = new BcfContainer();
     private readonly PanelViewModel _panelViewModel = new PanelViewModel();
+    private readonly BrowserManager _browserManager;
 
     public BcfierPanel()
     {
+      // This call sets up the global Chromium settings, e.g. the User Agent
+      CefBrowserInitializer.InitializeCefBrowser();
+
       InitializeComponent();
       DataContext = _panelViewModel;
-      PropagateAvailableStatiAndTypes();
-      //top menu buttons and events
-      //NewBcfBtn.Click += delegate { _bcf.NewFile(); OnAddIssue(null, null); };
-      NewBcfBtn.Click += delegate
-      {
-        var newBcfFile = new ViewModels.Bcf.BcfFileViewModel();
-        _panelViewModel.BcfFiles.Add(newBcfFile);
-        _panelViewModel.SelectedBcfFile = newBcfFile;
 
-        OnAddIssue(null, null);
-      };
-      OpenBcfBtn.Click += delegate
-      {
-        var newBcfFiles = BcfLocalFileLoader.OpenFileDialogAndLoadBcfFile();
-        if (newBcfFiles.Any())
-        {
-          foreach (var newBcfFile in newBcfFiles)
-          {
-            _panelViewModel.BcfFiles.Add(newBcfFile);
-          }
-          _panelViewModel.SelectedBcfFile = newBcfFiles.Last();
-          PropagateAvailableStatiAndTypes();
-        }
-      };
-      //OpenProjectBtn.Click += OnOpenWebProject;
-      SaveBcfBtn.Click += delegate
-      {
-        if (_panelViewModel.SelectedBcfFile != null)
-        {
-          BcfLocalFileSaver.SaveBcfFileLocally(_panelViewModel.SelectedBcfFile);
-        }
-      };
-      var selectedOpenProjectProjectId = -1;
-      SettingsBtn.Click += delegate
-      {
-        var s = new Settings();
-        s.ShowDialog();
-        //update bcfs with new statuses and types
-        if (s.DialogResult.HasValue && s.DialogResult.Value)
-        {
-          PropagateAvailableStatiAndTypes();
-        }
+      _browserManager = new BrowserManager(Browser);
 
-      };
-      OpenProjectBtn.Click += delegate
-      {
-        var openProjectApiBaseUrl = UserSettings.Get("OpenProjectBaseUrl");
-        var openProjectAccessToken = UserSettings.Get("OpenProjectAccessToken");
-        if (!string.IsNullOrWhiteSpace(openProjectApiBaseUrl)
-          && !string.IsNullOrWhiteSpace(openProjectAccessToken))
-        {
-          var viewModel = new OpenProjectSyncViewModel(openProjectApiBaseUrl,
-            openProjectAccessToken,
-            filename =>
-            {
-              var bcfFile = BcfLocalFileLoader.OpenLocalBcfFile(filename);
-              _panelViewModel.BcfFiles.Add(bcfFile);
-              _panelViewModel.SelectedBcfFile = bcfFile;
-              PropagateAvailableStatiAndTypes();
-            });
-          var openProjectSyncWindow = new OpenProjectSync(viewModel);
-          viewModel.OnCloseWindowRequested += (s, e) => openProjectSyncWindow.Close();
-          viewModel.PropertyChanged += (s, e) =>
-          {
-            if (e.PropertyName == nameof(OpenProjectSyncViewModel.SelectedProject)
-            && viewModel.SelectedProject != null)
-            {
-              selectedOpenProjectProjectId = viewModel.SelectedProject.Id;
-            }
-          };
-          openProjectSyncWindow.ShowDialog();
-        }
-        else
-        {
-          MessageBox.Show("Please configure the connection to OpenProject in the settings menu");
-        }
-      };
-      SyncOpenProjectButton.Click += async delegate
-      {
-        var openProjectApiBaseUrl = UserSettings.Get("OpenProjectBaseUrl");
-        var openProjectAccessToken = UserSettings.Get("OpenProjectAccessToken");
-        if (!string.IsNullOrWhiteSpace(openProjectApiBaseUrl)
-          && !string.IsNullOrWhiteSpace(openProjectAccessToken))
-        {
-          if (_panelViewModel.SelectedBcfFile == null)
-          {
-            MessageBox.Show("Please make sure to have an active Bcf issue opened before syncing to OpenProject");
-            return;
-          }
-
-          if (selectedOpenProjectProjectId < 0)
-          {
-            MessageBox.Show("Please make sure to have an active, selected project in OpenProject");
-            return;
-          }
-
-          var bcfConverter = new BcfFileConverter(_panelViewModel.SelectedBcfFile);
-          var bcfStream = bcfConverter.GetBcfFileStream(ViewModels.Bcf.BcfVersion.V21);
-          var openProjectClient = new OpenProjectClient(openProjectAccessToken, openProjectApiBaseUrl);
-          var response = await openProjectClient.UploadBcfXmlToOpenProjectAsync(selectedOpenProjectProjectId, bcfStream)
-            .ConfigureAwait(false);
-        }
-        else
-        {
-          MessageBox.Show("Please configure the connection to OpenProject in the settings menu");
-        }
-      };
-      HelpBtn.Click += HelpBtnOnClick;
+           
 
       if (UserSettings.GetBool("checkupdates"))
         CheckUpdates();
@@ -173,37 +76,6 @@ namespace Bcfier.UserControls
         }
       }
     }
-
-
-    private bool CheckSaveBcf(BcfFileViewModel bcfFile)
-    {
-      try
-      {
-        if (BcfTabControl.SelectedIndex != -1 && bcfFile != null && bcfFile.IsModified && bcfFile.BcfIssues.Any())
-        {
-
-          MessageBoxResult answer = MessageBox.Show(bcfFile.FileName + " has been modified.\nDo you want to save changes?", "Save Report?",
-          MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.Cancel);
-          if (answer == MessageBoxResult.Yes)
-          {
-            BcfLocalFileSaver.SaveBcfFileLocally(bcfFile);
-            return false;
-          }
-          if (answer == MessageBoxResult.Cancel)
-          {
-            return false;
-          }
-        }
-      }
-      catch (System.Exception ex1)
-      {
-        MessageBox.Show("exception: " + ex1);
-      }
-      return true;
-    }
-
-
-
 
     #region commands
     private void OnDeleteIssues(object sender, ExecutedRoutedEventArgs e)
@@ -457,26 +329,6 @@ namespace Bcfier.UserControls
         MessageBox.Show("exception: " + ex1);
       }
     }
-    private void OnCloseBcf(object sender, ExecutedRoutedEventArgs e)
-    {
-      try
-      {
-        var guid = Guid.Parse(e.Parameter.ToString());
-        var bcfFiles = _panelViewModel.BcfFiles.Where(x => x.Id.Equals(guid));
-        if (!bcfFiles.Any())
-          return;
-        var bcfFile = bcfFiles.First();
-
-        if (CheckSaveBcf(bcfFile))
-        {
-          _panelViewModel.BcfFiles.Remove(bcfFile);
-        }
-      }
-      catch (Exception ex)
-      {
-        MessageBox.Show("Exception: " + Environment.NewLine + ex);
-      }
-    }
 
     private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
     {
@@ -508,21 +360,6 @@ namespace Bcfier.UserControls
       PropagateAvailableStatiAndTypes();
     }
 
-    //prompt to save bcf
-    //delete temp folders
-    public bool onClosing(CancelEventArgs e)
-    {
-      foreach (var bcfFile in _panelViewModel.BcfFiles)
-      {
-        //does not need to be saved, or user has saved it
-        if (!CheckSaveBcf(bcfFile))
-        {
-          return true;
-        }
-      }
-
-      return false;
-    }
     private void HelpBtnOnClick(object sender, RoutedEventArgs routedEventArgs)
     {
       const string url = "http://bcfier.com/";
@@ -584,17 +421,17 @@ namespace Bcfier.UserControls
     #region drag&drop
     private void Window_DragEnter(object sender, DragEventArgs e)
     {
-      whitespace.Visibility = Visibility.Visible;
+      // whitespace.Visibility = Visibility.Visible;
     }
     private void Window_DragLeave(object sender, DragEventArgs e)
     {
-      whitespace.Visibility = Visibility.Hidden;
+      // whitespace.Visibility = Visibility.Hidden;
     }
     private void Window_Drop(object sender, DragEventArgs e)
     {
       try
       {
-        whitespace.Visibility = Visibility.Hidden;
+        // whitespace.Visibility = Visibility.Hidden;
         if (e.Data.GetDataPresent(DataFormats.FileDrop))
         {
           var files = (string[])e.Data.GetData(DataFormats.FileDrop);

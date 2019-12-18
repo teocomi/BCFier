@@ -35,7 +35,7 @@ namespace Bcfier.Win
     /// <param name="e"></param>
     private void Window_Closing(object sender, CancelEventArgs e)
     {
-      e.Cancel = Bcfier.onClosing(e);
+      // e.Cancel = Bcfier.onClosing(e);
     }
 
     #region commands

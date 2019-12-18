@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 using Bcfier.Data.Utils;
 using System.IO;
 using Bcfier.ViewModels.Bcf;
+using Bcfier.WebViewIntegration;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace Bcfier.Revit
 {
@@ -44,9 +47,31 @@ namespace Bcfier.Revit
       {
         TaskDialog.Show("Error!", "exception: " + ex1);
       }
-    }
 
-    #region commands
+      // Notify OpenProject about the current document
+      var uidoc = uiapp.ActiveUIDocument;
+      JavaScriptBridge.Instance
+        .SendMessageToOpenProject(MessageTypes.REVIT_LOADED, string.Empty, JsonConvert.SerializeObject(new
+        {
+          uidoc.Document.Title
+        }));
+
+      JavaScriptBridge
+        .Instance
+        .OnWebUIMessageReveived += (s, e) =>
+          {
+          // TODO CONSTANTS
+          if (e.MessageType == MessageTypes.VIEWPOINT_DATA)
+            {
+              var bcfViewpoint = MessageDeserializer.DeserializeBcfViewpoint(e);
+              OpenView(bcfViewpoint);
+            }
+          if (e.MessageType == MessageTypes.VIEWPOINT_GENERATION_REQUESTED)
+            {
+              AddView(e.TrackingId);
+            }
+          };
+    }
     /// <summary>
     /// Raises the External Event to accomplish a transaction in a modeless window
     /// http://help.autodesk.com/view/RVT/2014/ENU/?guid=GUID-0A0D656E-5C44-49E8-A891-6C29F88E35C0
@@ -54,15 +79,10 @@ namespace Bcfier.Revit
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void OnOpenView(object sender, ExecutedRoutedEventArgs e)
+    private void OpenView(BcfViewpointViewModel view)
     {
       try
       {
-        if (Bcfier.SelectedBcf() == null)
-          return;
-        var view = e.Parameter as BcfViewpointViewModel;
-        if (view == null)
-          return;
         UIDocument uidoc = uiapp.ActiveUIDocument;
 
         if (uidoc.ActiveView.ViewType == ViewType.Schedule)
@@ -91,59 +111,77 @@ namespace Bcfier.Revit
         TaskDialog.Show("Error opening a View!", "exception: " + ex1);
       }
     }
+
     /// <summary>
     /// Same as in the windows app, but here we generate a VisInfo that is attached to the view
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void OnAddView(object sender, ExecutedRoutedEventArgs e)
+    private void AddView(string trackingId)
     {
       try
       {
-
-        if (Bcfier.SelectedBcf() == null)
-          return;
-        var issue = e.Parameter as BcfIssueViewModel;
-        if (issue == null)
+        var generatedViewpoint = RevitView.GenerateViewpoint(uiapp.ActiveUIDocument);
+        var snapshot = GetRevitSnapshot(uiapp.ActiveUIDocument.Document);
+        var messageContent = new ViewpointGeneratedApiMessage
         {
-          MessageBox.Show("No Issue selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-          return;
-        }
-
-        var dialog = new AddViewRevit(issue, Path.Combine(Path.GetTempPath(), Bcfier.SelectedBcf().Id.ToString()), uiapp.ActiveUIDocument.Document);
-        dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-        dialog.ShowDialog();
-        if (dialog.DialogResult.HasValue && dialog.DialogResult.Value)
-        {
-          //generate and set the VisInfo
-          var generatedViewpoint = RevitView.GenerateViewpoint(uiapp.ActiveUIDocument);
-          issue.Viewpoints.Add(generatedViewpoint);
-
-          //get filename
-          UIDocument uidoc = uiapp.ActiveUIDocument;
-
-          var headerFile = issue.Markup.HeaderFiles.FirstOrDefault();
-          if (headerFile == null)
-          {
-            headerFile = new BcfHeaderFileViewModel();
-            issue.Markup.HeaderFiles.Add(headerFile);
-          }
-
-          if (uidoc.Document.Title != null)
-            headerFile.FileName = uidoc.Document.Title;
-          else
-            headerFile.FileName = "Unknown";
-
-          Bcfier.SelectedBcf().IsModified = true;
-        }
-
+          SnapshotPngBase64 = ConvertToBase64(snapshot),
+          Viewpoint = MessageSerializer.SerializeBcfViewpoint(generatedViewpoint)
+        };
+        var payloadString = JsonConvert.SerializeObject(messageContent);
+        JavaScriptBridge.Instance.SendMessageToOpenProject(MessageTypes.VIEWPOINT_GENERATED, trackingId, payloadString);
       }
       catch (System.Exception ex1)
       {
         TaskDialog.Show("Error adding a View!", "exception: " + ex1);
       }
     }
-    #endregion
+
+    private Stream GetRevitSnapshot(Document doc)
+    {
+      try
+      {
+        string tempImg = Path.Combine(Path.GetTempPath(), "BCFier", Path.GetTempFileName() + ".png");
+        var options = new ImageExportOptions
+        {
+          FilePath = tempImg,
+          HLRandWFViewsFileType = ImageFileType.PNG,
+          ShadowViewsFileType = ImageFileType.PNG,
+          ExportRange = ExportRange.VisibleRegionOfCurrentView,
+          ZoomType = ZoomFitType.FitToPage,
+          ImageResolution = ImageResolution.DPI_72,
+          PixelSize = 1000
+        };
+        doc.ExportImage(options);
+
+        var memStream = new MemoryStream();
+        using (var fs = System.IO.File.OpenRead(tempImg))
+        {
+          fs.CopyTo(memStream);
+        }
+        File.Delete(tempImg);
+
+        memStream.Position = 0;
+        return memStream;
+      }
+      catch (System.Exception ex1)
+      {
+        TaskDialog.Show("Error!", "exception: " + ex1);
+        throw;
+      }
+    }
+
+    private static string ConvertToBase64(Stream stream)
+    {
+      byte[] bytes;
+      using (var memoryStream = new MemoryStream())
+      {
+        stream.CopyTo(memoryStream);
+        bytes = memoryStream.ToArray();
+      }
+
+      return Convert.ToBase64String(bytes);
+    }
 
     #region private methods
 
@@ -154,7 +192,7 @@ namespace Bcfier.Revit
     /// <param name="e"></param>
     private void Window_Closing(object sender, CancelEventArgs e)
     {
-      e.Cancel = Bcfier.onClosing(e);
+      // e.Cancel = Bcfier.onClosing(e);
     }
     #endregion
 

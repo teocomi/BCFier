@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\CefSharp.Wpf.75.1.142\build\CefSharp.Wpf.props" Condition="Exists('..\packages\CefSharp.Wpf.75.1.142\build\CefSharp.Wpf.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,12 +10,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Bcfier.Revit</RootNamespace>
     <AssemblyName>Bcfier.Revit</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <TargetFrameworkProfile />
     <StartAction>Program</StartAction>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -241,10 +244,145 @@
     <Prefer32Bit>false</Prefer32Bit>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-2015|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug-2015\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Version2015</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-2015|x86'">
+    <OutputPath>bin\x86\Release-2015\</OutputPath>
+    <DefineConstants>TRACE;RELEASE;Version2015</DefineConstants>
+    <Optimize>true</Optimize>
+    <WarningLevel>0</WarningLevel>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-2016|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug-2016\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Version2016</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-2016|x86'">
+    <OutputPath>bin\x86\Release-2016\</OutputPath>
+    <DefineConstants>TRACE;RELEASE;Version2016</DefineConstants>
+    <Optimize>true</Optimize>
+    <WarningLevel>0</WarningLevel>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-2017|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug-2017\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Version2017</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-2017|x86'">
+    <OutputPath>bin\x86\Release-2017\</OutputPath>
+    <DefineConstants>TRACE;RELEASE;Version2017</DefineConstants>
+    <Optimize>true</Optimize>
+    <WarningLevel>0</WarningLevel>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-2018|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug-2018\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Version2018</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-2018|x86'">
+    <OutputPath>bin\x86\Release-2018\</OutputPath>
+    <DefineConstants>TRACE;RELEASE;Version2018</DefineConstants>
+    <Optimize>true</Optimize>
+    <WarningLevel>0</WarningLevel>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-2019|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug-2019\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Version2019</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-2019|x86'">
+    <OutputPath>bin\x86\Release-2019\</OutputPath>
+    <DefineConstants>TRACE;RELEASE;Version2019</DefineConstants>
+    <Optimize>true</Optimize>
+    <WarningLevel>0</WarningLevel>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-2020|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug-2020\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Version2020</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-2020|x86'">
+    <OutputPath>bin\x86\Release-2020\</OutputPath>
+    <DefineConstants>TRACE;RELEASE;Version2020</DefineConstants>
+    <Optimize>true</Optimize>
+    <WarningLevel>0</WarningLevel>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <!-- MULTIVERSION CONFIGURATION END -->
   <ItemGroup>
     <Reference Include="Dangl.Common, Version=1.5.0.0, Culture=neutral, PublicKeyToken=1e67b3ad1938d67e, processorArchitecture=MSIL">
       <HintPath>..\packages\Dangl.Common.1.5.0\lib\net45\Dangl.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -256,8 +394,8 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-	<!-- Revit package references -->
-	<!-- 2015 -->
+    <!-- Revit package references -->
+    <!-- 2015 -->
     <Reference Include="AdWindows" Condition="$(Configuration.Contains('2015'))">
       <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2015.0.1\lib\net45\AdWindows.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
@@ -278,7 +416,7 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-	<!-- 2016 -->
+    <!-- 2016 -->
     <Reference Include="AdWindows" Condition="$(Configuration.Contains('2016'))">
       <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2016.0.1\lib\net45\AdWindows.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
@@ -299,7 +437,7 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-	<!-- 2017 -->
+    <!-- 2017 -->
     <Reference Include="AdWindows" Condition="$(Configuration.Contains('2017'))">
       <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2017.0.1\lib\net46\AdWindows.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
@@ -320,7 +458,7 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-	<!-- 2018 -->
+    <!-- 2018 -->
     <Reference Include="AdWindows" Condition="$(Configuration.Contains('2018'))">
       <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2018.0.1\lib\net46\AdWindows.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
@@ -341,7 +479,7 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-	<!-- 2019 -->
+    <!-- 2019 -->
     <Reference Include="AdWindows" Condition="$(Configuration.Contains('2019'))">
       <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2019.0.0\lib\net47\AdWindows.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
@@ -362,7 +500,7 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-	<!-- 2020 -->
+    <!-- 2020 -->
     <Reference Include="AdWindows" Condition="$(Configuration.Contains('2020'))">
       <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2020.0.0\lib\net47\AdWindows.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
@@ -473,5 +611,13 @@
     <Copy SourceFiles="@(SourceDLLs)" DestinationFolder="$(AppData)\Autodesk\REVIT\Addins\$(RevitVersion)\$(ProjectName)\%(RecursiveDir)" />
     <Copy SourceFiles="@(SourceManifest)" DestinationFolder="$(AppData)\Autodesk\REVIT\Addins\$(RevitVersion)\" />
   </Target>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\CefSharp.Wpf.75.1.142\build\CefSharp.Wpf.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Wpf.75.1.142\build\CefSharp.Wpf.props'))" />
+    <Error Condition="!Exists('..\packages\CefSharp.Wpf.75.1.142\build\CefSharp.Wpf.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Wpf.75.1.142\build\CefSharp.Wpf.targets'))" />
+  </Target>
+  <Import Project="..\packages\CefSharp.Wpf.75.1.142\build\CefSharp.Wpf.targets" Condition="Exists('..\packages\CefSharp.Wpf.75.1.142\build\CefSharp.Wpf.targets')" />
   <!-- MULTIVERSION POST BUILD EVENTS END -->
 </Project>
