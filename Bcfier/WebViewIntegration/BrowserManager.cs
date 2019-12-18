@@ -1,4 +1,4 @@
-﻿using CefSharp;
+using CefSharp;
 using CefSharp.Wpf;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -27,11 +27,12 @@ namespace Bcfier.WebViewIntegration
 
             // Register the bridge between JS and C#
             // This also registers the callback that should be bound to by OpenProject to receive messages from BCFier
-            _webBrowser.JavascriptObjectRepository.Register("bcfierBridge", new BcfierJavascriptInterop(), true);
+            _webBrowser.JavascriptObjectRepository.Register("RevitBridge", new BcfierJavascriptInterop(), true);
             _webBrowser.GetMainFrame().ExecuteJavaScriptAsync(@"(async function(){
-await CefSharp.BindObjectAsync(""bcfierBridge"", ""bound"");
-window.bcfierBridge.sendMessageToOpenProject = (message) => {console.log(JSON.parse(message))}; // This is the callback to be used by OpenProject for receiving messages
+await CefSharp.BindObjectAsync(""RevitBridge"", ""bound"");
+window.RevitBridge.sendMessageToOpenProject = (message) => {console.log(JSON.parse(message))}; // This is the callback to be used by OpenProject for receiving messages
 })();");
+            _webBrowser.GetMainFrame().ExecuteJavaScriptAsync("window.dispatchEvent(new Event('revit.plugin.ready'));");
 
             var jsonSerializerSettings = new JsonSerializerSettings();
             jsonSerializerSettings.ContractResolver = new DefaultContractResolver
