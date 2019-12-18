@@ -48,12 +48,20 @@ namespace Bcfier.UserControls
       _browserManager = new BrowserManager(Browser);
 
       // TODO this is for quick testing to ensure a 'loaded' event is sent to OpenProject at the start
-      JavaScriptBridge.Instance
-        .SendMessageToOpenProject(MessageTypes.REVIT_LOADED, string.Empty, JsonConvert.SerializeObject(new
+      Browser.FrameLoadEnd += (s, e) =>
+      {
+        var myTimer = new System.Timers.Timer(3000);
+        myTimer.Elapsed += (s2, e2) =>
         {
-          Title = "Demo.ifc"
-        }));
-
+          JavaScriptBridge.Instance
+          .SendMessageToOpenProject(MessageTypes.REVIT_LOADED, string.Empty, JsonConvert.SerializeObject(new
+          {
+            Title = "Demo.ifc"
+          }));
+          myTimer.Stop();
+        };
+        myTimer.Start();
+      };
 
       if (UserSettings.GetBool("checkupdates"))
         CheckUpdates();
