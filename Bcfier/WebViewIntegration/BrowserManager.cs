@@ -1,4 +1,4 @@
-using CefSharp;
+﻿using CefSharp;
 using CefSharp.Wpf;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -42,7 +42,6 @@ window.RevitBridge.sendMessageToOpenProject = (message) => {console.log(JSON.par
 
             JavaScriptBridge.Instance.OnWebUIMessageSent += (sender, eventArgs) =>
               {
-                
                 var messageData = JsonConvert.SerializeObject(new { eventArgs.MessageType, eventArgs.TrackingId, eventArgs.MessagePayload }, jsonSerializerSettings);
                 var encodedMessage = JsonConvert.ToString(messageData);
                 _webBrowser.GetMainFrame()
