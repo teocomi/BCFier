@@ -48,16 +48,6 @@ window.RevitBridge.sendMessageToOpenProject = (message) => {console.log(JSON.par
                   .ExecuteJavaScriptAsync($"RevitBridge.sendMessageToOpenProject({encodedMessage})");
               };
 
-
-            var myFunkyTimer = new System.Timers.Timer(3000);
-            myFunkyTimer.Elapsed += (s2, e2) =>
-            {
-              JavaScriptBridge.Instance.SendMessageToOpenProject("FunkyType", "FunkyId", "Hello World!");
-              myFunkyTimer.Stop();
-            };
-            myFunkyTimer.Start();
-
-
             // Now in JS, call this: openProjectBridge.messageFromOpenProject('Message from JS');
           }
         }
