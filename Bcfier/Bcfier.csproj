@@ -449,6 +449,7 @@
     </Compile>
     <Compile Include="ViewModels\OpenProjectSyncViewModel.cs" />
     <Compile Include="ViewModels\PanelViewModel.cs" />
+    <Compile Include="WebViewIntegration\BcfierJavascriptInterop.cs" />
     <Compile Include="WebViewIntegration\BrowserManager.cs" />
     <Compile Include="WebViewIntegration\CefBrowserInitializer.cs" />
     <Compile Include="WebViewIntegration\JavaScriptBridge.cs" />
