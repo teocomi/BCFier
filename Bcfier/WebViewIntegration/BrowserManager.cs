@@ -12,6 +12,7 @@ namespace Bcfier.WebViewIntegration
     public BrowserManager(ChromiumWebBrowser webBrowser)
     {
       _webBrowser = webBrowser;
+      JavaScriptBridge.Instance.SetWebBrowser(_webBrowser);
 
       var hasGreetedLock = new object();
       var hasGreeted = false;
