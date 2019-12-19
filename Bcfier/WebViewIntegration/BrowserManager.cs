@@ -21,6 +21,7 @@ namespace Bcfier.WebViewIntegration
           // Register the bridge between JS and C#
           // This also registers the callback that should be bound to by OpenProject to receive messages from BCFier
           _webBrowser.JavascriptObjectRepository.UnRegisterAll();
+          _webBrowser.GetMainFrame().ExecuteJavaScriptAsync($"CefSharp.DeleteBoundObject('{JavaScriptBridge.REVIT_BRIDGE_JAVASCRIPT_NAME}');");
           _webBrowser.JavascriptObjectRepository.Register(JavaScriptBridge.REVIT_BRIDGE_JAVASCRIPT_NAME, new BcfierJavascriptInterop(), true);
 
           _webBrowser.GetMainFrame().ExecuteJavaScriptAsync(@"(async function(){
