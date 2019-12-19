@@ -48,8 +48,15 @@ namespace Bcfier.UserControls
       _browserManager = new BrowserManager(Browser);
 
       // TODO this is for quick testing to ensure a 'loaded' event is sent to OpenProject at the start
+      var hasSentTestMessage = false;
       Browser.FrameLoadEnd += (s, e) =>
       {
+        if (hasSentTestMessage)
+        {
+          return;
+        }
+
+        hasSentTestMessage = true;
         var myTimer = new System.Timers.Timer(3000);
         myTimer.Elapsed += (s2, e2) =>
         {
