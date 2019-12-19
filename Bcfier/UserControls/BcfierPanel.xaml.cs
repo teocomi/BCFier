@@ -49,25 +49,28 @@ namespace Bcfier.UserControls
 
       // TODO this is for quick testing to ensure a 'loaded' event is sent to OpenProject at the start
       var hasSentTestMessage = false;
-      Browser.FrameLoadEnd += (s, e) =>
+      Browser.LoadingStateChanged += (s, e) =>
       {
-        if (hasSentTestMessage)
+        if (!e.IsLoading)
         {
-          return;
-        }
-
-        hasSentTestMessage = true;
-        var myTimer = new System.Timers.Timer(3000);
-        myTimer.Elapsed += (s2, e2) =>
-        {
-          JavaScriptBridge.Instance
-          .SendMessageToOpenProject(MessageTypes.REVIT_LOADED, string.Empty, JsonConvert.SerializeObject(new
+          if (hasSentTestMessage)
           {
-            Title = "Demo.ifc"
-          }));
-          myTimer.Stop();
-        };
-        myTimer.Start();
+            return;
+          }
+
+          hasSentTestMessage = true;
+          var myTimer = new System.Timers.Timer(1000);
+          myTimer.Elapsed += (s2, e2) =>
+          {
+            JavaScriptBridge.Instance
+            .SendMessageToOpenProject(MessageTypes.REVIT_LOADED, string.Empty, JsonConvert.SerializeObject(new
+            {
+              Title = "Demo.ifc"
+            }));
+            myTimer.Stop();
+          };
+          myTimer.Start();
+        }
       };
 
       if (UserSettings.GetBool("checkupdates"))
