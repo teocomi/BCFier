@@ -33,8 +33,11 @@ window.dispatchEvent(new Event('" + JavaScriptBridge.REVIT_BRIDGE_JAVASCRIPT_NAM
         }
       };
 
-      var hasGreetedLock = new object();
+      _webBrowser.IsBrowserInitializedChanged+=(s, e) => { _webBrowser.ShowDevTools(); };
+
+      /*
       var hasGreeted = false;
+      var hasGreetedLock = new object();
       _webBrowser.FrameLoadEnd += (s, e) =>
       {
         lock (hasGreetedLock)
@@ -47,6 +50,7 @@ window.dispatchEvent(new Event('" + JavaScriptBridge.REVIT_BRIDGE_JAVASCRIPT_NAM
           }
         }
       };
+      */
 
       // TODO CHECK IF COOKIES AND LOCALSTORAGE CAN BE PERSISTED VIA C#
       // TODO -> SAVE LAST LOCATION FROM WEBVIEW AND REOPEN

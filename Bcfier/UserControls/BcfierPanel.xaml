@@ -35,7 +35,7 @@
     </Grid.ColumnDefinitions>
 
     <wpf:ChromiumWebBrowser x:Name="Browser"
-                            Address="https://bcf.openproject-edge.com"
+                            Address="http://spike.openproject-stage.com"
                             >
       <!--Address="https://www.whatismybrowser.com/detect/what-is-my-user-agent"-->
       <!---->

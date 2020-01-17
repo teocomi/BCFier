@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -40,7 +40,7 @@ namespace Bcfier.UserControls
     public BcfierPanel()
     {
       // This call sets up the global Chromium settings, e.g. the User Agent
-      CefBrowserInitializer.InitializeCefBrowser();
+      // CefBrowserInitializer.InitializeCefBrowser();
 
       InitializeComponent();
       DataContext = _panelViewModel;

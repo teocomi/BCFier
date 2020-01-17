@@ -5,10 +5,11 @@
 
     <IsPackable>false</IsPackable>
 
-    <Platforms>AnyCPU;x86</Platforms>
+    <Platforms>AnyCPU;x86;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CefSharp.Wpf" Version="65.0.1" />
     <PackageReference Include="Dangl.Common" Version="1.5.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
     <PackageReference Include="xunit" Version="2.4.1" />

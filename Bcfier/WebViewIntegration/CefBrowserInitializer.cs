@@ -1,6 +1,7 @@
 ﻿using Bcfier.Data.Utils;
 using CefSharp;
 using CefSharp.Wpf;
+using System.Reflection;
 
 namespace Bcfier.WebViewIntegration
 {
@@ -31,6 +32,11 @@ namespace Bcfier.WebViewIntegration
       // Additionally, we're persisting session cookies to ensure logins are persistent throughout
       // multiple sessions.
       settings.PersistSessionCookies = true;
+
+      var assemblyLocation = Assembly.GetExecutingAssembly().Location;
+      var assemblyPath = System.IO.Path.GetDirectoryName(assemblyLocation);
+      var pathSubprocess = System.IO.Path.Combine(assemblyPath, "CefSharp.BrowserSubprocess.exe");
+      settings.BrowserSubprocessPath = pathSubprocess;
 
       Cef.Initialize(settings);
     }

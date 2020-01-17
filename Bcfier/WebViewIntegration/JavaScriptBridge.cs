@@ -33,16 +33,29 @@ namespace Bcfier.WebViewIntegration
       }
 
       _webBrowser = webBrowser;
+
+      _webBrowser.LoadingStateChanged += (s, e) => isLoaded = true;
+
     }
+
+    private bool isLoaded = false;
 
     public void SendMessageToBcfier(string messageType, string trackingId, string messagePayload)
     {
+      if (!isLoaded)
+      {
+        return;
+      }
       var eventArgs = new WebUIMessageEventArgs(messageType, trackingId, messagePayload);
       OnWebUIMessageReveived?.Invoke(this, eventArgs);
     }
 
     public void SendMessageToOpenProject(string messageType, string trackingId, string messagePayload)
     {
+      if (!isLoaded)
+      {
+        return;
+      }
       var messageData = JsonConvert.SerializeObject(new { messageType, trackingId, messagePayload });
       var encodedMessage = JsonConvert.ToString(messageData);
       _webBrowser?.GetMainFrame()
