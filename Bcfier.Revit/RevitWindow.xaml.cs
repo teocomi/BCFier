@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -15,6 +15,8 @@ using Bcfier.ViewModels.Bcf;
 using Bcfier.WebViewIntegration;
 using Newtonsoft.Json;
 using System.Text;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace Bcfier.Revit
 {
@@ -56,20 +58,39 @@ namespace Bcfier.Revit
           uidoc.Document.Title
         }));
 
+      var callbackStackLock = new object();
+      var callbackStack = new Stack<Action>();
+
+      uiapp.Idling += (s, e) =>
+        {
+          lock (callbackStackLock)
+          {
+            if (callbackStack.Any())
+            {
+              var action = callbackStack.Pop();
+              action.Invoke();
+            }
+          }
+        };
+
       JavaScriptBridge
         .Instance
         .OnWebUIMessageReveived += (s, e) =>
           {
-          // TODO CONSTANTS
-          if (e.MessageType == MessageTypes.VIEWPOINT_DATA)
+            var localS = s;
+            var localE = e;
+            callbackStack.Push(() =>
             {
-              var bcfViewpoint = MessageDeserializer.DeserializeBcfViewpoint(e);
-              OpenView(bcfViewpoint);
-            }
-          if (e.MessageType == MessageTypes.VIEWPOINT_GENERATION_REQUESTED)
-            {
-              AddView(e.TrackingId);
-            }
+              if (localE.MessageType == MessageTypes.VIEWPOINT_DATA)
+              {
+                var bcfViewpoint = MessageDeserializer.DeserializeBcfViewpoint(localE);
+                OpenView(bcfViewpoint);
+              }
+              if (localE.MessageType == MessageTypes.VIEWPOINT_GENERATION_REQUESTED)
+              {
+                AddView(localE.TrackingId);
+              }
+            });
           };
     }
     /// <summary>
@@ -128,7 +149,17 @@ namespace Bcfier.Revit
           SnapshotPngBase64 = ConvertToBase64(snapshot),
           Viewpoint = MessageSerializer.SerializeBcfViewpoint(generatedViewpoint)
         };
-        var payloadString = JsonConvert.SerializeObject(messageContent);
+
+        var serializerSettings = new JsonSerializerSettings
+        {
+          ContractResolver = new CamelCasePropertyNamesContractResolver()
+        };
+
+        var jsonPayload = JObject.Parse(JsonConvert.SerializeObject(messageContent.Viewpoint.Viewpoint,serializerSettings));
+        jsonPayload["components"] = JObject.Parse(JsonConvert.SerializeObject(messageContent.Viewpoint.Components, serializerSettings));
+        jsonPayload["snapshot"] = messageContent.SnapshotPngBase64;
+        //var payloadString = JsonConvert.SerializeObject(messageContent);
+        var payloadString = jsonPayload.ToString();
         JavaScriptBridge.Instance.SendMessageToOpenProject(MessageTypes.VIEWPOINT_GENERATED, trackingId, payloadString);
       }
       catch (System.Exception ex1)

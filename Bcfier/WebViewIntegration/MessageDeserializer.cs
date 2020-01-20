@@ -1,6 +1,9 @@
 ﻿using Bcfier.ViewModels.Bcf;
+using iabi.BCF.APIObjects.V21;
 using iabi.BCF.Converter;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Linq;
 
@@ -15,8 +18,13 @@ namespace Bcfier.WebViewIntegration
         throw new InvalidOperationException("Tried to deserialize a message with the wrong data type");
       }
 
-      var bcfApiViewpoint = JsonConvert.DeserializeObject<ViewpointApiMessage>(webUIMessage.MessagePayload);
+      var deserializedJson = JObject.Parse(webUIMessage.MessagePayload.Trim('"').Replace("\\\"", "\""));
 
+      var bcfApiViewpoint = new ViewpointApiMessage
+      {
+        Viewpoint = deserializedJson.ToObject<Viewpoint_GET>(),
+        Components = deserializedJson.ToObject<Components>()
+      };
 
       var bcfViewpoint = new BcfViewpointViewModel
       {
