@@ -17,7 +17,7 @@ namespace Bcfier.WebViewIntegration
       string messagePayload)
     {
       MessageType = messageType;
-      trackingId = TrackingId;
+      TrackingId = trackingId;
       MessagePayload = messagePayload;
     }
 
