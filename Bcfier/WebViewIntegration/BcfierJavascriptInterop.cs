@@ -6,9 +6,9 @@
     {
       private readonly JavaScriptBridge _javaScriptBridge = JavaScriptBridge.Instance;
 
-      public void SendMessageToBcfier(string type, string trackingId, string payload)
+      public void SendMessageToRevit(string type, string trackingId, string payload)
       {
-        _javaScriptBridge.SendMessageToBcfier(type, trackingId, payload);
+        _javaScriptBridge.SendMessageToRevit(type, trackingId, payload);
       }
     }
   }

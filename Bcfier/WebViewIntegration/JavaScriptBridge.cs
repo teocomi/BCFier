@@ -40,7 +40,7 @@ namespace Bcfier.WebViewIntegration
 
     private bool isLoaded = false;
 
-    public void SendMessageToBcfier(string messageType, string trackingId, string messagePayload)
+    public void SendMessageToRevit(string messageType, string trackingId, string messagePayload)
     {
       if (!isLoaded)
       {
