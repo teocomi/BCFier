@@ -1,11 +1,9 @@
-using Autodesk.Revit.Attributes;
+﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Bcfier.WebViewIntegration;
 using System;
 using System.Reflection;
-using CefSharp;
-using CefSharp.Wpf;
 
 namespace Bcfier.Revit.Entry
 {
@@ -60,9 +58,8 @@ namespace Bcfier.Revit.Entry
     {
       try
       {
-
         //Version check
-        
+
         if (!commandData.Application.Application.VersionName.Contains(RevitVersion))
         {
           using (var td = new TaskDialog("Untested version"))

@@ -433,11 +433,26 @@
   </PropertyGroup>
   <!-- MULTIVERSION CONFIGURATION END -->
   <ItemGroup>
+    <Reference Include="AdWindows, Version=2018.11.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2020.0.1\lib\net47\AdWindows.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Dangl.Common, Version=1.5.0.0, Culture=neutral, PublicKeyToken=1e67b3ad1938d67e, processorArchitecture=MSIL">
       <HintPath>..\packages\Dangl.Common.1.5.0\lib\net45\Dangl.Common.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RevitAPI, Version=20.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2020.0.1\lib\net47\RevitAPI.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI, Version=20.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2020.0.1\lib\net47\RevitAPIUI.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -446,31 +461,16 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="UIFramework, Version=20.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2020.0.1\lib\net47\UIFramework.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <!-- Revit package references -->
     <!-- 2015 -->
-    <Reference Include="AdWindows" Condition="$(Configuration.Contains('2015'))">
-      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2015.0.1\lib\net45\AdWindows.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPI" Condition="$(Configuration.Contains('2015'))">
-      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2015.0.1\lib\net45\RevitAPI.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI" Condition="$(Configuration.Contains('2015'))">
-      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2015.0.1\lib\net45\RevitAPIUI.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UIFramework" Condition="$(Configuration.Contains('2015'))">
-      <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2015.0.1\lib\net45\UIFramework.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
     <!-- 2016 -->
     <Reference Include="AdWindows" Condition="$(Configuration.Contains('2016'))">
       <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2016.0.1\lib\net45\AdWindows.dll</HintPath>
