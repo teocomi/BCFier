@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -141,7 +141,9 @@ namespace Bcfier.Revit
     {
       try
       {
-        string tempImg = Path.Combine(Path.GetTempPath(), "BCFier", Path.GetTempFileName() + ".png");
+        var tempPath = Path.Combine(Path.GetTempPath(), "BCFier");
+        Directory.CreateDirectory(tempPath);
+        string tempImg = Path.Combine(tempPath, Path.GetTempFileName() + ".png");
         var options = new ImageExportOptions
         {
           FilePath = tempImg,
