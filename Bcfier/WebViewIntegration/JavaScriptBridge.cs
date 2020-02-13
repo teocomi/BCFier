@@ -1,6 +1,7 @@
-using Bcfier.Shared;
+﻿using Bcfier.Shared;
 using CefSharp;
 using Newtonsoft.Json;
+using System.Windows;
 
 namespace Bcfier.WebViewIntegration
 {
@@ -34,9 +35,7 @@ namespace Bcfier.WebViewIntegration
       }
 
       _webBrowser = webBrowser;
-
       _webBrowser.LoadingStateChanged += (s, e) => isLoaded = true;
-
     }
 
     private bool isLoaded = false;
@@ -59,8 +58,11 @@ namespace Bcfier.WebViewIntegration
       }
       var messageData = JsonConvert.SerializeObject(new { messageType, trackingId, messagePayload });
       var encodedMessage = JsonConvert.ToString(messageData);
-      _webBrowser?.GetMainFrame()
-        .ExecuteJavaScriptAsync($"{REVIT_BRIDGE_JAVASCRIPT_NAME}.sendMessageToOpenProject({encodedMessage})");
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        _webBrowser?.GetMainFrame()
+          .ExecuteJavaScriptAsync($"{REVIT_BRIDGE_JAVASCRIPT_NAME}.sendMessageToOpenProject({encodedMessage})");
+      });
     }
   }
 }

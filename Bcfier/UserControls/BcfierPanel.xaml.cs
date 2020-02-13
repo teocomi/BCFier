@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -24,6 +24,8 @@ using Newtonsoft.Json;
 using Bcfier.Shared.ViewModels.Bcf;
 using Bcfier.ViewModels;
 using Bcfier.Shared;
+using ZetaIpc.Runtime.Server;
+using ZetaIpc.Runtime.Client;
 
 namespace Bcfier.UserControls
 {
@@ -40,7 +42,7 @@ namespace Bcfier.UserControls
     public BcfierPanel()
     {
       // This call sets up the global Chromium settings, e.g. the User Agent
-      // CefBrowserInitializer.InitializeCefBrowser();
+      CefBrowserInitializer.InitializeCefBrowser();
 
       InitializeComponent();
       DataContext = _panelViewModel;
@@ -73,9 +75,22 @@ namespace Bcfier.UserControls
         }
       };
 
+      var commandLineArgs = Environment.GetCommandLineArgs();
+      if (commandLineArgs?.Any(arg => arg == "ipc") ?? false)
+      {
+        var args = commandLineArgs.SkipWhile(arg => arg != "ipc")
+          .Skip(1)
+          .ToList();
+        if (args.Count == 2)
+        {
+          var serverPort = int.Parse(args[0]);
+          var clientPort = int.Parse(args[1]);
+          IpcManager.StartIpcCommunication(serverPort, clientPort);
+        }
+      }
+
       if (UserSettings.GetBool("checkupdates"))
         CheckUpdates();
-
     }
 
     private void PropagateAvailableStatiAndTypes()
