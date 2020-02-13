@@ -2,7 +2,7 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 
-namespace Bcfier.ViewModels.ChangeListeners
+namespace Bcfier.Shared.ViewModels.ChangeListeners
 {
   public class CollectionChangeListener : INotifyPropertyChanged
   {

@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Dangl;
 
-namespace Bcfier.ViewModels.Bcf
+namespace Bcfier.Shared.ViewModels.Bcf
 {
   public class BcfFileViewModel : BindableBase
   {
@@ -64,7 +64,7 @@ namespace Bcfier.ViewModels.Bcf
     public bool IsModified
     {
       get => _isModified;
-      internal set => SetProperty(ref _isModified, value);
+      set => SetProperty(ref _isModified, value);
     }
 
     public Guid Id

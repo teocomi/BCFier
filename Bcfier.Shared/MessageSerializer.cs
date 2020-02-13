@@ -1,4 +1,5 @@
-﻿using Bcfier.ViewModels.Bcf;
+﻿using Bcfier.Shared.ViewModels.Bcf;
+using Bcfier.Shared;
 using System;
 using System.Linq;
 

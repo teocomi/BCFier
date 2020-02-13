@@ -1,4 +1,4 @@
-﻿namespace Bcfier.ViewModels.Bcf
+﻿namespace Bcfier.Shared.ViewModels.Bcf
 {
   public class BcfViewpointOrthogonalCameraViewModel : BcfViewpointCameraViewModelBase
   {

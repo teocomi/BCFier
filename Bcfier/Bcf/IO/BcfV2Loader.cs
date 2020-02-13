@@ -1,4 +1,4 @@
-﻿using Bcfier.ViewModels.Bcf;
+﻿using Bcfier.Shared.ViewModels.Bcf;
 using iabi.BCF.BCFv2;
 using iabi.BCF.BCFv2.Schemas;
 using System;

@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
-using Bcfier.ViewModels.ChangeListeners;
+using Bcfier.Shared.ViewModels.ChangeListeners;
 using Dangl;
 
-namespace Bcfier.ViewModels.Bcf
+namespace Bcfier.Shared.ViewModels.Bcf
 {
   public class BcfIssueViewModel : BindableBase
   {

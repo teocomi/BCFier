@@ -1,14 +1,6 @@
-﻿using CefSharp;
-using CefSharp.Wpf;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
-namespace Bcfier.WebViewIntegration
+namespace Bcfier.Shared
 {
   public class WebUIMessageEventArgs : EventArgs
   {

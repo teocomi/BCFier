@@ -1,4 +1,4 @@
-﻿using Bcfier.ViewModels.Bcf;
+﻿using Bcfier.Shared.ViewModels.Bcf;
 using Dangl;
 using System;
 using System.Collections.Generic;

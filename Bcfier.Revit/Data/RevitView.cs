@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using Bcfier.Data.Utils;
-using Bcfier.ViewModels.Bcf;
+using Bcfier.Shared.ViewModels.Bcf;
+using Bcfier.Shared;
 
 namespace Bcfier.Revit.Data
 {

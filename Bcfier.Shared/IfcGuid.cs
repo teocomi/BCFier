@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 
-namespace Bcfier.Data.Utils
+namespace Bcfier.Shared
 {
   /// <summary>
   /// Conversion methods between an IFC 

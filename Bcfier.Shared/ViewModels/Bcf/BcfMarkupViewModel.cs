@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using Dangl;
 
-namespace Bcfier.ViewModels.Bcf
+namespace Bcfier.Shared.ViewModels.Bcf
 {
   public class BcfMarkupViewModel : BindableBase
   {

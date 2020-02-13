@@ -8,7 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Bcfier.Bcf;
 using Bcfier.Themes;
-using Bcfier.ViewModels.Bcf;
+using Bcfier.Shared.ViewModels.Bcf;
 using GongSolutions.Wpf.DragDrop;
 
 

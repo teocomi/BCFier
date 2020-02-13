@@ -1,6 +1,6 @@
 ﻿using Dangl;
 
-namespace Bcfier.ViewModels.Bcf
+namespace Bcfier.Shared.ViewModels.Bcf
 {
   public class BcfViewpointComponentViewModel : BindableBase
   {

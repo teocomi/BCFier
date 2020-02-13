@@ -1,7 +1,6 @@
-﻿using Bcfier.ViewModels.Bcf;
-using iabi.BCF.APIObjects.V21;
+﻿using iabi.BCF.APIObjects.V21;
 
-namespace Bcfier.WebViewIntegration
+namespace Bcfier.Shared
 {
   public class ViewpointApiMessage
   {

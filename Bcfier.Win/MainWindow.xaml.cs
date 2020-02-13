@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Bcfier.UserControls;
-using Bcfier.ViewModels.Bcf;
+using Bcfier.Shared.ViewModels.Bcf;
 
 namespace Bcfier.Win
 {

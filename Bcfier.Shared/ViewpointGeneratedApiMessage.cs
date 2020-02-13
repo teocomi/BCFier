@@ -1,4 +1,6 @@
-﻿namespace Bcfier.WebViewIntegration
+﻿using Bcfier.Shared;
+
+namespace Bcfier.WebViewIntegration
 {
   public class ViewpointGeneratedApiMessage
   {

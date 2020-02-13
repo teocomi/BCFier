@@ -1,13 +1,11 @@
-﻿using Bcfier.ViewModels.Bcf;
+﻿using Bcfier.Shared.ViewModels.Bcf;
 using iabi.BCF.APIObjects.V21;
 using iabi.BCF.Converter;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 using System;
 using System.Linq;
 
-namespace Bcfier.WebViewIntegration
+namespace Bcfier.Shared
 {
   public static class MessageDeserializer
   {
@@ -49,7 +47,7 @@ namespace Bcfier.WebViewIntegration
                 IsVisible = defaultVisibility,
                 OriginatingSystem = bcfApiComponent.Originating_system
               });
-          }
+            }
           }
         }
 

@@ -3,7 +3,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 
-namespace Bcfier.ViewModels.ChangeListeners
+namespace Bcfier.Shared.ViewModels.ChangeListeners
 {
   public class ChangeListener : INotifyPropertyChanged
   {

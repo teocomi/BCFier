@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\CefSharp.Wpf.65.0.1\build\CefSharp.Wpf.props" Condition="Exists('..\packages\CefSharp.Wpf.65.0.1\build\CefSharp.Wpf.props')" />
-  <Import Project="..\packages\CefSharp.Common.65.0.1\build\CefSharp.Common.props" Condition="Exists('..\packages\CefSharp.Common.65.0.1\build\CefSharp.Common.props')" />
-  <Import Project="..\packages\cef.redist.x86.3.3325.1758\build\cef.redist.x86.props" Condition="Exists('..\packages\cef.redist.x86.3.3325.1758\build\cef.redist.x86.props')" />
-  <Import Project="..\packages\cef.redist.x64.3.3325.1758\build\cef.redist.x64.props" Condition="Exists('..\packages\cef.redist.x64.3.3325.1758\build\cef.redist.x64.props')" />
+  <Import Project="..\packages\CefSharp.Wpf.79.1.350\build\CefSharp.Wpf.props" Condition="Exists('..\packages\CefSharp.Wpf.79.1.350\build\CefSharp.Wpf.props')" />
+  <Import Project="..\packages\CefSharp.Common.79.1.350\build\CefSharp.Common.props" Condition="Exists('..\packages\CefSharp.Common.79.1.350\build\CefSharp.Common.props')" />
+  <Import Project="..\packages\cef.redist.x86.79.1.35\build\cef.redist.x86.props" Condition="Exists('..\packages\cef.redist.x86.79.1.35\build\cef.redist.x86.props')" />
+  <Import Project="..\packages\cef.redist.x64.79.1.35\build\cef.redist.x64.props" Condition="Exists('..\packages\cef.redist.x64.79.1.35\build\cef.redist.x64.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -355,8 +355,8 @@
     <Reference Include="Microsoft.Toolkit.Wpf.UI.Controls.WebView, Version=5.1.0.0, Culture=neutral, PublicKeyToken=4aff67a105548ee2, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Toolkit.Wpf.UI.Controls.WebView.5.1.1\lib\net462\Microsoft.Toolkit.Wpf.UI.Controls.WebView.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
@@ -364,16 +364,20 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.OracleClient" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Security" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -386,6 +390,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="ZetaIpc, Version=1.0.0.9, Culture=neutral, PublicKeyToken=6c27b71344e0b736, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZetaIpc.1.0.0.9\lib\netstandard2.0\ZetaIpc.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyVersionInfo.cs">
@@ -400,34 +407,14 @@
     <Compile Include="Bcf\IO\BcfLocalFileLoader.cs" />
     <Compile Include="Bcf\IO\BcfLocalFileSaver.cs" />
     <Compile Include="Data\ValueConverters\InvertedBoolStarConverter.cs" />
-    <Compile Include="ViewModels\Bcf\BcfCommentviewModel.cs" />
     <Compile Include="Bcf\IO\BcfFileLoader.cs" />
-    <Compile Include="ViewModels\Bcf\BcfFileViewModel.cs" />
-    <Compile Include="ViewModels\Bcf\BcfHeaderFileViewModel.cs" />
-    <Compile Include="ViewModels\Bcf\BcfIssueViewModel.cs" />
-    <Compile Include="ViewModels\ChangeListeners\BcfIssueViewModelChangeListener.cs" />
     <Compile Include="Bcf\IO\BcfLoaderException.cs" />
-    <Compile Include="ViewModels\Bcf\BcfMarkupViewModel.cs" />
-    <Compile Include="ViewModels\Bcf\BcfMarkupViewpointReferenceViewModel.cs" />
-    <Compile Include="ViewModels\Bcf\BcfPointOrVectorViewModel.cs" />
-    <Compile Include="ViewModels\Bcf\BcfTopicViewModel.cs" />
     <Compile Include="Bcf\IO\BcfV21Loader.cs" />
     <Compile Include="Bcf\IO\BcfV2Loader.cs" />
-    <Compile Include="ViewModels\Bcf\BcfVersion.cs" />
-    <Compile Include="ViewModels\Bcf\BcfViewpointCameraViewModelBase.cs" />
-    <Compile Include="ViewModels\Bcf\BcfViewpointClippingPlaneViewModel.cs" />
-    <Compile Include="ViewModels\Bcf\BcfViewpointComponentViewModel.cs" />
-    <Compile Include="ViewModels\Bcf\BcfViewpointLineViewModel.cs" />
-    <Compile Include="ViewModels\Bcf\BcfViewpointOrthogonalCameraViewModel.cs" />
-    <Compile Include="ViewModels\Bcf\BcfViewpointPerspectiveCameraViewModel.cs" />
-    <Compile Include="ViewModels\Bcf\BcfViewpointViewModel.cs" />
-    <Compile Include="ViewModels\ChangeListeners\ChangeListener.cs" />
-    <Compile Include="ViewModels\ChangeListeners\CollectionChangeListener.cs" />
     <Compile Include="Data\AttachedProperties\CtrlEnterKeyDown.cs" />
     <Compile Include="Data\AttachedProperties\NavigationService.cs" />
     <Compile Include="Data\Globals.cs" />
     <Compile Include="Data\RelayCommand.cs" />
-    <Compile Include="Data\Utils\IfcGuid.cs" />
     <Compile Include="Data\Utils\RelativeDate.cs" />
     <Compile Include="Data\ValueConverters\DateConverter.cs" />
     <Compile Include="Data\Utils\ImagingUtils.cs" />
@@ -447,10 +434,10 @@
     <Compile Include="OpenProjectApi\Models\Project.cs" />
     <Compile Include="OpenProjectApi\Models\WorkPackage.cs" />
     <Compile Include="OpenProjectApi\Models\WorkPackageDescription.cs" />
-    <Compile Include="OpenProjectApi\WorkPackageJsonConverter.cs" />
     <Compile Include="OpenProjectApi\Models\WorkPackageLink.cs" />
     <Compile Include="OpenProjectApi\OpenProjectClient.cs" />
     <Compile Include="OpenProjectApi\ResponseWrapper.cs" />
+    <Compile Include="OpenProjectApi\WorkPackageJsonConverter.cs" />
     <Compile Include="Themes\ButtonIcon.cs" />
     <Compile Include="Themes\LabelSelectable.cs" />
     <Compile Include="Themes\IssueListStyle.xaml.cs">
@@ -472,13 +459,8 @@
     <Compile Include="WebViewIntegration\BcfierJavascriptInterop.cs" />
     <Compile Include="WebViewIntegration\BrowserManager.cs" />
     <Compile Include="WebViewIntegration\CefBrowserInitializer.cs" />
+    <Compile Include="WebViewIntegration\IpcManager.cs" />
     <Compile Include="WebViewIntegration\JavaScriptBridge.cs" />
-    <Compile Include="WebViewIntegration\MessageDeserializer.cs" />
-    <Compile Include="WebViewIntegration\MessageSerializer.cs" />
-    <Compile Include="WebViewIntegration\MessageTypes.cs" />
-    <Compile Include="WebViewIntegration\ViewpointApiMessage.cs" />
-    <Compile Include="WebViewIntegration\ViewpointGeneratedApiMessage.cs" />
-    <Compile Include="WebViewIntegration\WebUIMessageEventArgs.cs" />
     <Compile Include="Windows\ComponentsList.xaml.cs">
       <DependentUpon>ComponentsList.xaml</DependentUpon>
     </Compile>
@@ -602,6 +584,12 @@
     <EmbeddedResource Include="Assets\BCFierIcon16x16.png" />
     <EmbeddedResource Include="Assets\BCFierIcon32x32.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BCFier.Shared\Bcfier.Shared.csproj">
+      <Project>{94d34cae-5191-45f0-b1bf-6ffe4ffdcf04}</Project>
+      <Name>Bcfier.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -612,15 +600,15 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\cef.redist.x64.3.3325.1758\build\cef.redist.x64.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cef.redist.x64.3.3325.1758\build\cef.redist.x64.props'))" />
-    <Error Condition="!Exists('..\packages\cef.redist.x86.3.3325.1758\build\cef.redist.x86.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cef.redist.x86.3.3325.1758\build\cef.redist.x86.props'))" />
-    <Error Condition="!Exists('..\packages\CefSharp.Common.65.0.1\build\CefSharp.Common.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Common.65.0.1\build\CefSharp.Common.props'))" />
-    <Error Condition="!Exists('..\packages\CefSharp.Common.65.0.1\build\CefSharp.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Common.65.0.1\build\CefSharp.Common.targets'))" />
-    <Error Condition="!Exists('..\packages\CefSharp.Wpf.65.0.1\build\CefSharp.Wpf.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Wpf.65.0.1\build\CefSharp.Wpf.props'))" />
-    <Error Condition="!Exists('..\packages\CefSharp.Wpf.65.0.1\build\CefSharp.Wpf.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Wpf.65.0.1\build\CefSharp.Wpf.targets'))" />
+    <Error Condition="!Exists('..\packages\cef.redist.x64.79.1.35\build\cef.redist.x64.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cef.redist.x64.79.1.35\build\cef.redist.x64.props'))" />
+    <Error Condition="!Exists('..\packages\cef.redist.x86.79.1.35\build\cef.redist.x86.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cef.redist.x86.79.1.35\build\cef.redist.x86.props'))" />
+    <Error Condition="!Exists('..\packages\CefSharp.Common.79.1.350\build\CefSharp.Common.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Common.79.1.350\build\CefSharp.Common.props'))" />
+    <Error Condition="!Exists('..\packages\CefSharp.Common.79.1.350\build\CefSharp.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Common.79.1.350\build\CefSharp.Common.targets'))" />
+    <Error Condition="!Exists('..\packages\CefSharp.Wpf.79.1.350\build\CefSharp.Wpf.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Wpf.79.1.350\build\CefSharp.Wpf.props'))" />
+    <Error Condition="!Exists('..\packages\CefSharp.Wpf.79.1.350\build\CefSharp.Wpf.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Wpf.79.1.350\build\CefSharp.Wpf.targets'))" />
   </Target>
-  <Import Project="..\packages\CefSharp.Common.65.0.1\build\CefSharp.Common.targets" Condition="Exists('..\packages\CefSharp.Common.65.0.1\build\CefSharp.Common.targets')" />
-  <Import Project="..\packages\CefSharp.Wpf.65.0.1\build\CefSharp.Wpf.targets" Condition="Exists('..\packages\CefSharp.Wpf.65.0.1\build\CefSharp.Wpf.targets')" />
+  <Import Project="..\packages\CefSharp.Common.79.1.350\build\CefSharp.Common.targets" Condition="Exists('..\packages\CefSharp.Common.79.1.350\build\CefSharp.Common.targets')" />
+  <Import Project="..\packages\CefSharp.Wpf.79.1.350\build\CefSharp.Wpf.targets" Condition="Exists('..\packages\CefSharp.Wpf.79.1.350\build\CefSharp.Wpf.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

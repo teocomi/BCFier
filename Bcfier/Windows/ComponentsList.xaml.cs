@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using Bcfier.ViewModels.Bcf;
+using Bcfier.Shared.ViewModels.Bcf;
 
 namespace Bcfier.Windows
 {

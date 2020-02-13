@@ -1,7 +1,7 @@
 ﻿using System;
 using Dangl;
 
-namespace Bcfier.ViewModels.Bcf
+namespace Bcfier.Shared.ViewModels.Bcf
 {
   public class BcfMarkupViewpointReferenceViewModel : BindableBase
   {

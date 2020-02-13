@@ -1,4 +1,5 @@
-﻿using CefSharp;
+using Bcfier.Shared;
+using CefSharp;
 using Newtonsoft.Json;
 
 namespace Bcfier.WebViewIntegration

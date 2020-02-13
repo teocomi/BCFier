@@ -1,9 +1,8 @@
-﻿using Bcfier.Bcf;
-using Bcfier.ViewModels.Bcf;
+﻿using Bcfier.Shared.ViewModels.Bcf;
 using System;
 using System.ComponentModel;
 
-namespace Bcfier.ViewModels.ChangeListeners
+namespace Bcfier.Shared.ViewModels.ChangeListeners
 {
   internal class BcfIssueViewModelChangeListener
   {

@@ -17,13 +17,13 @@ using Bcfier.Data.Utils;
 using Bcfier.Windows;
 using Bcfier.Data;
 using Version = System.Version;
-using Bcfier.ViewModels;
-using Bcfier.OpenProjectApi;
-using Bcfier.ViewModels.Bcf;
 using CefSharp;
 using Bcfier.WebViewIntegration;
 using CefSharp.Wpf;
 using Newtonsoft.Json;
+using Bcfier.Shared.ViewModels.Bcf;
+using Bcfier.ViewModels;
+using Bcfier.Shared;
 
 namespace Bcfier.UserControls
 {

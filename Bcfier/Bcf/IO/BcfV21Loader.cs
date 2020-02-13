@@ -3,7 +3,8 @@ using iabi.BCF.BCFv21.Schemas;
 using System;
 using System.Collections.Generic;
 using iabi.BCF.Converter;
-using Bcfier.ViewModels.Bcf;
+using Bcfier.Shared.ViewModels.Bcf;
+using Bcfier.Shared.ViewModels.Bcf;
 
 namespace Bcfier.Bcf
 {

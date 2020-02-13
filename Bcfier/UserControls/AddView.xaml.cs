@@ -16,7 +16,7 @@ namespace Bcfier.UserControls
   public partial class AddView : UserControl
   {
     internal string TempFolder;
-    public ViewModels.Bcf.BcfIssueViewModel BcfIssue { get; set; }
+    public Shared.ViewModels.Bcf.BcfIssueViewModel BcfIssue { get; set; }
     private byte[] snapshot;
 
     public AddView()
@@ -24,7 +24,7 @@ namespace Bcfier.UserControls
       InitializeComponent();
     }
 
-    public AddView(ViewModels.Bcf.BcfIssueViewModel bcfIssue, string bcfTempFolder)
+    public AddView(Shared.ViewModels.Bcf.BcfIssueViewModel bcfIssue, string bcfTempFolder)
     {
       try
       {
@@ -85,7 +85,7 @@ namespace Bcfier.UserControls
 
     private void Button_OK(object sender, RoutedEventArgs e)
     {
-      var viewpoint = new ViewModels.Bcf.BcfViewpointViewModel();
+      var viewpoint = new Shared.ViewModels.Bcf.BcfViewpointViewModel();
 
       if (!Directory.Exists(Path.Combine(TempFolder, BcfIssue.Markup.BcfTopic.Id.ToString())))
         Directory.CreateDirectory(Path.Combine(TempFolder, BcfIssue.Markup.BcfTopic.Id.ToString()));
@@ -93,7 +93,7 @@ namespace Bcfier.UserControls
 
       if (!string.IsNullOrEmpty(CommentBox.Text))
       {
-        var c = new ViewModels.Bcf.BcfCommentviewModel
+        var c = new Shared.ViewModels.Bcf.BcfCommentviewModel
         {
           Text = CommentBox.Text,
           Author = Utils.GetUsername(),

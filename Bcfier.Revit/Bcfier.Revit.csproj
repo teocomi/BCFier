@@ -445,8 +445,8 @@
       <HintPath>..\packages\iabi.BCF.1.2.7\lib\net461\iabi.BCF.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="RevitAPI, Version=20.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>..\packages\Revit_All_Main_Versions_API_x64.2020.0.1\lib\net47\RevitAPI.dll</HintPath>
@@ -463,6 +463,7 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml">
@@ -584,32 +585,20 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
+    <Reference Include="ZetaIpc, Version=1.0.0.9, Culture=neutral, PublicKeyToken=6c27b71344e0b736, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZetaIpc.1.0.0.9\lib\netstandard2.0\ZetaIpc.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyVersionInfo.cs">
       <Link>Properties\AssemblyVersionInfo.cs</Link>
     </Compile>
-    <Compile Include="AddViewRevit.xaml.cs">
-      <DependentUpon>AddViewRevit.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Data\RevitUtils.cs" />
-    <Page Include="AddViewRevit.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="RevitWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="Data\RevitView.cs" />
-    <Compile Include="Entry\ExtAppBcfier.cs" />
+    <Compile Include="Entry\BcfierSignalRClient.cs" />
     <Compile Include="Entry\CmdMain.cs" />
     <Compile Include="Entry\ExtEvntOpenView.cs" />
     <Compile Include="Entry\AppMain.cs" />
-    <Compile Include="RevitWindow.xaml.cs">
-      <DependentUpon>RevitWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -643,14 +632,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Bcfier\Bcfier.csproj">
-      <Project>{503ce2c1-09d7-4f15-bb42-86196ee01ed4}</Project>
-      <Name>Bcfier</Name>
-      <Private>True</Private>
+    <Resource Include="Assets\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BCFier.Shared\Bcfier.Shared.csproj">
+      <Project>{94d34cae-5191-45f0-b1bf-6ffe4ffdcf04}</Project>
+      <Name>Bcfier.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\icon.ico" />
+    <EmbeddedResource Include="Assets\BCFierIcon16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\BCFierIcon32x32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
