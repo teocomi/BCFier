@@ -9,7 +9,7 @@ namespace Bcfier.Revit.Entry
   {
     public static string GetBcfierWinExecutablePath()
     {
-      // The configuration file should always be adjacent to the Bcfier.Recit.dll assembly
+      // The configuration file should always be adjacent to the Bcfier.Revit.dll assembly
       var currentAssemblyPath = Assembly.GetExecutingAssembly().CodeBase;
       using (var fs = System.IO.File.OpenRead(currentAssemblyPath))
       {
