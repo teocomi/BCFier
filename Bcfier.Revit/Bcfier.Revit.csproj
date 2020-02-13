@@ -595,8 +595,9 @@
     </Compile>
     <Compile Include="Data\RevitUtils.cs" />
     <Compile Include="Data\RevitView.cs" />
-    <Compile Include="Entry\BcfierSignalRClient.cs" />
+    <Compile Include="Entry\BcfierIpcHandler.cs" />
     <Compile Include="Entry\CmdMain.cs" />
+    <Compile Include="Entry\ConfigurationLoader.cs" />
     <Compile Include="Entry\ExtEvntOpenView.cs" />
     <Compile Include="Entry\AppMain.cs" />
   </ItemGroup>
@@ -618,6 +619,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Bcfier.Revit.Configuration.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

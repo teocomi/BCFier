@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -59,6 +59,16 @@ namespace Bcfier.Revit.Entry
     /// <returns></returns>
     public Result OnShutdown(UIControlledApplication application)
     {
+      try
+      {
+        CmdMain.BcfierWinProcess?.CloseMainWindow();
+        CmdMain.BcfierWinProcess?.Close();
+      }
+      catch
+      {
+        // TODO -> What to do when Bcfier.Win can't be stopped?
+      }
+
       return Result.Succeeded;
     }
 

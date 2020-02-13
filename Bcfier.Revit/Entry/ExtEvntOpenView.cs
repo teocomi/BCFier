@@ -6,30 +6,27 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using Bcfier.Data.Utils;
 using Bcfier.Revit.Data;
-using Bcfier.ViewModels.Bcf;
+using Bcfier.Shared;
+using Bcfier.Shared.ViewModels.Bcf;
 
 namespace Bcfier.Revit.Entry
 {
   /// <summary>
   /// Obfuscation Ignore for External Interface
   /// </summary>
-  public class ExtEvntOpenView : IExternalEventHandler
+  public static class ExtEvntOpenView
   {
-    public BcfViewpointViewModel v;
-
     /// <summary>
     /// External Event Implementation
     /// </summary>
     /// <param name="app"></param>
-    public void Execute(UIApplication app)
+    public static void ShowBcfViewpoint(UIApplication app, BcfViewpointViewModel v)
     {
       try
       {
         UIDocument uidoc = app.ActiveUIDocument;
         Document doc = uidoc.Document;
-        var uniqueView = UserSettings.GetBool("alwaysNewView");
 
         // IS ORTHOGONAL
         if (v.OrthogonalCamera != null)
@@ -70,10 +67,10 @@ namespace Bcfier.Revit.Entry
             {
               //create a new 3d ortho view 
 
-              if (orthoView == null || uniqueView)
+              if (orthoView == null)
               {
                 orthoView = View3D.CreateIsometric(doc, getFamilyViews(doc).First().Id);
-                orthoView.Name = (uniqueView) ? "BCFortho" + DateTime.Now.ToString("yyyyMMddTHHmmss") : "BCFortho";
+                orthoView.Name = "BCFortho";
               }
               else
               {
@@ -137,10 +134,10 @@ namespace Bcfier.Revit.Entry
           {
             if (trans.Start("Open perspective view") == TransactionStatus.Started)
             {
-              if (null == perspView || uniqueView)
+              if (null == perspView)
               {
                 perspView = View3D.CreatePerspective(doc, getFamilyViews(doc).First().Id);
-                perspView.Name = (uniqueView) ? "BCFpersp" + DateTime.Now.ToString("yyyyMMddTHHmmss") : "BCFpersp";
+                perspView.Name = "BCFpersp";
               }
               else
               {
@@ -228,21 +225,23 @@ namespace Bcfier.Revit.Entry
         TaskDialog.Show("Error!", "exception: " + ex);
       }
     }
-    private IEnumerable<ViewFamilyType> getFamilyViews(Document doc)
-    {
 
+    private static IEnumerable<ViewFamilyType> getFamilyViews(Document doc)
+    {
       return from elem in new FilteredElementCollector(doc).OfClass(typeof(ViewFamilyType))
              let type = elem as ViewFamilyType
              where type.ViewFamily == ViewFamily.ThreeDimensional
              select type;
     }
-    private IEnumerable<View3D> get3DViews(Document doc)
+
+    private static IEnumerable<View3D> get3DViews(Document doc)
     {
       return from elem in new FilteredElementCollector(doc).OfClass(typeof(View3D))
              let view = elem as View3D
              select view;
     }
-    private IEnumerable<View> getSheets(Document doc, int id, string stname)
+
+    private static IEnumerable<View> getSheets(Document doc, int id, string stname)
     {
       ElementId eid = new ElementId(id);
       return from elem in new FilteredElementCollector(doc).OfClass(typeof(View))
@@ -252,15 +251,5 @@ namespace Bcfier.Revit.Entry
              select view;
       
     }
-
-
-
-
-    public string GetName()
-    {
-      return "Open 3D View";
-    }
-    // returns XYZ and ZOOM/FOV value
   }
-
 }

@@ -1,13 +1,14 @@
 ﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using Bcfier.WebViewIntegration;
 using System;
+using System.Diagnostics;
 using System.Reflection;
+using ZetaIpc.Runtime.Helper;
+using ZetaIpc.Runtime.Server;
 
 namespace Bcfier.Revit.Entry
 {
-
   /// <summary>
   /// Obfuscation Ignore for External Interface
   /// </summary>
@@ -43,9 +44,9 @@ namespace Bcfier.Revit.Entry
 
 #endif
 
-    internal static CmdMain ThisCmd = null;
     private static bool _isRunning;
-    private static ExtAppBcfier _extAppBcfier;
+
+    public static Process BcfierWinProcess { get; private set; }
 
     /// <summary>
     /// Main Command Entry Point
@@ -72,26 +73,28 @@ namespace Bcfier.Revit.Entry
         }
         
         // Form Running?
-        if (_isRunning && _extAppBcfier != null && (_extAppBcfier.RvtWindow?.IsLoaded ?? false))
+        if (_isRunning)
         {
-          _extAppBcfier.Focus();
           return Result.Succeeded;
         }
 
+
+        var ipcHandler = new BcfierIpcHandler(commandData.Application);
+        var revitServerPort = ipcHandler.StartLocalServerAndReturnPort();
+        var bcfierWinProcessPath = ConfigurationLoader.GetBcfierWinExecutablePath();
+        var bcfierWinServerPort = FreePortHelper.GetFreePort();
+        var bcfWinProcessArguments = $"ipc {revitServerPort} {bcfierWinServerPort}";
+        BcfierWinProcess = Process.Start($"\"{bcfierWinProcessPath}\" {bcfWinProcessArguments}");
+        BcfierWinProcess.Exited += (s, e) => _isRunning = false;
         _isRunning = true;
-
-        ThisCmd = this;
-        _extAppBcfier = new ExtAppBcfier();
-        _extAppBcfier.ShowForm(commandData.Application);
+        ipcHandler.StartLocalClient(bcfierWinServerPort);
         return Result.Succeeded;
-
       }
       catch (Exception e)
       {
         message = e.Message;
         return Result.Failed;
       }
-
     }
 
   }
