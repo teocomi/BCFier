@@ -74,7 +74,7 @@ namespace Bcfier.Revit.Data
       return new XYZ(X.ToFeet(), Y.ToFeet(), Z.ToFeet());
     }
 
-    public static XYZ GetRevitXYZ(ViewModels.Bcf.BcfPointOrVectorViewModel d)
+    public static XYZ GetRevitXYZ(Shared.ViewModels.Bcf.BcfPointOrVectorViewModel d)
     {
       return new XYZ(d.X.ToFeet(),d.Y.ToFeet(),d.Z.ToFeet());
     }

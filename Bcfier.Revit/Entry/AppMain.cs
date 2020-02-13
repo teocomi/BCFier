@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -38,8 +38,8 @@ namespace Bcfier.Revit.Entry
         // Images and Tooltip
         if (pushButton != null)
         {
-          pushButton.Image = LoadPngImgSource("Bcfier.Assets.BCFierIcon16x16.png", Path.Combine(_path, "Bcfier.dll"));
-          pushButton.LargeImage = LoadPngImgSource("Bcfier.Assets.BCFierIcon32x32.png", Path.Combine(_path, "Bcfier.dll"));
+          pushButton.Image = LoadPngImgSource("Bcfier.Revit.Assets.BCFierIcon16x16.png");
+          pushButton.LargeImage = LoadPngImgSource("Bcfier.Revit.Assets.BCFierIcon32x32.png");
           pushButton.ToolTip = "BCFier";
         }
       }
@@ -85,14 +85,14 @@ namespace Bcfier.Revit.Entry
     /// <param name="sourceName"></param>
     /// <param name="path"></param>
     /// <returns></returns>
-    private ImageSource LoadPngImgSource(string sourceName, string path)
+    private ImageSource LoadPngImgSource(string resourceName)
     {
 
       try
       {
         // Assembly & Stream
-        var assembly = Assembly.LoadFrom(Path.Combine(path));
-        var icon = assembly.GetManifestResourceStream(sourceName);
+        var assembly = typeof(AppMain).Assembly;
+        var icon = assembly.GetManifestResourceStream(resourceName);
 
         // Decoder
         PngBitmapDecoder m_decoder = new PngBitmapDecoder(icon, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
