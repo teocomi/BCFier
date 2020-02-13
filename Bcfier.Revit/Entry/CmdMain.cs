@@ -78,13 +78,12 @@ namespace Bcfier.Revit.Entry
           return Result.Succeeded;
         }
 
-
         var ipcHandler = new BcfierIpcHandler(commandData.Application);
         var revitServerPort = ipcHandler.StartLocalServerAndReturnPort();
         var bcfierWinProcessPath = ConfigurationLoader.GetBcfierWinExecutablePath();
         var bcfierWinServerPort = FreePortHelper.GetFreePort();
-        var bcfWinProcessArguments = $"ipc {revitServerPort} {bcfierWinServerPort}";
-        BcfierWinProcess = Process.Start($"\"{bcfierWinProcessPath}\" {bcfWinProcessArguments}");
+        var bcfWinProcessArguments = $"ipc {bcfierWinServerPort} {revitServerPort}";
+        BcfierWinProcess = Process.Start(bcfierWinProcessPath, bcfWinProcessArguments);
         BcfierWinProcess.Exited += (s, e) => _isRunning = false;
         _isRunning = true;
         ipcHandler.StartLocalClient(bcfierWinServerPort);

@@ -17,6 +17,8 @@ namespace Bcfier.Revit.Entry
   /// </summary>
   public static class ExtEvntOpenView
   {
+    private static int _viewSequence = 0;
+
     /// <summary>
     /// External Event Implementation
     /// </summary>
@@ -65,24 +67,16 @@ namespace Bcfier.Revit.Entry
           {
             if (trans.Start("Open orthogonal view") == TransactionStatus.Started)
             {
-              //create a new 3d ortho view 
-
-              if (orthoView == null)
-              {
-                orthoView = View3D.CreateIsometric(doc, getFamilyViews(doc).First().Id);
-                orthoView.Name = "BCFortho";
-              }
-              else
-              {
-                //reusing an existing view, I net to reset the visibility
-                //placed this here because if set afterwards it doesn't work
-                orthoView.DisableTemporaryViewMode(TemporaryViewMode.TemporaryHideIsolate);
-              }
+              orthoView = View3D.CreateIsometric(doc, getFamilyViews(doc).First().Id);
+              orthoView.Name = $"BCFortho{_viewSequence++}";
               orthoView.SetOrientation(orient3D);
               trans.Commit();
             }
           }
-          uidoc.ActiveView = orthoView;
+
+          uidoc.RequestViewChange(orthoView);
+
+          // uidoc.ActiveView = orthoView;
           //adjust view rectangle
 
           // **** CUSTOM VALUE FOR TEKLA **** //

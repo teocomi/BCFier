@@ -1,13 +1,13 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.IO;
 using System.Reflection;
+using Newtonsoft.Json.Linq;
 
-namespace Bcfier.Revit.Entry
+namespace Bcfier.UserControls
 {
   public static class ConfigurationLoader
   {
-    public static string GetBcfierWinExecutablePath()
+    public static string LoadBcfierBrowserInitialAddressOrNull()
     {
       var configurationFilePath = GetConfigurationFilePath();
       using (var fs = File.OpenRead(configurationFilePath))
@@ -16,13 +16,9 @@ namespace Bcfier.Revit.Entry
         {
           var json = sr.ReadToEnd();
           var jObject = JObject.Parse(json);
-          var bcfierWinExecutablePath = jObject["BcfierWinExecutablePath"].ToString();
-          if (!File.Exists(bcfierWinExecutablePath))
-          {
-            throw new Exception($"The Bcfier.Win.exe path in the configuration is given as: \"{bcfierWinExecutablePath}\", but the file could not be found.");
-          }
+          var initialBrowserAddress = jObject["InitialBrowserAddress"]?.ToString();
 
-          return bcfierWinExecutablePath;
+          return initialBrowserAddress;
         }
       }
     }
@@ -35,7 +31,7 @@ namespace Bcfier.Revit.Entry
         // '/' comes from the uri, we need it to be '\' for the path
         .Replace("/", "\\");
       var currentFolder = Path.GetDirectoryName(currentAssemblyPath);
-      var configurationFilePath = Path.Combine(currentFolder, "Bcfier.Revit.Configuration.json");
+      var configurationFilePath = Path.Combine(currentFolder, "Bcfier.Configuration.json");
       return configurationFilePath;
     }
   }
