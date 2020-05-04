@@ -108,15 +108,18 @@ class Build : NukeBuild
       .DependsOn(Restore)
       .Executes(() =>
       {
-        //var releaseConfigurations = new[] { "2019", "2020" };
-        var releaseConfigurations = new[,] { { "2020", "2020.0.1" }, { "2019", "2019.0.1" } };
+        // This array should specify the configuration and the used package version
+        // for the Revit API package
+        var releaseConfigurations = new[,]
+        {
+          { "2020", "2020.0.1" },
+          { "2019", "2019.0.1" }
+        };
+
         MSBuild(opt => opt
           .SetVerbosity(MSBuildVerbosity.Quiet)
           .SetTargetPlatform(MSBuildTargetPlatform.x64)
-          //.SetProjectFile(Solution.Directory / "Bcfier.Revit" / "Bcfier.Revit.csproj")
           .SetProjectFile(Solution.Directory / "Bcfier.Win" / "Bcfier.Win.csproj")
-          //.SetSolutionFile(Solution.FileName)
-          //.SetArgumentConfigurator(a => a.Add("/p:TargetFrameworkVersion=v4.7.2"))
           .SetConfiguration("Release-2020")
           .SetOutDir(OutputDirectory / "Bcfier.Win")
           .SetAssemblyVersion(GitVersion.GetNormalizedAssemblyVersion())
