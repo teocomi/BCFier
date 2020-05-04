@@ -1,0 +1,15 @@
+name: continuous
+
+on: [push]
+
+jobs:
+  ubuntu-latest:
+    name: windows-latest
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v1
+      - name: Run './build.cmd PublishGitHubRelease'
+        run: ./build.cmd PublishGitHubRelease
+        env:
+            GitHubAuthenticationToken: ${{ secrets.GITHUB_TOKEN }}
