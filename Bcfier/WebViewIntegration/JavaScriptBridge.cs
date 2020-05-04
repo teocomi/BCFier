@@ -27,15 +27,20 @@ namespace Bcfier.WebViewIntegration
     public event WebUIMessageReceivedEventHandler OnWebUIMessageReveived;
     public delegate void WebUIMessageReceivedEventHandler(object sender, WebUIMessageEventArgs e);
 
+    private void ChangeLoadingState(object sender, object eventArgs)
+    {
+        isLoaded = true;
+    }
+
     public void SetWebBrowser(IWebBrowser webBrowser)
     {
       if (_webBrowser != null)
       {
-        throw new System.InvalidOperationException("The web browser instance was already set in the " + nameof(JavaScriptBridge));
+        _webBrowser.LoadingStateChanged -= ChangeLoadingState;
       }
 
       _webBrowser = webBrowser;
-      _webBrowser.LoadingStateChanged += (s, e) => isLoaded = true;
+      _webBrowser.LoadingStateChanged += ChangeLoadingState;
     }
 
     private bool isLoaded = false;

@@ -28,7 +28,7 @@ namespace Bcfier.WebViewIntegration
             _webBrowser.GetMainFrame().ExecuteJavaScriptAsync(@"(async function(){
 await CefSharp.BindObjectAsync(""" + JavaScriptBridge.REVIT_BRIDGE_JAVASCRIPT_NAME + @""", ""bound"");
 window." + JavaScriptBridge.REVIT_BRIDGE_JAVASCRIPT_NAME + @".sendMessageToOpenProject = (message) => {console.log(JSON.parse(message))}; // This is the callback to be used by OpenProject for receiving messages
-window.dispatchEvent(new Event('" + JavaScriptBridge.REVIT_BRIDGE_JAVASCRIPT_NAME + @"'));
+window.dispatchEvent(new Event('" + JavaScriptBridge.REVIT_READY_EVENT_NAME + @"'));
 })();");
           });
           // Now in JS, call this: openProjectBridge.messageFromOpenProject('Message from JS');
