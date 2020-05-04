@@ -1,6 +1,6 @@
 ﻿using Bcfier.Bcf;
-using Bcfier.ViewModels.Bcf;
-using Bcfier.ViewModels.ChangeListeners;
+using Bcfier.Shared.ViewModels.Bcf;
+using Bcfier.Shared.ViewModels.ChangeListeners;
 using System.Collections.ObjectModel;
 using Xunit;
 

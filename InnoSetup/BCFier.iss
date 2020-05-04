@@ -8,14 +8,6 @@
 
 #define RevitAppName  "Bcfier.Revit"
 #define RevitAddinFolder "{sd}\ProgramData\Autodesk\Revit\Addins"
-#define RevitFolder15 RevitAddinFolder+"\2015\"+RevitAppName
-#define RevitAddin15  RevitAddinFolder+"\2015\"
-#define RevitFolder16 RevitAddinFolder+"\2016\"+RevitAppName
-#define RevitAddin16  RevitAddinFolder+"\2016\"
-#define RevitFolder17 RevitAddinFolder+"\2017\"+RevitAppName
-#define RevitAddin17  RevitAddinFolder+"\2017\"
-#define RevitFolder18 RevitAddinFolder+"\2018\"+RevitAppName
-#define RevitAddin18  RevitAddinFolder+"\2018\"
 #define RevitFolder19 RevitAddinFolder+"\2019\"+RevitAppName
 #define RevitAddin19  RevitAddinFolder+"\2019\"
 #define RevitFolder20 RevitAddinFolder+"\2020\"+RevitAppName
@@ -38,7 +30,7 @@ DisableDirPage=yes
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 DisableWelcomePage=no
-OutputDir={#Repository}
+OutputDir={#Repository}\output
 OutputBaseFilename=BCFier
 SetupIconFile={#Repository}\Assets\icon.ico
 Compression=lzma
@@ -53,55 +45,26 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: checkedonce
 
 [Components]
-Name: revit15; Description: Addin for Autodesk Revit 2015; Types: full 
-Name: revit16; Description: Addin for Autodesk Revit 2016;  Types: full
-Name: revit17; Description: Addin for Autodesk Revit 2017;  Types: full
-Name: revit18; Description: Addin for Autodesk Revit 2018;  Types: full
 Name: revit19; Description: Addin for Autodesk Revit 2019;  Types: full
 Name: revit20; Description: Addin for Autodesk Revit 2020;  Types: full
-Name: standalone; Description: BCFier for Windows (standalone viewer); Types: full
-
+Name: standalone; Description: BCFier for Windows; Types: full
 
 [Dirs]
 Name: "{app}"; Permissions: everyone-full 
 
 [Files]
 ;STANDALONE
-Source: "{#Repository}\{#WinAppName}\bin\Release\{#WinAppName}.exe"; DestDir: "{app}"; Flags: ignoreversion; Permissions: everyone-full; Components: standalone
-Source: "{#Repository}\{#WinAppName}\bin\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: standalone
+Source: "{#Repository}\output\{#WinAppName}\{#WinAppName}.exe"; DestDir: "{app}"; Flags: ignoreversion; Permissions: everyone-full; Components: standalone
+Source: "{#Repository}\output\{#WinAppName}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs; Components: standalone
 Source: "{#Repository}\Assets\BCF.ico"; DestDir: "{app}"; Flags: ignoreversion; Components: standalone
 
-;REVIT 2015                                                                                                                                        
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2015\{#RevitAppName}.dll"; DestDir: "{#RevitFolder15}"; Flags: ignoreversion; Components: revit15  
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2015\{#RevitAppName}.addin"; DestDir: "{#RevitAddin15}"; Flags: ignoreversion; Components: revit15
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2015\*.dll"; DestDir: "{#RevitFolder15}"; Flags: ignoreversion; Components: revit15
-
-;REVIT 2016                                                                                                                                        
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2016\{#RevitAppName}.dll"; DestDir: "{#RevitFolder16}"; Flags: ignoreversion; Components: revit16  
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2016\{#RevitAppName}.addin"; DestDir: "{#RevitAddin16}"; Flags: ignoreversion; Components: revit16
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2016\*.dll"; DestDir: "{#RevitFolder16}"; Flags: ignoreversion; Components: revit16
-
-;REVIT 2017                                                                                                                                     
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2017\{#RevitAppName}.dll"; DestDir: "{#RevitFolder17}"; Flags: ignoreversion; Components: revit17  
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2017\{#RevitAppName}.addin"; DestDir: "{#RevitAddin17}"; Flags: ignoreversion; Components: revit17
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2017\*.dll"; DestDir: "{#RevitFolder17}"; Flags: ignoreversion; Components: revit17
-
-;REVIT 2018                                                                                                                                    
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2018\{#RevitAppName}.dll"; DestDir: "{#RevitFolder18}"; Flags: ignoreversion; Components: revit18  
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2018\{#RevitAppName}.addin"; DestDir: "{#RevitAddin18}"; Flags: ignoreversion; Components: revit18
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2018\*.dll"; DestDir: "{#RevitFolder18}"; Flags: ignoreversion; Components: revit18
-
 ;REVIT 2019                                                                                                                                    
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2019\{#RevitAppName}.dll"; DestDir: "{#RevitFolder19}"; Flags: ignoreversion; Components: revit19  
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2019\{#RevitAppName}.addin"; DestDir: "{#RevitAddin19}"; Flags: ignoreversion; Components: revit19
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2019\*.dll"; DestDir: "{#RevitFolder19}"; Flags: ignoreversion; Components: revit19
+Source: "{#Repository}\output\2019\{#RevitAppName}\*"; DestDir: "{#RevitFolder19}"; Flags: ignoreversion recursesubdirs; Components: revit19 
+Source: "{#Repository}\output\2019\{#RevitAppName}\{#RevitAppName}.addin"; DestDir: "{#RevitAddin19}"; Flags: ignoreversion; Components: revit19
 
 ;REVIT 2020                                                                                                                                    
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2020\{#RevitAppName}.dll"; DestDir: "{#RevitFolder20}"; Flags: ignoreversion; Components: revit20  
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2020\{#RevitAppName}.addin"; DestDir: "{#RevitAddin20}"; Flags: ignoreversion; Components: revit20
-Source: "{#Repository}\{#RevitAppName}\bin\Release-2020\*.dll"; DestDir: "{#RevitFolder20}"; Flags: ignoreversion; Components: revit20
-
-
+Source: "{#Repository}\output\2020\{#RevitAppName}\*"; DestDir: "{#RevitFolder20}"; Flags: ignoreversion recursesubdirs; Components: revit20 
+Source: "{#Repository}\output\2020\{#RevitAppName}\{#RevitAppName}.addin"; DestDir: "{#RevitAddin20}"; Flags: ignoreversion; Components: revit20
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
