@@ -11,6 +11,7 @@ using Nuke.Common.Utilities.Collections;
 using Nuke.GitHub;
 using System;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -251,4 +252,56 @@ namespace Bcfier
               .SetTag(releaseTag)
               .SetToken(GitHubAuthenticationToken));
       });
+
+  Target BuildLandingPageHtml => _ => _
+    .Executes(() =>
+    {
+      var landingPageFolder = RootDirectory / "Bcfier" / "WebViewIntegration" / "LandingPage";
+      var assetsFolder = landingPageFolder / "assets";
+
+      var originalHtml = ReadAllText(landingPageFolder / "index.html");
+      var htmlDoc = new HtmlAgilityPack.HtmlDocument();
+      htmlDoc.LoadHtml(originalHtml);
+
+      // Inline css
+      foreach (var cssDeclaration in htmlDoc.DocumentNode.Descendants()
+        .Where(d => d.Name == "link" && d.GetAttributes("rel")?.FirstOrDefault().Value == "stylesheet")
+        .Where(d => d.GetAttributes("href")?.Any() ?? false)
+        .ToList())
+      {
+        var cssLink = cssDeclaration.GetAttributes("href")
+          .First()
+          .Value
+          .Substring(9); // "./assets/" length
+        var css = ReadAllText(assetsFolder / cssLink);
+
+        var styleNode = htmlDoc.CreateElement("style");
+        styleNode.InnerHtml = css;
+
+        cssDeclaration.ParentNode.InsertBefore(styleNode, cssDeclaration);
+        cssDeclaration.Remove();
+      }
+
+      // Inline javascript
+      foreach (var scriptDeclaration in htmlDoc.DocumentNode.Descendants()
+        .Where(d => d.Name == "script" && d.GetAttributes("src")?.FirstOrDefault() != null)
+        .ToList())
+      {
+        var scriptLink = scriptDeclaration.GetAttributes("src")
+          .First()
+          .Value
+          .Substring(9); // "./assets/" length
+        var script = ReadAllText(assetsFolder / scriptLink);
+
+        var scriptNode = htmlDoc.CreateElement("script");
+        scriptNode.SetAttributeValue("type", "text/javascript");
+        scriptNode.InnerHtml = script;
+
+        scriptDeclaration.ParentNode.InsertBefore(scriptNode, scriptDeclaration);
+        scriptDeclaration.Remove();
+      }
+
+        var transformedHtml = htmlDoc.DocumentNode.OuterHtml;
+      WriteAllText(landingPageFolder / "generated.html", transformedHtml);
+    });
 }

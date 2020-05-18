@@ -195,3 +195,5 @@ FakesAssemblies/
 *.opt
 
 output/
+
+Bcfier/WebViewIntegration/LandingPage/LandingPage.zip

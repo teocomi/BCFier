@@ -89,13 +89,13 @@ namespace Bcfier.UserControls
         }
       }
 
-      var initialBrowserAddress = ConfigurationLoader.LoadBcfierBrowserInitialAddressOrNull();
+      var initialBrowserAddress = ConfigurationHandler.LoadBcfierBrowserInitialAddressOrNull();
       if (string.IsNullOrWhiteSpace(initialBrowserAddress))
       {
         initialBrowserAddress = "http://spike.openproject-stage.com";
       }
 
-      Browser.Address = initialBrowserAddress;
+      Browser.Address = EmbeddedLandingPageHandler.GetEmbeddedLandingPageIndexUrl();
 
       if (UserSettings.GetBool("checkupdates"))
         CheckUpdates();

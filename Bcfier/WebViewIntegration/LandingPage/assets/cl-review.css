@@ -1,0 +1,204 @@
+.cl-review + .cl-review {
+  margin-top: 30px;
+}
+.cl-review-quote-text q {
+  display: block;
+  font-style: normal;
+  line-height: 1.56;
+}
+.cl-review-author {
+  display: block;
+  line-height: 24px;
+  overflow: hidden;
+  padding-top: 15px;
+}
+.cl-review-author-avatar {
+  display: block;
+  float: left;
+  margin-right: 15px;
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  background-size: cover;
+}
+.cl-review-author-name {
+  vertical-align: top;
+  font-weight: 600;
+  margin-right: 8px;
+}
+.cl-review-author-occupation {
+  display: inline-block;
+  font-size: 0.9em;
+  opacity: 0.5;
+}
+.cl-review.with_avatar .cl-review-author-name {
+  display: block;
+  padding-top: 6px;
+  margin: 0;
+}
+.cl-review.quote_italic .cl-review-quote-text q {
+  font-style: italic;
+}
+.cl-review.layout_clean .cl-review-quote-text,
+.cl-review.layout_clean .cl-review-author {
+  padding-left: 26px;
+}
+.cl-review.layout_clean .cl-review-quote-text q {
+  quotes: none;
+  position: relative;
+}
+.cl-review.layout_clean .cl-review-quote-text q:before {
+  content: '\f10d';
+  font-family: FontAwesome;
+  font-size: 18px;
+  position: absolute;
+  top: 0;
+  left: -25px;
+  padding-right: 3px;
+  opacity: 0.25;
+}
+.cl-review.layout_clean .cl-review-quote-text q:after {
+  content: '\f10e';
+  font-family: FontAwesome;
+  font-size: 18px;
+  margin-left: 7px;
+  padding-right: 3px;
+  opacity: 0.25;
+}
+.cl-review.layout_balloon .cl-review-quote-text {
+  position: relative;
+  padding: 23px 30px 25px;
+  background-color: #eee;
+  border-radius: 5px;
+}
+.cl-review.layout_balloon .cl-review-quote-text:after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 35px;
+  bottom: -10px;
+  width: 20px;
+  height: 20px;
+  z-index: -1;
+  background-color: inherit;
+  -webkit-transform: rotateZ(45deg);
+  transform: rotateZ(45deg);
+}
+.cl-review.layout_balloon .cl-review-quote-text[style*="color:"] a {
+  color: inherit;
+}
+.cl-review.layout_balloon .cl-review-author {
+  padding: 20px 0 0 30px;
+}
+.cl-review.layout_balloon.with_avatar .cl-review-author {
+  padding-left: 15px;
+}
+.cl-review.layout_framed {
+  padding: 30px;
+  background-color: #eee;
+}
+.cl-review.layout_framed[style*="color:"] a {
+  color: inherit;
+}
+.cl-review.layout_centered {
+  text-align: center;
+}
+.cl-review.layout_centered .cl-review-author {
+  text-align: center;
+}
+.cl-review.layout_centered .cl-review-author-avatar {
+  float: none;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+}
+.cl-review.layout_centered .cl-review-author-name,
+.cl-review.layout_centered .cl-review-author-occupation {
+  display: block;
+  margin: 0;
+}
+.cl-review.layout_modern .cl-review-quote {
+  padding-left: 100px;
+  position: relative;
+}
+.cl-review.layout_modern .cl-review-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-align: center;
+  line-height: 80px;
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  background-color: #eee;
+}
+.cl-review.layout_modern .cl-review-icon:before {
+  content: '\f10d';
+  font-size: 30px;
+  font-family: fontawesome;
+}
+.cl-review.layout_modern .cl-review-quote-text q {
+  quotes: none;
+}
+.cl-review.layout_modern .cl-review-author-avatar {
+  float: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 80px;
+  width: 80px;
+  margin: 0;
+}
+.cl-review.layout_modern .cl-review-author-name {
+  display: inline;
+  margin-right: 8px;
+  padding: 0;
+}
+.cl-review.type_doc .cl-review-doc {
+  display: block;
+  cursor: zoom-in;
+  margin-bottom: 15px;
+}
+.cl-review.type_doc .cl-review-doc img {
+  display: block;
+}
+@media (min-width: 600px) {
+  .cl-review.type_doc .cl-review-doc {
+    float: left;
+    width: 47%;
+    margin-bottom: 0;
+  }
+  .cl-review.type_doc .cl-review-quote {
+    float: right;
+    width: 47%;
+  }
+  .cl-review.type_doc:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+.cl-review.type_video .cl-review-video {
+  margin-bottom: 15px;
+}
+.cl-review.type_video .cl-review-video iframe,
+.cl-review.type_video .cl-review-video video {
+  display: block;
+  height: auto !important;
+}
+@media (min-width: 600px) {
+  .cl-review.type_video .cl-review-video {
+    float: left;
+    width: 47%;
+    margin-bottom: 0;
+  }
+  .cl-review.type_video .cl-review-quote {
+    float: right;
+    width: 47%;
+  }
+  .cl-review.type_video:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}

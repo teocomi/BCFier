@@ -1,0 +1,15 @@
+.so-widget-sow-image-default-d6014b76747a .sow-image-container {
+  display: flex;
+  align-items: flex-start;
+}
+.so-widget-sow-image-default-d6014b76747a .sow-image-container > a {
+  display: inline-block;
+  
+  max-width: 100%;
+}
+.so-widget-sow-image-default-d6014b76747a .sow-image-container .so-widget-image {
+  display: block;
+  max-width: 100%;
+  
+  height: auto;
+}

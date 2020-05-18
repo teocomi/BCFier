@@ -1,0 +1,28 @@
+@font-face {
+    font-family: "sow-ionicons";
+    src: url("font/ionicons.eot?v=2.0.0");
+    src: url("font/ionicons.eot?v=2.0.0#iefix") format("embedded-opentype"),
+    url("font/ionicons.ttf?v=2.0.0") format("truetype"),
+    url("font/ionicons.woff?v=2.0.0") format("woff"),
+    url("font/ionicons.svg?v=2.0.0#Ionicons") format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.sow-icon-ionicons {
+    display: inline-block;
+    font-family: "sow-ionicons";
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    text-rendering: auto;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.sow-icon-ionicons[data-sow-icon]:before {
+    content: attr(data-sow-icon);
+}

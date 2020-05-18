@@ -1,0 +1,48 @@
+.cl-itext {
+  display: block;
+  position: relative;
+  padding: 0 !important;
+  margin: 10px 0;
+  font-size: 50px;
+  line-height: 1.4;
+  text-align: center;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+.cl-itext.align_left {
+  text-align: left;
+}
+.cl-itext.align_right {
+  text-align: right;
+}
+.cl-itext-part {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  text-align: left;
+  -webkit-transition-property: width, color;
+  transition-property: width, color;
+}
+.cl-itext-part.notransition {
+  -webkit-transition-property: none !important;
+  transition-property: none !important;
+}
+.cl-itext-part > span.measure {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+.cl-itext-part > span > span {
+  display: inline-block;
+  visibility: hidden;
+}
+.cl-itext-part > span > span[class^="animated_"] {
+  visibility: visible;
+}
+.cl-itext-part > span > span:last-child {
+  margin-right: -200px;
+}
+.cl-itext.dynamic_bold .dynamic {
+  font-weight: bold;
+}

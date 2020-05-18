@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\CefSharp.Wpf.79.1.350\build\CefSharp.Wpf.props" Condition="Exists('..\packages\CefSharp.Wpf.79.1.350\build\CefSharp.Wpf.props')" />
   <Import Project="..\packages\CefSharp.Common.79.1.350\build\CefSharp.Common.props" Condition="Exists('..\packages\CefSharp.Common.79.1.350\build\CefSharp.Common.props')" />
@@ -457,13 +457,14 @@
     <Compile Include="UserControls\AddView.xaml.cs">
       <DependentUpon>AddView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ConfigurationLoader.cs" />
+    <Compile Include="ConfigurationHandler.cs" />
     <Compile Include="Version.cs" />
     <Compile Include="ViewModels\OpenProjectSyncViewModel.cs" />
     <Compile Include="ViewModels\PanelViewModel.cs" />
     <Compile Include="WebViewIntegration\BcfierJavascriptInterop.cs" />
     <Compile Include="WebViewIntegration\BrowserManager.cs" />
     <Compile Include="WebViewIntegration\CefBrowserInitializer.cs" />
+    <Compile Include="WebViewIntegration\EmbeddedLandingPageHandler.cs" />
     <Compile Include="WebViewIntegration\IpcManager.cs" />
     <Compile Include="WebViewIntegration\JavaScriptBridge.cs" />
     <Compile Include="Windows\ComponentsList.xaml.cs">
@@ -581,6 +582,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <EmbeddedResource Include="WebViewIntegration\LandingPage\LandingPage.zip" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -599,6 +601,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Content Include="WebViewIntegration\LandingPage\index.html" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

@@ -1,5 +1,6 @@
 ﻿using Bcfier.Shared;
 using CefSharp;
+using CefSharp.Wpf;
 using Newtonsoft.Json;
 using System.Windows;
 
@@ -21,7 +22,7 @@ namespace Bcfier.WebViewIntegration
       // via the static 'Instance' property.
     }
 
-    private IWebBrowser _webBrowser;
+    private ChromiumWebBrowser _webBrowser;
     public static JavaScriptBridge Instance { get; } = new JavaScriptBridge();
 
     public event WebUIMessageReceivedEventHandler OnWebUIMessageReveived;
@@ -32,7 +33,7 @@ namespace Bcfier.WebViewIntegration
         isLoaded = true;
     }
 
-    public void SetWebBrowser(IWebBrowser webBrowser)
+    public void SetWebBrowser(ChromiumWebBrowser webBrowser)
     {
       if (_webBrowser != null)
       {
@@ -51,8 +52,23 @@ namespace Bcfier.WebViewIntegration
       {
         return;
       }
-      var eventArgs = new WebUIMessageEventArgs(messageType, trackingId, messagePayload);
-      OnWebUIMessageReveived?.Invoke(this, eventArgs);
+
+      if (messageType == MessageTypes.INSTANCE_SELECTED)
+      {
+        // This is the case at the beginning when the user selects which instance of OpenProject
+        // should be accessed. We're not relaying this to Revit.
+        HandleInstanceNameReceived(messagePayload);
+      }
+      else if (messageType == MessageTypes.LAST_INSTANCE_REQUESTED)
+      {
+        var lastInstanceUrl = ConfigurationHandler.LoadBcfierBrowserInitialAddressOrNull();
+        SendMessageToOpenProject(MessageTypes.LAST_INSTANCE, trackingId, lastInstanceUrl);
+      }
+      else
+      {
+        var eventArgs = new WebUIMessageEventArgs(messageType, trackingId, messagePayload);
+        OnWebUIMessageReveived?.Invoke(this, eventArgs);
+      }
     }
 
     public void SendMessageToOpenProject(string messageType, string trackingId, string messagePayload)
@@ -67,6 +83,28 @@ namespace Bcfier.WebViewIntegration
       {
         _webBrowser?.GetMainFrame()
           .ExecuteJavaScriptAsync($"{REVIT_BRIDGE_JAVASCRIPT_NAME}.sendMessageToOpenProject({encodedMessage})");
+      });
+    }
+
+    private void HandleInstanceNameReceived(string instanceName)
+    {
+      var urlToOpen = string.Empty;
+      if (instanceName.Contains("."))
+      {
+        // It's likely an absolute url
+        urlToOpen = instanceName;
+      }
+      else
+      {
+        // It's an OpenProject team / organization
+        urlToOpen = $"https://{instanceName}.openproject.org";
+      }
+
+      ConfigurationHandler.SaveInitialBrowserAddress(urlToOpen);
+
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        _webBrowser.Address = urlToOpen;
       });
     }
   }
