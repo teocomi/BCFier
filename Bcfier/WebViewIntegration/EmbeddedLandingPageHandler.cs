@@ -26,6 +26,8 @@ namespace Bcfier.WebViewIntegration
         // '/' comes from the uri, we need it to be '\' for the path
         .Replace("/", "\\");
       var currentFolder = Path.GetDirectoryName(currentAssemblyPath);
+      // We're versioning the folder so as to not have to do a direct file comparison of the contents
+      // in case an earlier version was aready present
       var landingPageFolder = Path.Combine(currentFolder, "LandingPage", VersionsService.Version);
       if (!Directory.Exists(landingPageFolder))
       {
