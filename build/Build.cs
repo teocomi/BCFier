@@ -73,6 +73,7 @@ class Build : NukeBuild
   }
 
   Target CreateEmbeddedLandingPageZip => _ => _
+    .DependsOn(Clean)
     .Executes(() =>
     {
       var landingPageFolder = RootDirectory / "BCFier" / "WebViewIntegration" / "LandingPage";
