@@ -1,4 +1,4 @@
-using Bcfier.Shared;
+﻿using Bcfier.Shared;
 using CefSharp;
 using CefSharp.Wpf;
 using Newtonsoft.Json;
@@ -101,7 +101,7 @@ namespace Bcfier.WebViewIntegration
       else
       {
         // It's an OpenProject team / organization
-        urlToOpen = $"https://{instanceName}.openproject.org";
+        urlToOpen = $"https://{instanceName}.openproject.com";
       }
 
       ConfigurationHandler.SaveInitialBrowserAddress(urlToOpen);
