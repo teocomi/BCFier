@@ -1,4 +1,4 @@
-﻿using Bcfier.Shared;
+using Bcfier.Shared;
 using CefSharp;
 using CefSharp.Wpf;
 using Newtonsoft.Json;
@@ -63,6 +63,10 @@ namespace Bcfier.WebViewIntegration
       {
         var lastInstanceUrl = ConfigurationHandler.LoadBcfierBrowserInitialAddressOrNull();
         SendMessageToOpenProject(MessageTypes.LAST_INSTANCE, trackingId, lastInstanceUrl);
+      }
+      else if (messageType == MessageTypes.FOCUS_REVIT_APPLICATION)
+      {
+        RevitMainWindowHandler.SetFocusToRevit();
       }
       else
       {

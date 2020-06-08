@@ -467,6 +467,7 @@
     <Compile Include="WebViewIntegration\EmbeddedLandingPageHandler.cs" />
     <Compile Include="WebViewIntegration\IpcManager.cs" />
     <Compile Include="WebViewIntegration\JavaScriptBridge.cs" />
+    <Compile Include="WebViewIntegration\RevitMainWindowHandler.cs" />
     <Compile Include="Windows\ComponentsList.xaml.cs">
       <DependentUpon>ComponentsList.xaml</DependentUpon>
     </Compile>
