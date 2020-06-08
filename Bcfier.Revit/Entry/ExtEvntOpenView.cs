@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ using Autodesk.Revit.UI;
 using Bcfier.Revit.Data;
 using Bcfier.Shared;
 using Bcfier.Shared.ViewModels.Bcf;
+using Bcfier.Revit.Extensions;
 
 namespace Bcfier.Revit.Entry
 {
@@ -97,6 +98,8 @@ namespace Bcfier.Revit.Entry
         {
           if (v.PerspectiveCamera == null)
             return;
+
+          v.EnsurePerspectiveCameraVectorsAreOrthogonal();
 
           //not used since the fov cannot be changed in Revit
           var zoom = v.PerspectiveCamera.FieldOfView;
