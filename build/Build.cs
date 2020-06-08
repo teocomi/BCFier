@@ -149,6 +149,7 @@ namespace Bcfier
   Target CompileReleaseConfigurations => _ => _
       .DependsOn(Clean)
       .DependsOn(Restore)
+      .DependsOn(CreateEmbeddedLandingPageZip)
       .Executes(() =>
       {
         // This array should specify the configuration and the used package version
