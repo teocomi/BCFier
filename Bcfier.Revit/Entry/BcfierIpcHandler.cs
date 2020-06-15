@@ -101,18 +101,6 @@ namespace Bcfier.Revit.Entry
           return;
         }
 
-        if (uidoc.ActiveView.ViewType == ViewType.ThreeD)
-        {
-          var view3D = (View3D)uidoc.ActiveView;
-          if (view3D.IsPerspective)
-          {
-            MessageBox.Show("This operation is not allowed in a Perspective View.\nPlease close the current window(s) and retry.",
-                "Warning!", MessageBoxButton.OK, MessageBoxImage.Warning);
-            return;
-          }
-
-        }
-
         ExtEvntOpenView.ShowBcfViewpoint(_uiapp, view);
       }
       catch (System.Exception ex1)
