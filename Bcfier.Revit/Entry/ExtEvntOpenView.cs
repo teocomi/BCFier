@@ -40,7 +40,6 @@ namespace Bcfier.Revit.Entry
         else if (v.PerspectiveCamera != null)
         {
           ShowPerspectiveView(v, doc, uidoc);
-
         }
         else
         {
