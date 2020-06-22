@@ -73,6 +73,8 @@ namespace OpenProject.WebViewIntegration
       {
         var eventArgs = new WebUIMessageEventArgs(messageType, trackingId, messagePayload);
         OnWebUIMessageReveived?.Invoke(this, eventArgs);
+        // For some UI operations, revit should be focused
+        RevitMainWindowHandler.SetFocusToRevit();
       }
     }
 
