@@ -3,6 +3,7 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using ZetaIpc.Runtime.Helper;
 using ZetaIpc.Runtime.Server;
@@ -81,6 +82,15 @@ namespace OpenProject.Revit.Entry
         var ipcHandler = new BcfierIpcHandler(commandData.Application);
         var revitServerPort = ipcHandler.StartLocalServerAndReturnPort();
         var bcfierWinProcessPath = ConfigurationLoader.GetBcfierWinExecutablePath();
+
+        if (!File.Exists(bcfierWinProcessPath))
+        {
+          // The configuration can be used to override the path, if there's no valid file given then
+          // the default installation location is used
+          var defaultInstallationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "OpenProject Revit AddIn", "OpenProject.Windows.exe");
+          bcfierWinProcessPath = defaultInstallationPath;
+        }
+
         var bcfierWinServerPort = FreePortHelper.GetFreePort();
         var bcfWinProcessArguments = $"ipc {bcfierWinServerPort} {revitServerPort}";
         BcfierWinProcess = Process.Start(bcfierWinProcessPath, bcfWinProcessArguments);
