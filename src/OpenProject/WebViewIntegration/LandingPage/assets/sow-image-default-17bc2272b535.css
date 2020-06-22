@@ -1,0 +1,16 @@
+.so-widget-sow-image-default-17bc2272b535 .sow-image-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+.so-widget-sow-image-default-17bc2272b535 .sow-image-container > a {
+  display: inline-block;
+  
+  max-width: 100%;
+}
+.so-widget-sow-image-default-17bc2272b535 .sow-image-container .so-widget-image {
+  display: block;
+  max-width: 100%;
+  
+  height: auto;
+}

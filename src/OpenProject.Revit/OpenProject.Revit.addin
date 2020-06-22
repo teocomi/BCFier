@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<RevitAddIns>
+  <AddIn Type="Application">
+    <Name>OpenProject for Revit</Name>
+    <Assembly>OpenProject.Revit\OpenProject.Revit.dll</Assembly>
+    <AddInId>5f96a79f-0e28-4d02-be10-251c8032a270</AddInId>
+    <FullClassName>OpenProject.Revit.Entry.AppMain</FullClassName>
+    <VendorId>OpenProject</VendorId>
+    <VendorDescription>OpenProject</VendorDescription>
+  </AddIn>
+</RevitAddIns>

@@ -1,0 +1,23 @@
+﻿<Window
+  x:Class="OpenProject.Windows.SnapWin"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:valueConverters="clr-namespace:OpenProject.Data.ValueConverters"
+  Name="SnapWindow"
+  Title="snapshot.png"
+  MaxHeight="800"
+  Icon="/OpenProject;component/Assets/icon.ico"
+  SizeToContent="WidthAndHeight">
+  <Window.Resources>
+    <valueConverters:PathToImageConv x:Key="pathToImageConv" />
+  </Window.Resources>
+  <Grid>
+    <Border Name="border" Grid.Row="1">
+      <Image
+        Name="snap"
+        VerticalAlignment="Stretch"
+        RenderTransformOrigin="0.5,0.5"
+        Source="{Binding Converter={StaticResource pathToImageConv}}" />
+    </Border>
+  </Grid>
+</Window>

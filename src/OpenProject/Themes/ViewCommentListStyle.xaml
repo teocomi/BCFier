@@ -1,0 +1,28 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="Colors.xaml" />
+  </ResourceDictionary.MergedDictionaries>
+  <!--  Style for the ViewComment List List  -->
+  <Style x:Key="ViewCommentListStyle" TargetType="{x:Type ListViewItem}">
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="Margin" Value="0" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ListBoxItem">
+          <Border
+            Name="Border"
+            Margin="15,0,5,10"
+            Padding="0"
+            HorizontalAlignment="Stretch"
+            Background="{StaticResource BackgroundLight}"
+            BorderBrush="{StaticResource BackgroundDark}"
+            BorderThickness="1"
+            SnapsToDevicePixels="true">
+            <ContentPresenter />
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+</ResourceDictionary>

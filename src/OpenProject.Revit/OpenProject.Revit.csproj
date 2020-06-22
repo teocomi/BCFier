@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net472</TargetFramework>
+		<PlatformTarget>x64</PlatformTarget>
+		<Platforms>x64</Platforms>
+		<Configurations>Debug;Release;Debug-2020;Debug-2019</Configurations>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Revit2020 Condition="$(Configuration.Contains('2020'))">true</Revit2020>
+		<Revit2019 Condition="$(Configuration.Contains('2019'))">true</Revit2019>
+		<RevitVersion Condition="$(Configuration.Contains('2020'))">2020</RevitVersion>
+		<RevitVersion Condition="$(Configuration.Contains('2019'))">2019</RevitVersion>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<DefineConstants Condition="'$(Revit2020)' == true">$(DefineConstants);Version2020</DefineConstants>
+		<DefineConstants Condition="'$(Revit2019)' == true">$(DefineConstants);Version2019</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Assets\BCFierIcon16x16.png" />
+		<EmbeddedResource Include="Assets\BCFierIcon32x32.png" />
+		<EmbeddedResource Include="Assets\icon.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Condition="'$(Revit2020)' == true" Include="Revit_All_Main_Versions_API_x64" Version="2020.0.1" />
+		<PackageReference Condition="'$(Revit2019)' == true" Include="Revit_All_Main_Versions_API_x64" Version="2019.0.1" />
+		<PackageReference Include="ZetaIpc" Version="1.0.0.9" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\OpenProject.Shared\OpenProject.Shared.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="PresentationCore" />
+		<Reference Include="PresentationFramework" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="OpenProject.Revit.Configuration.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
+		</None>
+		<None Update="OpenProject.Revit.addin">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<Target Name="TestTarget" AfterTargets="Build" Condition="'$(Revit2019)' == true Or '$(Revit2020)' == true">
+		<ItemGroup>
+			<SourceDLLs Include="$(TargetDir)**\*.*" />
+			<SourceManifest Include="$(TargetDir)*.addin" />
+		</ItemGroup>
+		<Copy SourceFiles="@(SourceDLLs)" DestinationFolder="$(AppData)\Autodesk\REVIT\Addins\$(RevitVersion)\$(ProjectName)\%(RecursiveDir)" />
+		<Copy SourceFiles="@(SourceManifest)" DestinationFolder="$(AppData)\Autodesk\REVIT\Addins\$(RevitVersion)\" />
+	</Target>
+	
+</Project>
