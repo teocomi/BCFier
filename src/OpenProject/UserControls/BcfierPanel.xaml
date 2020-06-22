@@ -33,14 +33,7 @@
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" />
     </Grid.ColumnDefinitions>
-
-    <wpf:ChromiumWebBrowser x:Name="Browser"
-                            >
+    <wpf:ChromiumWebBrowser x:Name="Browser">
     </wpf:ChromiumWebBrowser>
-
-
-
-
   </Grid>
 </UserControl>
-
