@@ -48,13 +48,16 @@
 		</None>
 	</ItemGroup>
 
-	<Target Name="TestTarget" AfterTargets="Build" Condition="'$(Revit2019)' == true Or '$(Revit2020)' == true">
+	<Target Name="TestTarget" AfterTargets="Build" Condition="$(Configuration.Contains('Debug')) And '$(BuildingInsideVisualStudio)' == 'true'">
+		<Exec Command="dotnet build -c Debug -o bin/TempDebug" WorkingDirectory="$(MSBuildThisFileDirectory)\..\..\src\OpenProject.Windows" />
 		<ItemGroup>
 			<SourceDLLs Include="$(TargetDir)**\*.*" />
 			<SourceManifest Include="$(TargetDir)*.addin" />
+			<OpenProjectWin Include="$(SolutionDir)\src\OpenProject.Windows\bin\TempDebug\**\*.*" />
 		</ItemGroup>
 		<Copy SourceFiles="@(SourceDLLs)" DestinationFolder="$(AppData)\Autodesk\REVIT\Addins\$(RevitVersion)\$(ProjectName)\%(RecursiveDir)" />
 		<Copy SourceFiles="@(SourceManifest)" DestinationFolder="$(AppData)\Autodesk\REVIT\Addins\$(RevitVersion)\" />
+		<Copy SourceFiles="@(OpenProjectWin)" DestinationFolder="$(AppData)\Autodesk\REVIT\Addins\$(RevitVersion)\$(ProjectName)\OpenProject.Windows\%(RecursiveDir)" />
 	</Target>
 	
 </Project>
