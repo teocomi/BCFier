@@ -82,7 +82,6 @@ namespace OpenProject.Revit.Entry
         var ipcHandler = new BcfierIpcHandler(commandData.Application);
         var revitServerPort = ipcHandler.StartLocalServerAndReturnPort();
         var bcfierWinProcessPath = ConfigurationLoader.GetBcfierWinExecutablePath();
-
         if (!File.Exists(bcfierWinProcessPath))
         {
           // The configuration can be used to override the path, if there's no valid file given then

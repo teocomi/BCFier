@@ -34,7 +34,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Assets\BCFierIcon16x16.png" />
     <EmbeddedResource Include="Assets\BCFierIcon32x32.png" />
-    <EmbeddedResource Include="WebViewIntegration\LandingPage\LandingPage.zip" />
+	<EmbeddedResource Include="WebViewIntegration\LandingPage\LandingPage.zip" />
+	<EmbeddedResource Include="OpenProject.Configuration.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,13 +44,6 @@
 
   <ItemGroup>
     <Resource Include="Assets\icon.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="OpenProject.Configuration.json">
-		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		<CopyToPublishDirectory>Always</CopyToPublishDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

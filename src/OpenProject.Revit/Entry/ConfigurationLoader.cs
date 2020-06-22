@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace OpenProject.Revit.Entry
 {
@@ -16,7 +17,7 @@ namespace OpenProject.Revit.Entry
         {
           var json = sr.ReadToEnd();
           var jObject = JObject.Parse(json);
-          var bcfierWinExecutablePath = jObject["BcfierWinExecutablePath"].ToString();
+          var bcfierWinExecutablePath = jObject["OpenProjectWindowsExecutablePath"].ToString();
 
           if (!System.IO.Path.IsPathRooted(bcfierWinExecutablePath))
           {
@@ -26,7 +27,7 @@ namespace OpenProject.Revit.Entry
 
           if (!File.Exists(bcfierWinExecutablePath))
           {
-            throw new Exception($"The Bcfier.Win.exe path in the configuration is given as: \"{bcfierWinExecutablePath}\", but the file could not be found.");
+            throw new Exception($"The OpenProject.Windows.exe path in the configuration is given as: \"{bcfierWinExecutablePath}\", but the file could not be found.");
           }
 
           return bcfierWinExecutablePath;
@@ -36,11 +37,24 @@ namespace OpenProject.Revit.Entry
 
     private static string GetConfigurationFilePath()
     {
-      // The configuration file should always be adjacent to the Bcfier.dll assembly
-      var currentFolder = GetCurrentDllDirectory();
+      var configPath = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+        "OpenProject.Revit",
+        "OpenProject.Revit.Configuration.json");
 
-      var configurationFilePath = Path.Combine(currentFolder, "OpenProject.Revit.Configuration.json");
-      return configurationFilePath;
+      if (!File.Exists(configPath))
+      {
+        // If the file doesn't yet exist, the default one is created
+        using (var configStream = typeof(ConfigurationLoader).Assembly.GetManifestResourceStream("OpenProject.Revit.OpenProject.Revit.Configuration.json"))
+        {
+          using (var fs = File.Create(configPath))
+          {
+            configStream.CopyTo(fs);
+          }
+        }
+      }
+
+      return configPath;
     }
 
     private static string GetCurrentDllDirectory()

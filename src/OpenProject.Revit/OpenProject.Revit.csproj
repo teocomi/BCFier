@@ -23,6 +23,7 @@
 		<EmbeddedResource Include="Assets\BCFierIcon16x16.png" />
 		<EmbeddedResource Include="Assets\BCFierIcon32x32.png" />
 		<EmbeddedResource Include="Assets\icon.ico" />
+		<EmbeddedResource Include="OpenProject.Revit.Configuration.json" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -41,10 +42,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="OpenProject.Revit.Configuration.json">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
-		</None>
 		<None Update="OpenProject.Revit.addin">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>

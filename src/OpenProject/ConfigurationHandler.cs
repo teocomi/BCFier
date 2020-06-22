@@ -42,14 +42,24 @@ namespace OpenProject
 
     private static string GetConfigurationFilePath()
     {
-      // The configuration file should always be adjacent to the Bcfier.dll assembly
-      var currentAssemblyPathUri = Assembly.GetExecutingAssembly().CodeBase;
-      var currentAssemblyPath = Uri.UnescapeDataString(new Uri(currentAssemblyPathUri).AbsolutePath)
-        // '/' comes from the uri, we need it to be '\' for the path
-        .Replace("/", "\\");
-      var currentFolder = Path.GetDirectoryName(currentAssemblyPath);
-      var configurationFilePath = Path.Combine(currentFolder, "OpenProject.Configuration.json");
-      return configurationFilePath;
+      var configPath = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+        "OpenProject.Revit",
+        "OpenProject.Configuration.json");
+
+      if (!File.Exists(configPath))
+      {
+        // If the file doesn't yet exist, the default one is created
+        using (var configStream = typeof(ConfigurationHandler).Assembly.GetManifestResourceStream("OpenProject.OpenProject.Configuration.json"))
+        {
+          using (var fs = File.Create(configPath))
+          {
+            configStream.CopyTo(fs);
+          }
+        }
+      }
+
+      return configPath;
     }
   }
 }
