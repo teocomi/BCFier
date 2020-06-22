@@ -1,5 +1,6 @@
 ﻿using CefSharp;
 using CefSharp.Wpf;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace OpenProject.WebViewIntegration
@@ -17,9 +18,9 @@ namespace OpenProject.WebViewIntegration
       {
         if (!e.IsLoading) // Not loading means the load is complete
         {
-          Application.Current.Dispatcher.Invoke(() =>
+          Application.Current.Dispatcher.Invoke(async () =>
           {
-            InitializeRevitBridgeIfNotPresent();
+            await InitializeRevitBridgeIfNotPresentAsync();
           });
         }
       };
@@ -35,9 +36,10 @@ namespace OpenProject.WebViewIntegration
       };
     }
 
-    private void InitializeRevitBridgeIfNotPresent()
+    private async Task InitializeRevitBridgeIfNotPresentAsync()
     {
-      if (_webBrowser.JavascriptObjectRepository.IsBound(JavaScriptBridge.REVIT_BRIDGE_JAVASCRIPT_NAME))
+      var revitBridgeIsPresentCheckResponse = await _webBrowser.GetMainFrame().EvaluateScriptAsync("window." + JavaScriptBridge.REVIT_BRIDGE_JAVASCRIPT_NAME);
+      if (revitBridgeIsPresentCheckResponse?.Result != null)
       {
         // No need to register the bridge since it's already bound
         return;
