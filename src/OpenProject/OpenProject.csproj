@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <PlatformTarget>x64</PlatformTarget>
-    <Platforms>AnyCPU;x64</Platforms>
+    <Platform>x64</Platform>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,24 +26,9 @@
     <None Remove="WebViewIntegration\LandingPage\LandingPage.zip" />
   </ItemGroup>
 
-	<!--
-  <ItemGroup>
-    <Page Remove="SampleBcfFile.xaml" />
-  </ItemGroup>
-	-->
-
   <ItemGroup>
     <Content Include="WebViewIntegration\LandingPage\index.html" />
   </ItemGroup>
-
-	<!--
-  <ItemGroup>
-    <DesignData Include="SampleBcfFile.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </DesignData>
-  </ItemGroup>
-	-->
 
   <ItemGroup>
     <EmbeddedResource Include="Assets\BCFierIcon16x16.png" />
@@ -59,100 +44,11 @@
     <Resource Include="Assets\icon.ico" />
   </ItemGroup>
 
-	<!--
   <ItemGroup>
-    <Compile Update="Themes\IssueListStyle.xaml.cs">
-      <DependentUpon>IssueListStyle.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="UserControls\AddView.xaml.cs">
-      <DependentUpon>AddView.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="UserControls\BcfierPanel.xaml.cs">
-      <DependentUpon>BcfierPanel.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="UserControls\BcfReportPanel.xaml.cs">
-      <DependentUpon>BcfReportPanel.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Windows\ComponentsList.xaml.cs">
-      <DependentUpon>ComponentsList.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Windows\NewVersion.xaml.cs">
-      <DependentUpon>NewVersion.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Windows\OpenProjectSync.xaml.cs">
-      <DependentUpon>OpenProjectSync.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Windows\Settings.xaml.cs">
-      <DependentUpon>Settings.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Windows\SnapWin.xaml.cs">
-      <DependentUpon>SnapWin.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-	
-	-->
-
-  <ItemGroup>
-    <None Update="Bcfier.Configuration.json">
+    <None Update="OpenProject.Configuration.json">
 		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		<CopyToPublishDirectory>Always</CopyToPublishDirectory>
     </None>
   </ItemGroup>
-
-	<!--
-  <ItemGroup>
-    <Page Update="Themes\ButtonStyles.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Themes\Colors.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Themes\Generic.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Themes\Icons.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Themes\IssueListStyle.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Themes\ScrollViewer.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Themes\ViewCommentDataTemplate.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Themes\ViewCommentListStyle.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Themes\VisibilityAnimations.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="UserControls\AddView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="UserControls\BcfierPanel.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="UserControls\BcfReportPanel.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Windows\ComponentsList.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Windows\NewVersion.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Windows\OpenProjectSync.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Windows\Settings.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Windows\SnapWin.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  -->
 
 </Project>

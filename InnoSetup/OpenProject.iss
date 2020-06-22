@@ -1,23 +1,22 @@
 ;defining variables
 #define Repository     "..\."
-#define MyAppName      "BCFier"
-#define MyAppVersion GetFileVersion("..\Bcfier\bin\Release\Bcfier.dll")
-#define MyAppPublisher "Matteo Cominetti"
-#define MyAppURL       "http://www.bcfier.com/"
-#define MyAppExeName   "Bcfier.Win.exe"
+#define MyAppName      "OpenProject Revit AddIn"
+#define MyAppVersion GetFileVersion("..\output\OpenProject.Windows\OpenProject.Windows.exe")
+#define MyAppPublisher "OpenProject"
+#define MyAppURL       "http://www.openproject.org/"
+#define MyAppExeName   "OpenProject.Revit.exe"
 
-#define RevitAppName  "Bcfier.Revit"
+#define RevitAppName  "OpenProject.Revit"
 #define RevitAddinFolder "{sd}\ProgramData\Autodesk\Revit\Addins"
 #define RevitFolder19 RevitAddinFolder+"\2019\"+RevitAppName
 #define RevitAddin19  RevitAddinFolder+"\2019\"
 #define RevitFolder20 RevitAddinFolder+"\2020\"+RevitAppName
 #define RevitAddin20  RevitAddinFolder+"\2020\"
 
-#define WinAppName    "Bcfier.Win"
-
+#define WinAppName    "OpenProject.Windows"
 
 [Setup]
-AppId={{0d553633-80f8-490b-84d6-9d3d6ad4196d}
+AppId={{5f96a79f-0e28-4d02-be10-251c8032a270}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppName} {#MyAppVersion}
@@ -25,13 +24,13 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={pf}\{#MyAppName}
+DefaultDirName={pf64}\{#MyAppName}
 DisableDirPage=yes
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 DisableWelcomePage=no
 OutputDir={#Repository}\output
-OutputBaseFilename=BCFier
+OutputBaseFilename=OpenProject.Revit
 SetupIconFile={#Repository}\Assets\icon.ico
 Compression=lzma
 SolidCompression=yes
@@ -41,41 +40,28 @@ ChangesAssociations=yes
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
-[Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: checkedonce
-
 [Components]
 Name: revit19; Description: Addin for Autodesk Revit 2019;  Types: full
 Name: revit20; Description: Addin for Autodesk Revit 2020;  Types: full
-Name: standalone; Description: BCFier for Windows; Types: full
 
 [Dirs]
 Name: "{app}"; Permissions: everyone-full 
 
 [Files]
-;STANDALONE
-Source: "{#Repository}\output\{#WinAppName}\{#WinAppName}.exe"; DestDir: "{app}"; Flags: ignoreversion; Permissions: everyone-full; Components: standalone
-Source: "{#Repository}\output\{#WinAppName}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs; Components: standalone
-Source: "{#Repository}\Assets\BCF.ico"; DestDir: "{app}"; Flags: ignoreversion; Components: standalone
+; Windows App
+Source: "{#Repository}\output\{#WinAppName}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs; Components: revit19 revit20
 
 ;REVIT 2019                                                                                                                                    
-Source: "{#Repository}\output\2019\{#RevitAppName}\*"; DestDir: "{#RevitFolder19}"; Flags: ignoreversion recursesubdirs; Components: revit19 
-Source: "{#Repository}\output\2019\{#RevitAppName}\{#RevitAppName}.addin"; DestDir: "{#RevitAddin19}"; Flags: ignoreversion; Components: revit19
+Source: "{#Repository}\output\{#RevitAppName}\Release-2019\*"; DestDir: "{#RevitFolder19}"; Flags: ignoreversion recursesubdirs; Components: revit19 
+Source: "{#Repository}\output\{#RevitAppName}\Release-2019\*.addin"; DestDir: "{#RevitAddin19}"; Flags: ignoreversion; Components: revit19
 
 ;REVIT 2020                                                                                                                                    
-Source: "{#Repository}\output\2020\{#RevitAppName}\*"; DestDir: "{#RevitFolder20}"; Flags: ignoreversion recursesubdirs; Components: revit20 
-Source: "{#Repository}\output\2020\{#RevitAppName}\{#RevitAppName}.addin"; DestDir: "{#RevitAddin20}"; Flags: ignoreversion; Components: revit20
+Source: "{#Repository}\output\{#RevitAppName}\Release-2020\*"; DestDir: "{#RevitFolder20}"; Flags: ignoreversion recursesubdirs; Components: revit20 
+Source: "{#Repository}\output\{#RevitAppName}\Release-2020\*.addin"; DestDir: "{#RevitAddin20}"; Flags: ignoreversion; Components: revit20
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
-
-[Registry]
-Root: HKCR; Subkey: ".bcfzip"; ValueType: string; ValueName: ""; ValueData: "{#MyAppName}"; Flags: uninsdeletevalue;  Components: standalone
-Root: HKCR; Subkey: "{#MyAppName}"; ValueType: string; ValueName: ""; ValueData: "BCF File"; Flags: uninsdeletekey;  Components: standalone
-Root: HKCR; Subkey: "{#MyAppName}\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\BCF.ico"; Components: standalone
-Root: HKCR; Subkey: "{#MyAppName}\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}""""%1"""; Components: standalone
 
 ;checks if minimun requirements are met
 [Code]

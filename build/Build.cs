@@ -1,6 +1,7 @@
 using Nuke.Common;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
+using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
@@ -76,7 +77,7 @@ class Build : NukeBuild
     .DependsOn(Clean)
     .Executes(() =>
     {
-      var landingPageFolder = RootDirectory / "BCFier" / "WebViewIntegration" / "LandingPage";
+      var landingPageFolder = RootDirectory / "src" / "OpenProject" / "WebViewIntegration" / "LandingPage";
       var zipOutputPath = landingPageFolder / "LandingPage.zip";
       if (File.Exists(zipOutputPath))
       {
@@ -151,92 +152,49 @@ namespace OpenProject.Shared
       .DependsOn(Clean)
       .DependsOn(Restore)
       .DependsOn(CreateEmbeddedLandingPageZip)
+      .DependsOn(WriteVersion)
       .Executes(() =>
       {
-        // This array should specify the configuration and the used package version
-        // for the Revit API package
-        var releaseConfigurations = new[,]
-        {
-          { "2020", "2020.0.1" },
-          { "2019", "2019.0.1" }
-        };
-
-        MSBuild(opt => opt
-          .SetVerbosity(MSBuildVerbosity.Quiet)
-          .SetTargetPlatform(MSBuildTargetPlatform.x64)
-          .SetProjectFile(Solution.Directory / "Bcfier.Win" / "Bcfier.Win.csproj")
-          .SetConfiguration("Release-2020")
-          .SetOutDir(OutputDirectory / "Bcfier.Win")
+        DotNetPublish(c => c
+          .SetProject(RootDirectory / "src" / "OpenProject.Windows" / "OpenProject.Windows.csproj")
+          .SetConfiguration("Release x64")
           .SetAssemblyVersion(GitVersion.GetNormalizedAssemblyVersion())
           .SetFileVersion(GitVersion.GetNormalizedFileVersion())
-          .SetInformationalVersion(GitVersion.InformationalVersion));
+          .SetInformationalVersion(GitVersion.InformationalVersion)
+          .SetOutput(OutputDirectory / "OpenProject.Windows")
+          .SetSelfContained(true)
+          .SetRuntime("win-x64"));
 
-        return;
-
-        var csprojPath = Solution.Directory / "Bcfier.Revit" / "Bcfier.Revit.csproj";
-        var originalCsproj = ReadAllText(csprojPath);
-        var xDoc = XDocument.Parse(originalCsproj);
-        var revitApiVersionElement = xDoc.Root
-        .Descendants()
-        .Where(d => d.Name.LocalName == "Version"
-          && d.Parent.Name.LocalName == "PackageReference"
-          && d.Parent.Attribute("Include").Value == "Revit_All_Main_Versions_API_x64")
-          .Single();
-        var originalRevitApiVersion = revitApiVersionElement.Value;
-
-        try
+        var revitConfigurations = new[]
         {
-          for (var i = 0; i < releaseConfigurations.Length / 2; i++)
-          {
-            revitApiVersionElement.Value = releaseConfigurations[i, 1];
-            WriteAllText(csprojPath, ToStringWithDeclaration(xDoc));
-            // To ensure the file is written to disk
-            Task.Delay(1_000).ConfigureAwait(false).GetAwaiter().GetResult();
-            RestorePackages();
-            var configuration = releaseConfigurations[i, 0];
-            MSBuild(opt => opt
-                .SetVerbosity(MSBuildVerbosity.Quiet)
-                .SetProjectFile(Solution.Directory / "Bcfier.Revit" / "Bcfier.Revit.csproj")
-                .SetConfiguration($"Release-{configuration}")
-                .SetOutDir(OutputDirectory / configuration / "Bcfier.Revit")
-                .SetAssemblyVersion(GitVersion.GetNormalizedAssemblyVersion())
-                .SetFileVersion(GitVersion.GetNormalizedFileVersion())
-                .SetInformationalVersion(GitVersion.InformationalVersion));
+          "Release-2019",
+          "Release-2020"
+        };
 
-            CopyDirectoryRecursively(OutputDirectory / "Bcfier.Win", OutputDirectory / configuration / "Bcfier.Revit" / "Bcfier.Win");
-          }
-        }
-        finally
-        {
-          revitApiVersionElement.Value = originalRevitApiVersion;
-          WriteAllText(csprojPath, ToStringWithDeclaration(xDoc));
-        }
+        DotNetBuild(c => c
+          .SetProjectFile(RootDirectory / "src" / "OpenProject.Revit" / "OpenProject.Revit.csproj")
+          .SetAssemblyVersion(GitVersion.GetNormalizedAssemblyVersion())
+          .SetFileVersion(GitVersion.GetNormalizedFileVersion())
+          .SetInformationalVersion(GitVersion.InformationalVersion)
+          .CombineWith(cc => revitConfigurations
+            .Select(config => cc
+              .SetConfiguration(config)
+              .SetOutputDirectory(OutputDirectory / "OpenProject.Revit" / config))));
+
+        OutputDirectory.GlobFiles("**/*.pdb",
+            "**/*.txt",
+            "**/*.xml",
+            "**/*.XML")
+          .ForEach(DeleteFile);
       });
-
-  public static string ToStringWithDeclaration(XDocument doc)
-  {
-    if (doc == null)
-    {
-      throw new ArgumentNullException("doc");
-    }
-    var builder = new StringBuilder();
-    using (var writer = new StringWriter(builder))
-    {
-      doc.Save(writer);
-    }
-    return builder.ToString();
-  }
 
   Target CreateSetup => _ => _
       .DependsOn(CompileReleaseConfigurations)
       .Executes(() =>
       {
-        // TODO no longer offer standalone
-        // TODO more (previous) Revit versions
-
         // The Inno Setup tool generates a single, self contained setup application
         // in the root directory as BCFier.exe. This can be distributed for installation
-        InnoSetup($"{RootDirectory / "InnoSetup" / "BCFier.iss"}");
+        InnoSetup($"{RootDirectory / "InnoSetup" / "OpenProject.iss"}");
       });
 
   Target PublishGitHubRelease => _ => _
@@ -248,7 +206,7 @@ namespace OpenProject.Shared
         var isStableRelease = GitVersion.BranchName.Equals("master") || GitVersion.BranchName.Equals("origin/master");
 
         var repositoryInfo = GetGitHubRepositoryInfo(GitRepository);
-        var installationFile = GlobFiles(OutputDirectory, "BCFier.exe").NotEmpty().ToArray();
+        var installationFile = GlobFiles(OutputDirectory, "OpenProject.Revit.exe").NotEmpty().ToArray();
 
         await PublishRelease(x => x
               .SetPrerelease(!isStableRelease)

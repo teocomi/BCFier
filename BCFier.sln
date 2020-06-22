@@ -16,10 +16,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C185EC12-235E-4F88-8831-91F677F8DC90}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		InnoSetup\BCFier.iss = InnoSetup\BCFier.iss
 		CHANGELOG.md = CHANGELOG.md
 		GitVersion.yml = GitVersion.yml
 		Jenkinsfile = Jenkinsfile
+		InnoSetup\OpenProject.iss = InnoSetup\OpenProject.iss
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -799,8 +799,8 @@ Global
 		{8E95AEFD-8036-4588-BE15-9D852260B83A}.Debug-2019|x86.Build.0 = Debug|Any CPU
 		{8E95AEFD-8036-4588-BE15-9D852260B83A}.Debug-2020|Any CPU.ActiveCfg = Debug|Any CPU
 		{8E95AEFD-8036-4588-BE15-9D852260B83A}.Debug-2020|Any CPU.Build.0 = Debug|Any CPU
-		{8E95AEFD-8036-4588-BE15-9D852260B83A}.Debug-2020|x64.ActiveCfg = Debug|x64
-		{8E95AEFD-8036-4588-BE15-9D852260B83A}.Debug-2020|x64.Build.0 = Debug|x64
+		{8E95AEFD-8036-4588-BE15-9D852260B83A}.Debug-2020|x64.ActiveCfg = Debug|Any CPU
+		{8E95AEFD-8036-4588-BE15-9D852260B83A}.Debug-2020|x64.Build.0 = Debug|Any CPU
 		{8E95AEFD-8036-4588-BE15-9D852260B83A}.Debug-2020|x86.ActiveCfg = Debug|Any CPU
 		{8E95AEFD-8036-4588-BE15-9D852260B83A}.Debug-2020|x86.Build.0 = Debug|Any CPU
 		{8E95AEFD-8036-4588-BE15-9D852260B83A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -889,8 +889,8 @@ Global
 		{171002DA-A573-4549-BBB5-708277683B4D}.Debug-2020|x86.Build.0 = Debug|Any CPU
 		{171002DA-A573-4549-BBB5-708277683B4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{171002DA-A573-4549-BBB5-708277683B4D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{171002DA-A573-4549-BBB5-708277683B4D}.Release|x64.ActiveCfg = Release|Any CPU
-		{171002DA-A573-4549-BBB5-708277683B4D}.Release|x64.Build.0 = Release|Any CPU
+		{171002DA-A573-4549-BBB5-708277683B4D}.Release|x64.ActiveCfg = Release|x64
+		{171002DA-A573-4549-BBB5-708277683B4D}.Release|x64.Build.0 = Release|x64
 		{171002DA-A573-4549-BBB5-708277683B4D}.Release|x86.ActiveCfg = Release|Any CPU
 		{171002DA-A573-4549-BBB5-708277683B4D}.Release|x86.Build.0 = Release|Any CPU
 		{171002DA-A573-4549-BBB5-708277683B4D}.Release-2015|Any CPU.ActiveCfg = Release|Any CPU
@@ -973,8 +973,8 @@ Global
 		{2388D458-990B-4573-B1EF-E13E27C3A003}.Debug-2020|x86.Build.0 = Debug|Any CPU
 		{2388D458-990B-4573-B1EF-E13E27C3A003}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2388D458-990B-4573-B1EF-E13E27C3A003}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2388D458-990B-4573-B1EF-E13E27C3A003}.Release|x64.ActiveCfg = Release|Any CPU
-		{2388D458-990B-4573-B1EF-E13E27C3A003}.Release|x64.Build.0 = Release|Any CPU
+		{2388D458-990B-4573-B1EF-E13E27C3A003}.Release|x64.ActiveCfg = Release|x64
+		{2388D458-990B-4573-B1EF-E13E27C3A003}.Release|x64.Build.0 = Release|x64
 		{2388D458-990B-4573-B1EF-E13E27C3A003}.Release|x86.ActiveCfg = Release|Any CPU
 		{2388D458-990B-4573-B1EF-E13E27C3A003}.Release|x86.Build.0 = Release|Any CPU
 		{2388D458-990B-4573-B1EF-E13E27C3A003}.Release-2015|Any CPU.ActiveCfg = Release|Any CPU
