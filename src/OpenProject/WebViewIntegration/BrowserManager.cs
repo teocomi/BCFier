@@ -19,30 +19,42 @@ namespace OpenProject.WebViewIntegration
         {
           Application.Current.Dispatcher.Invoke(() =>
           {
-            // Register the bridge between JS and C#
-            // This also registers the callback that should be bound to by OpenProject to receive messages from BCFier
-            _webBrowser.JavascriptObjectRepository.UnRegisterAll();
-            _webBrowser.GetMainFrame().ExecuteJavaScriptAsync($"CefSharp.DeleteBoundObject('{JavaScriptBridge.REVIT_BRIDGE_JAVASCRIPT_NAME}');");
-            _webBrowser.JavascriptObjectRepository.Register(JavaScriptBridge.REVIT_BRIDGE_JAVASCRIPT_NAME, new BcfierJavascriptInterop(), true);
-
-            _webBrowser.GetMainFrame().ExecuteJavaScriptAsync(@"(async function(){
-await CefSharp.BindObjectAsync(""" + JavaScriptBridge.REVIT_BRIDGE_JAVASCRIPT_NAME + @""", ""bound"");
-window." + JavaScriptBridge.REVIT_BRIDGE_JAVASCRIPT_NAME + @".sendMessageToOpenProject = (message) => {console.log(JSON.parse(message))}; // This is the callback to be used by OpenProject for receiving messages
-window.dispatchEvent(new Event('" + JavaScriptBridge.REVIT_READY_EVENT_NAME + @"'));
-})();");
+            InitializeRevitBridgeIfNotPresent();
           });
-          // Now in JS, call this: openProjectBridge.messageFromOpenProject('Message from JS');
         }
       };
 
       var devToolsEnabled = false;
-      _webBrowser.IsBrowserInitializedChanged += (s, e) => {
+      _webBrowser.IsBrowserInitializedChanged += (s, e) =>
+      {
         if (!devToolsEnabled)
         {
           _webBrowser.ShowDevTools();
           devToolsEnabled = true;
         }
       };
+    }
+
+    private void InitializeRevitBridgeIfNotPresent()
+    {
+      if (_webBrowser.JavascriptObjectRepository.IsBound(JavaScriptBridge.REVIT_BRIDGE_JAVASCRIPT_NAME))
+      {
+        // No need to register the bridge since it's already bound
+        return;
+      }
+
+      // Register the bridge between JS and C#
+      // This also registers the callback that should be bound to by OpenProject to receive messages from BCFier
+      _webBrowser.JavascriptObjectRepository.UnRegisterAll();
+      _webBrowser.GetMainFrame().ExecuteJavaScriptAsync($"CefSharp.DeleteBoundObject('{JavaScriptBridge.REVIT_BRIDGE_JAVASCRIPT_NAME}');");
+      _webBrowser.JavascriptObjectRepository.Register(JavaScriptBridge.REVIT_BRIDGE_JAVASCRIPT_NAME, new BcfierJavascriptInterop(), true);
+
+      _webBrowser.GetMainFrame().ExecuteJavaScriptAsync(@"(async function(){
+await CefSharp.BindObjectAsync(""" + JavaScriptBridge.REVIT_BRIDGE_JAVASCRIPT_NAME + @""", ""bound"");
+window." + JavaScriptBridge.REVIT_BRIDGE_JAVASCRIPT_NAME + @".sendMessageToOpenProject = (message) => {console.log(JSON.parse(message))}; // This is the callback to be used by OpenProject for receiving messages
+window.dispatchEvent(new Event('" + JavaScriptBridge.REVIT_READY_EVENT_NAME + @"'));
+})();");
+      // Now in JS, call this: openProjectBridge.messageFromOpenProject('Message from JS');
     }
   }
 }
