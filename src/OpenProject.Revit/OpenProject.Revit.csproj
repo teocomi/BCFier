@@ -4,7 +4,7 @@
 		<TargetFramework>net472</TargetFramework>
 		<PlatformTarget>x64</PlatformTarget>
 		<Platforms>x64</Platforms>
-		<Configurations>Debug;Release;Debug-2020;Debug-2019</Configurations>
+		<Configurations>Debug;Release;Debug-2020;Debug-2019;Release-2020;Release-2019</Configurations>
 	</PropertyGroup>
 
 	<PropertyGroup>
