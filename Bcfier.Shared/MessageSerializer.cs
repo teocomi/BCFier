@@ -2,6 +2,7 @@
 using Bcfier.Shared;
 using System;
 using System.Linq;
+using iabi.BCF.Converter;
 
 namespace Bcfier.WebViewIntegration
 {
@@ -102,15 +103,32 @@ namespace Bcfier.WebViewIntegration
         {
           if (component.Color != null)
           {
-
+            var colorHex = component.Color.ToRgbHexColorString();
+            var colorParent = apiViewpoint.Components.Coloring.FirstOrDefault(c => c.Color == colorHex);
+            if (colorParent == null)
+            {
+              colorParent = new iabi.BCF.APIObjects.V21.Coloring
+              {
+                Color = colorHex,
+                Components = new System.Collections.Generic.List<iabi.BCF.APIObjects.V21.Component>()
+              };
+              apiViewpoint.Components.Coloring.Add(colorParent);
+            }
+            colorParent.Components.Add(new iabi.BCF.APIObjects.V21.Component
+            {
+              Authoring_tool_id = component.AuthoringToolId,
+              Ifc_guid = component.IfcGuid,
+              Originating_system = component.OriginatingSystem
+            });
           }
           else if (component.IsSelected)
           {
-
-          }
-          else
-          {
-
+            apiViewpoint.Components.Selection.Add(new iabi.BCF.APIObjects.V21.Component
+            {
+              Authoring_tool_id = component.AuthoringToolId,
+              Ifc_guid = component.IfcGuid,
+              Originating_system = component.OriginatingSystem
+            });
           }
         }
       }
