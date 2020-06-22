@@ -52,6 +52,12 @@ namespace OpenProject
         // If the file doesn't yet exist, the default one is created
         using (var configStream = typeof(ConfigurationHandler).Assembly.GetManifestResourceStream("OpenProject.OpenProject.Configuration.json"))
         {
+          var configDirName = Path.GetDirectoryName(configPath);
+          if (!Directory.Exists(configDirName))
+          {
+            Directory.CreateDirectory(configDirName);
+          }
+
           using (var fs = File.Create(configPath))
           {
             configStream.CopyTo(fs);

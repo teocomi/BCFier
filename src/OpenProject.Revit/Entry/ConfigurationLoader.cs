@@ -47,6 +47,12 @@ namespace OpenProject.Revit.Entry
         // If the file doesn't yet exist, the default one is created
         using (var configStream = typeof(ConfigurationLoader).Assembly.GetManifestResourceStream("OpenProject.Revit.OpenProject.Revit.Configuration.json"))
         {
+          var configDirName = Path.GetDirectoryName(configPath);
+          if (!Directory.Exists(configDirName))
+          {
+            Directory.CreateDirectory(configDirName);
+          }
+
           using (var fs = File.Create(configPath))
           {
             configStream.CopyTo(fs);
