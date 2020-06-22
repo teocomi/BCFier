@@ -63,6 +63,7 @@ namespace OpenProject.Revit.Entry
       {
         CmdMain.BcfierWinProcess?.CloseMainWindow();
         CmdMain.BcfierWinProcess?.Close();
+        CmdMain.BcfierWinProcess?.Kill();
       }
       catch
       {
