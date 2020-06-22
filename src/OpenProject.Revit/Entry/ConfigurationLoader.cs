@@ -39,7 +39,7 @@ namespace OpenProject.Revit.Entry
       // The configuration file should always be adjacent to the Bcfier.dll assembly
       var currentFolder = GetCurrentDllDirectory();
 
-      var configurationFilePath = Path.Combine(currentFolder, "Bcfier.Revit.Configuration.json");
+      var configurationFilePath = Path.Combine(currentFolder, "OpenProject.Revit.Configuration.json");
       return configurationFilePath;
     }
 

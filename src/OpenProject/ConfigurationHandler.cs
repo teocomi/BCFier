@@ -48,7 +48,7 @@ namespace OpenProject
         // '/' comes from the uri, we need it to be '\' for the path
         .Replace("/", "\\");
       var currentFolder = Path.GetDirectoryName(currentAssemblyPath);
-      var configurationFilePath = Path.Combine(currentFolder, "Bcfier.Configuration.json");
+      var configurationFilePath = Path.Combine(currentFolder, "OpenProject.Configuration.json");
       return configurationFilePath;
     }
   }
