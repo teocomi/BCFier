@@ -1,4 +1,4 @@
-﻿namespace Bcfier.Tests
+﻿namespace OpenProject.Tests
 {
   public enum TestFile
   {

@@ -1,10 +1,10 @@
-﻿using Bcfier.Bcf;
+﻿using OpenProject.Bcf;
 using System;
 using System.IO;
 using System.Linq;
 using Xunit;
 
-namespace Bcfier.Tests.Bcf
+namespace OpenProject.Tests.Bcf
 {
   public class BcfFileLoaderTests
   {

@@ -135,15 +135,9 @@ namespace OpenProject.Shared
        .DependsOn(Restore)
        .Executes(() =>
         {
-          // The solution is compiled for the Debug-2020 target for testing
-          MSBuild(c => c
-            .SetSolutionFile(Solution.FileName)
-            .SetConfiguration("Debug-2020"));
           DotNetTest(c => c
-            .SetNoBuild(true)
-            // The test dlls are copied to the bin/Debug folder
             .SetConfiguration("Debug")
-            .SetProjectFile(RootDirectory / "Bcfier.Tests" / "Bcfier.Tests.csproj")
+            .SetProjectFile(RootDirectory / "test" / "OpenProject.Tests" / "OpenProject.Tests.csproj")
             .SetTestAdapterPath(".")
             .SetLogger($"xunit;LogFilePath={OutputDirectory / "testresults.xml"}"));
         });

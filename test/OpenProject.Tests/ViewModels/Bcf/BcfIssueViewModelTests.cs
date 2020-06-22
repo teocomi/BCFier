@@ -1,8 +1,8 @@
-﻿using Bcfier.Shared.ViewModels.Bcf;
+﻿using OpenProject.Shared.ViewModels.Bcf;
 using System.Linq;
 using Xunit;
 
-namespace Bcfier.Tests.ViewModels.Bcf
+namespace OpenProject.Tests.ViewModels.Bcf
 {
   public class BcfIssueViewModelTests
   {

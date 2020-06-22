@@ -1,8 +1,8 @@
-﻿using Bcfier.Bcf;
+﻿using OpenProject.Bcf;
 using System.Linq;
 using Xunit;
 
-namespace Bcfier.Tests.ViewModels.Bcf
+namespace OpenProject.Tests.ViewModels.Bcf
 {
   public class BcfMarkupViewModelTests
   {

@@ -1,8 +1,8 @@
-﻿using Bcfier.OpenProjectApi;
+﻿using OpenProject.OpenProjectApi;
 using System;
 using Xunit;
 
-namespace Bcfier.Tests.OpenProjectApi
+namespace OpenProject.Tests.OpenProjectApi
 {
   public class HttpClientFactoryTests
   {

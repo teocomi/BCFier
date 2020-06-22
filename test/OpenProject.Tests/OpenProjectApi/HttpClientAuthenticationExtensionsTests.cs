@@ -1,9 +1,9 @@
-﻿using Bcfier.OpenProjectApi;
+﻿using OpenProject.OpenProjectApi;
 using System;
 using System.Net.Http;
 using Xunit;
 
-namespace Bcfier.Tests.OpenProjectApi
+namespace OpenProject.Tests.OpenProjectApi
 {
   public class HttpClientAuthenticationExtensionsTests
   {

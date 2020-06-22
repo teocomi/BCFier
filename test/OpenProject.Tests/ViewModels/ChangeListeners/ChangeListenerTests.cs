@@ -1,10 +1,10 @@
-﻿using Bcfier.Bcf;
-using Bcfier.Shared.ViewModels.Bcf;
-using Bcfier.Shared.ViewModels.ChangeListeners;
+﻿using OpenProject.Bcf;
+using OpenProject.Shared.ViewModels.Bcf;
+using OpenProject.Shared.ViewModels.ChangeListeners;
 using System.Linq;
 using Xunit;
 
-namespace Bcfier.Tests.ViewModels.ChangeListeners
+namespace OpenProject.Tests.ViewModels.ChangeListeners
 {
   public class ChangeListenerTests
   {

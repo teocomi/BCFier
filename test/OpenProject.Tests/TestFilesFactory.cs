@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace Bcfier.Tests
+namespace OpenProject.Tests
 {
   public static class TestFilesFactory
   {
