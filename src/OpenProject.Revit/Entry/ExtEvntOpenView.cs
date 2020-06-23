@@ -102,13 +102,6 @@ namespace OpenProject.Revit.Entry
 
       uidoc.RequestViewChange(orthoView);
 
-      // uidoc.ActiveView = orthoView;
-      //adjust view rectangle
-
-      // **** CUSTOM VALUE FOR TEKLA **** //
-      // double x = zoom / 2.5;
-      // **** CUSTOM VALUE FOR TEKLA **** //
-
       double x = zoom;
 
       //set UI view position and zoom
@@ -178,7 +171,8 @@ namespace OpenProject.Revit.Entry
           trans.Commit();
         }
       }
-      uidoc.ActiveView = perspView;
+
+      uidoc.RequestViewChange(perspView);
     }
 
     private static void ApplyElementStyles(BcfViewpointViewModel v, Document doc, UIDocument uidoc)
