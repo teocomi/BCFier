@@ -28,7 +28,7 @@ namespace OpenProject.Api
         return null;
 
 
-      var request = new RestRequest("repos/teocomi/bcfier/releases", Method.GET);
+      var request = new RestRequest("repos/opf/bcfier/releases", Method.GET);
       request.AddHeader("Content-Type", "application/json");
       request.RequestFormat = DataFormat.Json;
       request.OnBeforeDeserialization = resp => { resp.ContentType = "application/json"; };
@@ -41,7 +41,7 @@ namespace OpenProject.Api
     internal static GitHubRelease GetLatestRelease()
     {
 
-      var request = new RestRequest("repos/teocomi/bcfier/releases/latest", Method.GET);
+      var request = new RestRequest("repos/opf/bcfier/releases/latest", Method.GET);
       request.AddHeader("Content-Type", "application/json");
       request.RequestFormat = DataFormat.Json;
 

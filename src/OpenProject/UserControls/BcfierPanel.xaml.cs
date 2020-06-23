@@ -428,23 +428,21 @@ namespace OpenProject.UserControls
           if (release == null)
             return;
 
-          string version = release.tag_name.Replace("v", "");
-          var mine = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-          var online = Version.Parse(version);
+          var onlineIsNewer = release.created_at > VersionsService.BuildDateUtc;
 
-          if (mine.CompareTo(online) < 0 && release.assets.Any())
+          if (onlineIsNewer)
           {
-            Application.Current.Dispatcher.Invoke((Action)delegate
+            Application.Current.Dispatcher.Invoke(() => 
             {
               var dialog = new NewVersion();
               dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
               dialog.Description.Text = release.name + " has been released on " + release.published_at.ToLongDateString() + "\ndo you want to check it out now?";
-              //dialog.NewFeatures.Text = document.Element("Bcfier").Element("Changelog").Element("NewFeatures").Value;
-              //dialog.BugFixes.Text = document.Element("Bcfier").Element("Changelog").Element("BugFixes").Value;
-              //dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
               dialog.ShowDialog();
               if (dialog.DialogResult.HasValue && dialog.DialogResult.Value)
-                Process.Start(release.assets.First().browser_download_url);
+              {
+                var downloadUrl = release.html_url.Replace("&", "^&");
+                Process.Start(new ProcessStartInfo("cmd", $"/c start {downloadUrl}") { CreateNoWindow = true });
+              }
             });
           }
         }
