@@ -121,7 +121,7 @@ namespace OpenProject.Revit.Entry
         var snapshot = GetRevitSnapshot(_uiapp.ActiveUIDocument.Document);
         var messageContent = new ViewpointGeneratedApiMessage
         {
-          SnapshotPngBase64 = ConvertToBase64(snapshot),
+          SnapshotPngBase64 = "data:image/png;base64," + ConvertToBase64(snapshot),
           Viewpoint = MessageSerializer.SerializeBcfViewpoint(generatedViewpoint)
         };
 
