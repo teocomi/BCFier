@@ -25,15 +25,18 @@ namespace OpenProject.WebViewIntegration
         }
       };
 
-      var devToolsEnabled = false;
-      _webBrowser.IsBrowserInitializedChanged += (s, e) =>
+      if (ConfigurationHandler.ShouldEnableDevelopmentTools())
       {
-        if (!devToolsEnabled)
+        var devToolsEnabled = false;
+        _webBrowser.IsBrowserInitializedChanged += (s, e) =>
         {
-          _webBrowser.ShowDevTools();
-          devToolsEnabled = true;
-        }
-      };
+          if (!devToolsEnabled)
+          {
+            _webBrowser.ShowDevTools();
+            devToolsEnabled = true;
+          }
+        };
+      }
     }
 
     private async Task InitializeRevitBridgeIfNotPresentAsync()

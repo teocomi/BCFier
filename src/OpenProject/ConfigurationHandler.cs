@@ -14,6 +14,18 @@ namespace OpenProject
       return initialBrowserAddress;
     }
 
+    public static bool ShouldEnableDevelopmentTools()
+    {
+      var configuration = ReadConfigurationFile();
+      var setting = configuration["EnableDevelopmentTools"];
+      if (setting == null)
+      {
+        return false;
+      }
+
+      return setting.Value<bool>();
+    }
+
     public static void SaveInitialBrowserAddress(string browserAddress)
     {
       var configuration = ReadConfigurationFile();
