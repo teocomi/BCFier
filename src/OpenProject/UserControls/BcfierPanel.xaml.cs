@@ -82,12 +82,6 @@ namespace OpenProject.UserControls
         }
       }
 
-      var initialBrowserAddress = ConfigurationHandler.LoadBcfierBrowserInitialAddressOrNull();
-      if (string.IsNullOrWhiteSpace(initialBrowserAddress))
-      {
-        initialBrowserAddress = "http://spike.openproject-stage.com";
-      }
-
       Browser.Address = EmbeddedLandingPageHandler.GetEmbeddedLandingPageIndexUrl();
 
       if (UserSettings.GetBool("checkupdates"))
