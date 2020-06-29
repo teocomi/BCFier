@@ -45,8 +45,6 @@ namespace OpenProject.Revit.Entry
 
 #endif
 
-    private static bool _isRunning;
-
     public static Process BcfierWinProcess { get; private set; }
 
     /// <summary>
@@ -93,8 +91,6 @@ namespace OpenProject.Revit.Entry
         var bcfierWinServerPort = FreePortHelper.GetFreePort();
         var bcfWinProcessArguments = $"ipc {bcfierWinServerPort} {revitServerPort}";
         BcfierWinProcess = Process.Start(bcfierWinProcessPath, bcfWinProcessArguments);
-        BcfierWinProcess.Exited += (s, e) => _isRunning = false;
-        _isRunning = true;
         ipcHandler.StartLocalClient(bcfierWinServerPort);
         return Result.Succeeded;
       }
