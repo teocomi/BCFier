@@ -86,7 +86,7 @@ namespace OpenProject.UserControls
           if (release == null)
             return;
 
-          var onlineIsNewer = release.created_at > VersionsService.BuildDateUtc;
+          var onlineIsNewer = new Api.Version(release.tag_name).CompareTo(new Api.Version(VersionsService.Version)) > 0;
 
           if (onlineIsNewer)
           {
