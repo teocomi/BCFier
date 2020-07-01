@@ -80,6 +80,13 @@ namespace OpenProject.Revit.Entry
       };
     }
 
+    public void SendShutdownRequestToDesktopApp()
+    {
+      var eventArgs = new WebUIMessageEventArgs(MessageTypes.CLOSE_DESKTOP_APPLICATION, "0", string.Empty);
+      var jsonEventArgs = JsonConvert.SerializeObject(eventArgs);
+      _sendData(jsonEventArgs);
+    }
+
     /// <summary>
     /// Raises the External Event to accomplish a transaction in a modeless window
     /// http://help.autodesk.com/view/RVT/2014/ENU/?guid=GUID-0A0D656E-5C44-49E8-A891-6C29F88E35C0

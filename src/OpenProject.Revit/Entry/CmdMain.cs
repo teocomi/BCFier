@@ -33,7 +33,8 @@ namespace OpenProject.Revit.Entry
 
 #endif
 
-    public static Process BcfierWinProcess { get; private set; }
+    private static Process _bcfierWinProcess;
+    public static BcfierIpcHandler IpcHandler { get; private set; }
 
     /// <summary>
     /// Main Command Entry Point
@@ -60,13 +61,13 @@ namespace OpenProject.Revit.Entry
         }
 
         // Form Running?
-        if (BcfierWinProcess != null && !BcfierWinProcess.HasExited)
+        if (_bcfierWinProcess != null && !_bcfierWinProcess.HasExited)
         {
           return Result.Succeeded;
         }
 
-        var ipcHandler = new BcfierIpcHandler(commandData.Application);
-        var revitServerPort = ipcHandler.StartLocalServerAndReturnPort();
+        IpcHandler = new BcfierIpcHandler(commandData.Application);
+        var revitServerPort = IpcHandler.StartLocalServerAndReturnPort();
         var bcfierWinProcessPath = ConfigurationLoader.GetBcfierWinExecutablePath();
         if (!File.Exists(bcfierWinProcessPath))
         {
@@ -78,8 +79,8 @@ namespace OpenProject.Revit.Entry
 
         var bcfierWinServerPort = FreePortHelper.GetFreePort();
         var bcfWinProcessArguments = $"ipc {bcfierWinServerPort} {revitServerPort}";
-        BcfierWinProcess = Process.Start(bcfierWinProcessPath, bcfWinProcessArguments);
-        ipcHandler.StartLocalClient(bcfierWinServerPort);
+        _bcfierWinProcess = Process.Start(bcfierWinProcessPath, bcfWinProcessArguments);
+        IpcHandler.StartLocalClient(bcfierWinServerPort);
         return Result.Succeeded;
       }
       catch (Exception e)
