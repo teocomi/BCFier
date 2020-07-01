@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net472</TargetFramework>
@@ -48,7 +48,7 @@
 		</None>
 	</ItemGroup>
 
-	<Target Name="TestTarget" AfterTargets="Build" Condition="$(Configuration.Contains('Debug')) And '$(BuildingInsideVisualStudio)' == 'true'">
+	<Target Name="CopyWindowsApp" AfterTargets="Build" Condition="$(Configuration.Contains('Debug')) And '$(BuildingInsideVisualStudio)' == 'true'">
 		<Exec Command="dotnet build -c Debug -o bin/TempDebug" WorkingDirectory="$(MSBuildThisFileDirectory)\..\..\src\OpenProject.Windows" />
 		<ItemGroup>
 			<SourceDLLs Include="$(TargetDir)**\*.*" />
