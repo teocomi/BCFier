@@ -46,4 +46,8 @@
     <Resource Include="Assets\icon.ico" />
   </ItemGroup>
 
+  <Target Name="ZipEmbeddedLandingPage" BeforeTargets="Build">
+    <Exec Command="build.cmd CreateEmbeddedLandingPageZip --skip" WorkingDirectory="$(MSBuildThisFileDirectory)\..\.." />
+  </Target>
+
 </Project>
