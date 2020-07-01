@@ -1,20 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net472</TargetFramework>
-		<PlatformTarget>x64</PlatformTarget>
-		<Platforms>x64</Platforms>
-		<Configurations>Debug;Release;Debug-2020;Debug-2019;Release-2020;Release-2019</Configurations>
-	</PropertyGroup>
-
-	<PropertyGroup>
+		<Revit2021 Condition="$(Configuration.Contains('2021'))">true</Revit2021>
 		<Revit2020 Condition="$(Configuration.Contains('2020'))">true</Revit2020>
 		<Revit2019 Condition="$(Configuration.Contains('2019'))">true</Revit2019>
+		<RevitVersion Condition="$(Configuration.Contains('2021'))">2021</RevitVersion>
 		<RevitVersion Condition="$(Configuration.Contains('2020'))">2020</RevitVersion>
 		<RevitVersion Condition="$(Configuration.Contains('2019'))">2019</RevitVersion>
 	</PropertyGroup>
 
 	<PropertyGroup>
+		<TargetFramework Condition="'$(Revit2021)' == true">net48</TargetFramework>
+		<TargetFramework Condition="'$(Revit2021)' != true">net472</TargetFramework>
+		<PlatformTarget>x64</PlatformTarget>
+		<Platforms>x64</Platforms>
+		<Configurations>Debug;Release;Debug-2020;Debug-2019;Release-2020;Release-2019;Release-2021;Debug-2021</Configurations>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<DefineConstants Condition="'$(Revit2021)' == true">$(DefineConstants);Version2021</DefineConstants>
 		<DefineConstants Condition="'$(Revit2020)' == true">$(DefineConstants);Version2020</DefineConstants>
 		<DefineConstants Condition="'$(Revit2019)' == true">$(DefineConstants);Version2019</DefineConstants>
 	</PropertyGroup>
@@ -27,6 +31,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Condition="'$(Revit2021)' == true" Include="Revit_All_Main_Versions_API_x64" Version="2021.0.0" />
 		<PackageReference Condition="'$(Revit2020)' == true" Include="Revit_All_Main_Versions_API_x64" Version="2020.0.1" />
 		<PackageReference Condition="'$(Revit2019)' == true" Include="Revit_All_Main_Versions_API_x64" Version="2019.0.1" />
 		<PackageReference Include="ZetaIpc" Version="1.0.0.9" />

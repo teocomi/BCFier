@@ -1,4 +1,4 @@
-﻿using Autodesk.Revit.Attributes;
+using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using System;
@@ -19,29 +19,17 @@ namespace OpenProject.Revit.Entry
   public class CmdMain : IExternalCommand
   {
 
-#if Version2020
+#if Version2021
+
+    public const string RevitVersion = "2021";
+
+#elif Version2020
 
     public const string RevitVersion = "2020";
 
 #elif Version2019
 
     public const string RevitVersion = "2019";
-
-#elif Version2018
-
-    public const string RevitVersion = "2018";
-
-#elif Version2017
-
-    public const string RevitVersion = "2017";
-
-#elif Version2016
-
-    public const string RevitVersion = "2016";
-
-#elif Version2015
-
-    public const string RevitVersion = "2015";
 
 #endif
 
