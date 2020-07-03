@@ -7,7 +7,9 @@
     <title>OpenProject Revit Integration</title>
     <meta name="description" content="Revit pluging of OpenProject, Web-based open source project management software to support teams along the entire project management life-cycle: task management✓ Gantt charts✓ agile boards✓ team collaboration✓ bug tracking✓ roadmap✓ time and cost reporting✓ FREE trial!">
     <link rel="stylesheet" href="./assets/main.css">
-    <link rel="stylesheet" type="text/css" href="./assets/fontawesome.min.css" media="all">
+    <!-- <link rel="stylesheet" type="text/css" href="./assets/fontawesome.min.css" media="all"> -->
+    <link href="./assets/font-awesome-css/all.css" rel="stylesheet">
+    <script src="./assets/jquery-3.1.0.min.js.Download"></script>
     <style>
       :root {
         --blue: #007bff;
@@ -178,7 +180,17 @@
         display: none;
       }
 
+      .delete-button {
+        margin-left: 1rem;
+        background-color: var(--red);
+        color: var(--white);
+        width: 45px;
+        transition: background-color .5s;
+      }
 
+      .delete-button:hover {
+        background-color: #c33240;
+      }
     </style>
     
     <script type="text/javascript">
@@ -204,24 +216,29 @@
 
       // Check if the url is valid (only if online)
       function validateInstanceUrl() {
-        const instanceUrl = instanceInput.value;
+        const instanceUrl = instanceInput.value + '/api/v3';
 
-        fetch(instanceUrl, { mode: 'no-cors' })
-          .then(
-            response => {
-              if (!response.ok) {
-                showErrorMessage('<span>Please provide a valid OpenProject instance url</span>');
-                submitButton.disabled = true;
-              } else {
-                errorContainer.display = 'none';
-                submitButton.disabled = false;
+        $(function() {
+          $.ajax({
+              url: instanceUrl,
+              dataType: "jsonp",
+              timeout: 5000,
+              crossDomain: true,
+              success: function () {
+                errorContainer.style.display = 'none';
+                submitButton.disabled = false;                  
+              },
+              error: function (parsedjson, b, c) {
+                if (parsedjson.status === 200) {
+                  errorContainer.style.display = 'none';
+                  submitButton.disabled = false;
+                } else {
+                  showErrorMessage('<span>Please provide a valid OpenProject instance url</span>');
+                  submitButton.disabled = true;
+                }
               }
-            },
-            () => {
-              showErrorMessage('<span>Please provide a valid OpenProject instance url</span>');
-              submitButton.disabled = false;
-            }
-          )      
+          });
+        });    
       }
 
       const debouncedValidateInstanceUrl = debounce(validateInstanceUrl, 700);
@@ -232,7 +249,7 @@
         const selectedInstance = instanceInput.value;
 
         if (selectedInstance) {
-          RevitBridge.sendMessageToRevit('InstanceSelected', '0', selectedInstance);
+          window.RevitBridge.sendMessageToRevit('InstanceSelected', '0', selectedInstance);
         } else {
           showErrorMessage('<span>Please provide a valid OpenProject instance url</span>');
         }
@@ -243,6 +260,10 @@
         errorContainer.innerHTML = message;
         errorContainer.style.display = 'block';
       };
+
+      function removeInstance(instanceUrl) {
+        window.RevitBridge.sendMessageToRevit('RemoveInstance', '0', instanceUrl);
+      }
 
       // Fill the main input and setup the instances list 
       function setUpInstanceInputAndList(allInstances) {
@@ -255,11 +276,19 @@
             // Create the list of the last used instance urls
             const templateClone = document.querySelector('#inputTemplate').content.cloneNode(true);
             const input = templateClone.querySelector('.instance_name_input_list');
-            const button = templateClone.querySelector('.go-button');
-            button.dataset.instance = instance;
+            const goButton = templateClone.querySelector('.go-button');
+            const deleteButton = templateClone.querySelector('.delete-button');
+            goButton.dataset.instance = instance;
+            deleteButton.dataset.instance = instance;
 
-            button.addEventListener('click', (event) => {
-              RevitBridge.sendMessageToRevit('InstanceSelected', '0', event.target.dataset.instance);
+            goButton.addEventListener('click', event => {
+              window.RevitBridge.sendMessageToRevit('InstanceSelected', '0', event.target.dataset.instance);
+            });
+
+            deleteButton.addEventListener('click', event => {
+              const instanceToRemove = event.target.dataset.instance || event.target.parentElement.dataset.instance;
+              
+              removeInstance(instanceToRemove);
             });
 
             input.value = instance;
@@ -272,12 +301,10 @@
       // Setup the sendMessageToOpenProject function that will be
       // called by the Revit plugin to communicate with this web
       function setupRevitCommunicationChannel() {
-        const revitBridge = window.RevitBridge;
+        if (window.RevitBridge) {
+          const previousCallback = window.RevitBridge.sendMessageToOpenProject;
 
-        if (revitBridge) {
-          const previousCallback = revitBridge.sendMessageToOpenProject;
-
-          revitBridge.sendMessageToOpenProject = function (messageData) {
+          window.RevitBridge.sendMessageToOpenProject = function (messageData) {
             const message = JSON.parse(messageData);
 
             if (message.messageType === 'AllInstances' &&
@@ -290,7 +317,7 @@
             previousCallback(messageData);
           };
 
-          revitBridge.sendMessageToRevit('AllInstancesRequested', '0', '');
+          window.RevitBridge.sendMessageToRevit('RequestAllInstances', '0', '');
         } else {
           // Need to wait for Revit to be initialized
           setTimeout(setupRevitCommunicationChannel, 500);
@@ -303,7 +330,7 @@
         errorContainer = document.getElementById('instance-error-message');
         previousInstancesList = document.querySelector('.previous_instances_list');
         submitButton = document.getElementById('submit-button');
-        previousListTitle = document.querySelector('.previous_instances_title');        
+        previousListTitle = document.querySelector('.previous_instances_title');
 
         submitButton.disabled = true;
         submitButton.addEventListener('click', handleSubmit);
@@ -373,6 +400,10 @@
         
         <button class="go-button" type="button" name="submit">
           GO
+        </button>
+
+        <button class="delete-button" type="button" name="submit">
+          <i class="far fa-trash-alt"></i>
         </button>
       </div>
     </template>
