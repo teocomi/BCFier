@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en-US" dir="ltr" class="wf-lato-n3-active wf-lato-n4-active wf-active">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -306,6 +306,9 @@
 
           window.RevitBridge.sendMessageToOpenProject = function (messageData) {
             const message = JSON.parse(messageData);
+            if (message.messagePayload && message.messagePayload.length) {
+              message.messagePayload = JSON.parse(message.messagePayload);
+            }
 
             if (message.messageType === 'AllInstances' &&
               Array.isArray(message.messagePayload) &&

@@ -14,8 +14,15 @@
     // This is used from the landing page when the user selects an OpenProject instance
     public const string INSTANCE_SELECTED = "InstanceSelected";
 
-    // This is sent from the landing page to request the last used OpenProject instance
-    public const string LAST_INSTANCE_REQUESTED = "LastInstanceRequested";
+    // This is called by the landing page to delete a saved instance
+    public const string REMOVE_INSTANCE = "RemoveInstance";
+
+    // This is called by the landing page to get the list of all previously used instances
+    public const string ALL_INSTANCES_REQUESTED = "RequestAllInstances";
+
+    // This is the response sent to the landing page that contains a list of all
+    // previously used instances
+    public const string ALL_INSTANCES = "AllInstances";
 
     // This is the response for the LAST_INSTANCE_REQUESTED message
     public const string LAST_INSTANCE = "LastInstance";

@@ -1,4 +1,6 @@
 {
-  "InitialBrowserAddress": "http://spike.openproject-stage.com:4200",
-  "EnableDevelopmentTools": true
+  "EnableDevelopmentTools": true,
+  "OpenProjectInstances": [
+    "http://spike.openproject-stage.com:4200"
+  ]
 }

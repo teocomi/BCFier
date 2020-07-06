@@ -60,10 +60,14 @@ namespace OpenProject.WebViewIntegration
         // should be accessed. We're not relaying this to Revit.
         HandleInstanceNameReceived(messagePayload);
       }
-      else if (messageType == MessageTypes.LAST_INSTANCE_REQUESTED)
+      else if (messageType == MessageTypes.REMOVE_INSTANCE)
       {
-        var lastInstanceUrl = ConfigurationHandler.LoadBcfierBrowserInitialAddressOrNull();
-        SendMessageToOpenProject(MessageTypes.LAST_INSTANCE, trackingId, lastInstanceUrl);
+        ConfigurationHandler.RemoveSavedInstance(messagePayload);
+      }
+      else if (messageType == MessageTypes.ALL_INSTANCES_REQUESTED)
+      {
+        var allInstances = JsonConvert.SerializeObject(ConfigurationHandler.LoadAllInstances());
+        SendMessageToOpenProject(MessageTypes.ALL_INSTANCES, trackingId, allInstances);
       }
       else if (messageType == MessageTypes.FOCUS_REVIT_APPLICATION)
       {
@@ -115,7 +119,7 @@ namespace OpenProject.WebViewIntegration
         urlToOpen = $"https://{instanceName}.openproject.com";
       }
 
-      ConfigurationHandler.SaveInitialBrowserAddress(urlToOpen);
+      ConfigurationHandler.SaveSelectedInstance(urlToOpen);
 
       Application.Current.Dispatcher.Invoke(() =>
       {

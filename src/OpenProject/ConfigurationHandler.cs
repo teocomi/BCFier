@@ -1,19 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
+using System.Linq;
 using Newtonsoft.Json.Linq;
 
 namespace OpenProject
 {
   public static class ConfigurationHandler
   {
-    public static string LoadBcfierBrowserInitialAddressOrNull()
-    {
-      var configuration = ReadConfigurationFile();
-      var initialBrowserAddress = configuration["InitialBrowserAddress"]?.ToString();
-      return initialBrowserAddress;
-    }
-
     public static bool ShouldEnableDevelopmentTools()
     {
       var configuration = ReadConfigurationFile();
@@ -26,16 +20,56 @@ namespace OpenProject
       return setting.Value<bool>();
     }
 
-    public static void SaveInitialBrowserAddress(string browserAddress)
+    public static void RemoveSavedInstance(string instanceUrl)
     {
       var configuration = ReadConfigurationFile();
-      configuration["InitialBrowserAddress"] = browserAddress;
-      var json = configuration.ToString(Newtonsoft.Json.Formatting.Indented);
-      var configurationFilePath = GetConfigurationFilePath();
-      using (var fs = File.CreateText(configurationFilePath))
+      var existingValues = configuration["OpenProjectInstances"];
+      if (existingValues != null)
       {
-        fs.Write(json);
+        var array = existingValues as JArray;
+        var existing = array.FirstOrDefault(e => e.ToString() == instanceUrl);
+        if (existing != null)
+        {
+          array.Remove(existing);
+          SaveConfigurationFile(configuration);
+        }
       }
+    }
+
+    public static List<string> LoadAllInstances()
+    {
+      var configuration = ReadConfigurationFile();
+      var existingValues = configuration["OpenProjectInstances"];
+      if (existingValues != null
+          && existingValues is JArray array)
+      {
+        return existingValues.Select(i => i.ToString()).ToList();
+      }
+
+      return new List<string>();
+    }
+
+    public static void SaveSelectedInstance(string instanceUrl)
+    {
+      var configuration = ReadConfigurationFile();
+      var existingValues = configuration["OpenProjectInstances"];
+      if (existingValues == null)
+      {
+        configuration["OpenProjectInstances"] = new JArray();
+        (configuration["OpenProjectInstances"] as JArray).Add(instanceUrl);
+      }
+      else
+      {
+        var array = existingValues as JArray;
+        var existing = array.FirstOrDefault(e => e.ToString() == instanceUrl);
+        if (existing != null)
+        {
+          array.Remove(existing);
+        }
+        array.AddFirst(instanceUrl);
+      }
+
+      SaveConfigurationFile(configuration);
     }
 
     private static JObject ReadConfigurationFile()
@@ -49,6 +83,16 @@ namespace OpenProject
           var jObject = JObject.Parse(json);
           return jObject;
         }
+      }
+    }
+
+    private static void SaveConfigurationFile(JObject configuration)
+    {
+      var json = configuration.ToString(Newtonsoft.Json.Formatting.Indented);
+      var configurationFilePath = GetConfigurationFilePath();
+      using (var fs = File.CreateText(configurationFilePath))
+      {
+        fs.Write(json);
       }
     }
 
