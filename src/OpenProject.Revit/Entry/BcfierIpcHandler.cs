@@ -76,7 +76,16 @@ namespace OpenProject.Revit.Entry
       client.Initialize(bcfierWinServerPort);
       _sendData = (message) =>
       {
-        client.Send(message);
+        try
+        {
+          client.Send(message);
+        }
+        catch (System.Net.WebException)
+        {
+          // We can ignore the WebException, it's raised after
+          // the shutdown event due to the other side just closing
+          // the open TCP connection. This is what's expected😊
+        }
       };
     }
 
