@@ -8,6 +8,9 @@
     // This indicates that the Revit desktop application should be focussed
     public const string FOCUS_REVIT_APPLICATION = "FocusRevitApplication";
 
+    // This message may be sent by Revit to force the closing of the sesktop application
+    public const string CLOSE_DESKTOP_APPLICATION = "CloseDesktopApplication";
+
     // This is used from the landing page when the user selects an OpenProject instance
     public const string INSTANCE_SELECTED = "InstanceSelected";
 

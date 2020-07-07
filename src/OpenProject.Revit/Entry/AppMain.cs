@@ -61,9 +61,7 @@ namespace OpenProject.Revit.Entry
     {
       try
       {
-        CmdMain.BcfierWinProcess?.CloseMainWindow();
-        CmdMain.BcfierWinProcess?.Close();
-        CmdMain.BcfierWinProcess?.Kill();
+        CmdMain.IpcHandler?.SendShutdownRequestToDesktopApp();
       }
       catch
       {

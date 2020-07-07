@@ -1,4 +1,4 @@
-﻿using Autodesk.Revit.Attributes;
+using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using System;
@@ -19,7 +19,11 @@ namespace OpenProject.Revit.Entry
   public class CmdMain : IExternalCommand
   {
 
-#if Version2020
+#if Version2021
+
+    public const string RevitVersion = "2021";
+
+#elif Version2020
 
     public const string RevitVersion = "2020";
 
@@ -27,27 +31,10 @@ namespace OpenProject.Revit.Entry
 
     public const string RevitVersion = "2019";
 
-#elif Version2018
-
-    public const string RevitVersion = "2018";
-
-#elif Version2017
-
-    public const string RevitVersion = "2017";
-
-#elif Version2016
-
-    public const string RevitVersion = "2016";
-
-#elif Version2015
-
-    public const string RevitVersion = "2015";
-
 #endif
 
-    private static bool _isRunning;
-
-    public static Process BcfierWinProcess { get; private set; }
+    private static Process _bcfierWinProcess;
+    public static BcfierIpcHandler IpcHandler { get; private set; }
 
     /// <summary>
     /// Main Command Entry Point
@@ -74,13 +61,13 @@ namespace OpenProject.Revit.Entry
         }
 
         // Form Running?
-        if (BcfierWinProcess != null && !BcfierWinProcess.HasExited)
+        if (_bcfierWinProcess != null && !_bcfierWinProcess.HasExited)
         {
           return Result.Succeeded;
         }
 
-        var ipcHandler = new BcfierIpcHandler(commandData.Application);
-        var revitServerPort = ipcHandler.StartLocalServerAndReturnPort();
+        IpcHandler = new BcfierIpcHandler(commandData.Application);
+        var revitServerPort = IpcHandler.StartLocalServerAndReturnPort();
         var bcfierWinProcessPath = ConfigurationLoader.GetBcfierWinExecutablePath();
         if (!File.Exists(bcfierWinProcessPath))
         {
@@ -92,10 +79,8 @@ namespace OpenProject.Revit.Entry
 
         var bcfierWinServerPort = FreePortHelper.GetFreePort();
         var bcfWinProcessArguments = $"ipc {bcfierWinServerPort} {revitServerPort}";
-        BcfierWinProcess = Process.Start(bcfierWinProcessPath, bcfWinProcessArguments);
-        BcfierWinProcess.Exited += (s, e) => _isRunning = false;
-        _isRunning = true;
-        ipcHandler.StartLocalClient(bcfierWinServerPort);
+        _bcfierWinProcess = Process.Start(bcfierWinProcessPath, bcfWinProcessArguments);
+        IpcHandler.StartLocalClient(bcfierWinServerPort);
         return Result.Succeeded;
       }
       catch (Exception e)

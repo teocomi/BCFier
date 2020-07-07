@@ -84,6 +84,14 @@ namespace OpenProject.WebViewIntegration
       {
         return;
       }
+
+      if (messageType == MessageTypes.CLOSE_DESKTOP_APPLICATION)
+      {
+        // This message means we should exit the application
+        System.Environment.Exit(0);
+        return;
+      }
+
       var messageData = JsonConvert.SerializeObject(new { messageType, trackingId, messagePayload });
       var encodedMessage = JsonConvert.ToString(messageData);
       Application.Current.Dispatcher.Invoke(() =>

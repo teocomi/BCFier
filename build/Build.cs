@@ -162,7 +162,8 @@ namespace OpenProject.Shared
         var revitConfigurations = new[]
         {
           "Release-2019",
-          "Release-2020"
+          "Release-2020",
+          "Release-2021"
         };
 
         DotNetBuild(c => c

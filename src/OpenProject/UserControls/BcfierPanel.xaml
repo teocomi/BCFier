@@ -9,11 +9,6 @@
   xmlns:src="clr-namespace:OpenProject.Data.ValueConverters"
   xmlns:themes="clr-namespace:OpenProject.Themes"
   xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
-  AllowDrop="True"
-  DragEnter="Window_DragEnter"
-  DragLeave="Window_DragLeave"
-  DragOver="Window_DragOver"
-  Drop="Window_Drop"
   mc:Ignorable="d">
   <UserControl.Resources>
     <ResourceDictionary>

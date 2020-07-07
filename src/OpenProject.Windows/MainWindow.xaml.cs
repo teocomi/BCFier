@@ -1,16 +1,8 @@
-﻿using System;
-using System.IO;
+﻿using System.ComponentModel;
 using System.Windows;
-using System.ComponentModel;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Windows.Threading;
-using OpenProject.UserControls;
-using OpenProject.Shared.ViewModels.Bcf;
 
 namespace OpenProject.Windows
 {
-
   /// <summary>
   /// Interaction logic for MainWindow.xaml
   /// </summary>
@@ -19,13 +11,6 @@ namespace OpenProject.Windows
     public MainWindow()
     {
       InitializeComponent();
-
-      string[] args = Environment.GetCommandLineArgs();
-      if (args.Length > 1 && File.Exists(args[1]))
-      {
-        Bcfier.Dispatcher.BeginInvoke(DispatcherPriority.Background,
-             new Action(() => Bcfier.BcfFileClicked(args[1])));
-      }
     }
 
     /// <summary>
@@ -35,52 +20,10 @@ namespace OpenProject.Windows
     /// <param name="e"></param>
     private void Window_Closing(object sender, CancelEventArgs e)
     {
-      // e.Cancel = Bcfier.onClosing(e);
     }
-
-    #region commands
-
-
-    private void OnAddView(object sender, ExecutedRoutedEventArgs e)
-    {
-      try
-      {
-
-        if (Bcfier.SelectedBcf() == null)
-          return;
-        var issue = e.Parameter as BcfIssueViewModel;
-        if (issue == null)
-        {
-          MessageBox.Show("No Issue selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-          return;
-        }
-
-        var addView = new AddView(issue, Path.Combine(Path.GetTempPath(), issue.Markup.BcfTopic.Id.ToString()));
-        var win = new Window
-        {
-          Content = addView,
-          Title = "Add View",
-          SizeToContent = SizeToContent.WidthAndHeight,
-          WindowStartupLocation = WindowStartupLocation.CenterScreen
-        };
-        win.ShowDialog();
-        if (win.DialogResult.HasValue && win.DialogResult.Value)
-          Bcfier.SelectedBcf().IsModified = true;
-
-      }
-      catch (Exception ex)
-      {
-        MessageBox.Show("Exception: " + Environment.NewLine + ex);
-      }
-    }
-    #endregion
 
     private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
     {
-      Task.Run(() =>
-      {
-        StatHat.Post.EzCounter(@"hello@teocomi.com", "BCFierWinStart", 1);
-      });
     }
   }
 }

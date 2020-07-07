@@ -12,6 +12,8 @@
 #define RevitAddin19  RevitAddinFolder+"\2019\"
 #define RevitFolder20 RevitAddinFolder+"\2020\"+RevitAppName
 #define RevitAddin20  RevitAddinFolder+"\2020\"
+#define RevitFolder21 RevitAddinFolder+"\2021\"+RevitAppName
+#define RevitAddin21  RevitAddinFolder+"\2021\"
 
 #define WinAppName    "OpenProject.Windows"
 
@@ -43,13 +45,14 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 [Components]
 Name: revit19; Description: Addin for Autodesk Revit 2019;  Types: full
 Name: revit20; Description: Addin for Autodesk Revit 2020;  Types: full
+Name: revit21; Description: Addin for Autodesk Revit 2021;  Types: full
 
 [Dirs]
 Name: "{app}"; Permissions: everyone-full 
 
 [Files]
 ; Windows App
-Source: "{#Repository}\output\{#WinAppName}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs; Components: revit19 revit20
+Source: "{#Repository}\output\{#WinAppName}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs; Components: revit19 revit20 revit21
 
 ;REVIT 2019                                                                                                                                    
 Source: "{#Repository}\output\{#RevitAppName}\Release-2019\*"; DestDir: "{#RevitFolder19}"; Flags: ignoreversion recursesubdirs; Components: revit19 
@@ -58,6 +61,10 @@ Source: "{#Repository}\output\{#RevitAppName}\Release-2019\*.addin"; DestDir: "{
 ;REVIT 2020                                                                                                                                    
 Source: "{#Repository}\output\{#RevitAppName}\Release-2020\*"; DestDir: "{#RevitFolder20}"; Flags: ignoreversion recursesubdirs; Components: revit20 
 Source: "{#Repository}\output\{#RevitAppName}\Release-2020\*.addin"; DestDir: "{#RevitAddin20}"; Flags: ignoreversion; Components: revit20
+
+;REVIT 2021                                                                                                                                    
+Source: "{#Repository}\output\{#RevitAppName}\Release-2021\*"; DestDir: "{#RevitFolder21}"; Flags: ignoreversion recursesubdirs; Components: revit21 
+Source: "{#Repository}\output\{#RevitAppName}\Release-2021\*.addin"; DestDir: "{#RevitAddin21}"; Flags: ignoreversion; Components: revit21
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"

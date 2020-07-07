@@ -56,7 +56,7 @@ namespace OpenProject.Api
       try
       {
         if (cancel != null)
-          response = await Client.ExecuteTaskAsync<T>(request, cancel.Token);
+          response = await Client.ExecuteAsync<T>(request, cancel.Token);
       }
       catch (OperationCanceledException ex)
       {
