@@ -216,29 +216,72 @@
 
       // Check if the url is valid (only if online)
       function validateInstanceUrl() {
-        const instanceUrl = instanceInput.value + '/api/v3';
+        const instanceUrl = instanceInput.value;
+        let domain = '.openproject.com';
 
-        $(function() {
-          $.ajax({
-              url: instanceUrl,
-              dataType: "jsonp",
-              timeout: 5000,
-              crossDomain: true,
-              success: function () {
-                errorContainer.style.display = 'none';
-                submitButton.disabled = false;                  
-              },
-              error: function (parsedjson, b, c) {
-                if (parsedjson.status === 200) {
-                  errorContainer.style.display = 'none';
-                  submitButton.disabled = false;
-                } else {
-                  showErrorMessage('<span>Please provide a valid OpenProject instance url</span>');
-                  submitButton.disabled = true;
-                }
+        // If the url belongs to an OP SAAS instance
+        // test it against the SAAS API (/instance)
+        if (instanceUrl.includes(domain)) {
+          let regex = /(?:http[s]*\:\/\/)*(.*?)\.(?=[^\/]*\..{2,5})/i;
+          const instanceName = instanceUrl.match(regex)[1];
+          
+          // TODO: Change this domain to openproject.com (prod)
+          // TODO: Change the Origin header to one of this:
+          // SETTINGS_CORS__ACCEPTED__DOMAINS=https://((www.)?openproject.(com|org))|(openprojectpr.staging.wpengine.com)|(opdev.staging.wpengine.com)|(opdev.wpengine.com)
+          // Or create a new one an add to the endpoint SETTINGS_CORS__ACCEPTED__DOMAINS
+          fetch('https://start.openproject-edge.com/instance',
+            {
+              method: 'POST',
+              body: JSON.stringify({"instance_name": instanceName}),
+              headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
               }
+            }
+          )
+          .then(response => {
+            console.log('response; ', response)
+            if (response.ok) {
+              errorContainer.style.display = 'none';
+              submitButton.disabled = false;
+            } else {
+              showErrorMessage('<span>The organization already exists</span>');
+              submitButton.disabled = true;
+            }
+          })
+          .catch(error => {
+            console.log('error; ', error)
+            showErrorMessage('<span>Please provide a valid OpenProject instance url</span>');
+            submitButton.disabled = true;
+          })
+        // If the url belongs to a private instance
+        // test it thorugh JSONP
+        } else {
+          // TODO; Are we sure we can rely on 'api/v3'??
+          const instanceUrl = instanceInput.value + '/api/v3';
+
+          $(function() {
+            $.ajax({
+                url: instanceUrl,
+                dataType: "jsonp",
+                timeout: 5000,
+                crossDomain: true,
+                success: function () {
+                  errorContainer.style.display = 'none';
+                  submitButton.disabled = false;                  
+                },
+                error: function (parsedjson, b, c) {
+                  if (parsedjson.status === 200) {
+                    errorContainer.style.display = 'none';
+                    submitButton.disabled = false;
+                  } else {
+                    showErrorMessage('<span>Please provide a valid OpenProject instance url</span>');
+                    submitButton.disabled = true;
+                  }
+                }
+            });
           });
-        });    
+        }
       }
 
       const debouncedValidateInstanceUrl = debounce(validateInstanceUrl, 700);
@@ -389,7 +432,7 @@
     
     <div class="previous_instances_list">
     </div>
-    
+
     <template id="inputTemplate">
       <div class="form__wrapper">
         <div class="input__wrapper">
