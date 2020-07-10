@@ -360,7 +360,9 @@
               setUpInstanceInputAndList(message.messagePayload)
             }
 
-            previousCallback(messageData);
+            if (previousCallback) {
+              previousCallback(messageData);
+            }
           };
 
           window.RevitBridge.sendMessageToRevit('RequestAllInstances', '0', '');
