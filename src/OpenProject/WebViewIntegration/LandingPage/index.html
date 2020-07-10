@@ -307,6 +307,10 @@
 
       // Fill the main input and setup the instances list 
       function setUpInstanceInputAndList(allInstances) {
+        if (allInstances > 1) {
+          previousListTitle.style.display = 'flex';
+        }
+
         allInstances.forEach((instance, index) => {
           // Set the value of the editable/main input
           if (index === allInstances.length - 1) {
@@ -346,18 +350,18 @@
 
           window.RevitBridge.sendMessageToOpenProject = function (messageData) {
             const message = JSON.parse(messageData);
-            console.log('sendMessageToOpenProject: ', messageData, message);
+
+            if (message.messagePayload && message.messagePayload.length) {
+              message.messagePayload = JSON.parse(message.messagePayload);
+            }
 
             if (message.messageType === 'AllInstances' &&
               Array.isArray(message.messagePayload) &&
               message.messagePayload.length) {
               setUpInstanceInputAndList(message.messagePayload)
-              previousListTitle.style.display = 'flex';
             }
 
-            if (previousCallback) {
-              previousCallback(messageData);
-            }
+            previousCallback(messageData);
           };
 
           window.RevitBridge.sendMessageToRevit('RequestAllInstances', '0', '');
@@ -384,8 +388,6 @@
         }
 
         setupRevitCommunicationChannel();
-
-        window.RevitBridge.sendMessageToOpenProject(messageString);
       });
     </script>
   </head>
