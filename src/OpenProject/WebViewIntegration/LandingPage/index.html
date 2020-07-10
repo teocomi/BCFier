@@ -1,5 +1,4 @@
-﻿<!DOCTYPE html>
-<html lang="en-US" dir="ltr" class="wf-lato-n3-active wf-lato-n4-active wf-active">
+﻿<!DOCTYPE html><html lang="en-US" dir="ltr" class="wf-lato-n3-active wf-lato-n4-active wf-active">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -7,7 +6,7 @@
     <title>OpenProject Revit Integration</title>
     <meta name="description" content="Revit pluging of OpenProject, Web-based open source project management software to support teams along the entire project management life-cycle: task management✓ Gantt charts✓ agile boards✓ team collaboration✓ bug tracking✓ roadmap✓ time and cost reporting✓ FREE trial!">
     <link rel="stylesheet" href="./assets/main.css">
-    <!-- <link rel="stylesheet" type="text/css" href="./assets/fontawesome.min.css" media="all"> -->
+<    <!-- <link rel="stylesheet" type="text/css" href="./assets/fontawesome.min.css" media="all"> -->
     <link href="./assets/font-awesome-css/all.css" rel="stylesheet">
     <script src="./assets/jquery-3.1.0.min.js.Download"></script>
     <style>
@@ -347,9 +346,10 @@
 
           window.RevitBridge.sendMessageToOpenProject = function (messageData) {
             const message = JSON.parse(messageData);
-            if (message.messagePayload && message.messagePayload.length) {
+            console.log('messageData: ', messageData, message);
+            /* if (message.messagePayload && message.messagePayload.length) {
               message.messagePayload = JSON.parse(message.messagePayload);
-            }
+            } */
 
             if (message.messageType === 'AllInstances' &&
               Array.isArray(message.messagePayload) &&
@@ -358,7 +358,9 @@
               previousListTitle.style.display = 'flex';
             }
 
-            previousCallback(messageData);
+            if (previousCallback) {
+              previousCallback(messageData);
+            }
           };
 
           window.RevitBridge.sendMessageToRevit('RequestAllInstances', '0', '');
@@ -384,7 +386,22 @@
           instanceInput.addEventListener('input', debouncedValidateInstanceUrl);
         }
 
+        // TODO: Remove this mock
+        window.RevitBridge = {
+          sendMessageToOpenProject: message => console.log('First declaration of sendMessageToOpenProject', message),
+          sendMessageToRevit: (instance, dos, tres) => console.log('sendMessageToRevit GO to instance', instance, tres),
+        }
+
         setupRevitCommunicationChannel();
+
+        // TODO: Remove this mock
+        const message = {
+          messageType: 'AllInstances',
+          messagePayload: JSON.stringify(['https://test1.openproject.com', 'https://test2.openproject.com', 'https://test3.openproject.com'])
+        }
+        const messageString = JSON.stringify(message);
+
+        window.RevitBridge.sendMessageToOpenProject(messageString);
       });
     </script>
   </head>
