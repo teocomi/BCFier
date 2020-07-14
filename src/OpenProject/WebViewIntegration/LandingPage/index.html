@@ -74,8 +74,8 @@
       }
       
       .main_container {
-        margin-bottom: 55px;
-        padding: 90px 20px 20px 20px;
+        margin-bottom: 75px;
+        padding: 120px 20px 20px 20px;
         background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(244,244,244,1) 71%);
       }
 
@@ -181,14 +181,14 @@
 
       .delete-button {
         margin-left: 1rem;
-        background-color: var(--red);
+        background-color: var(--blue);
         color: var(--white);
         width: 45px;
         transition: background-color .5s;
       }
 
       .delete-button:hover {
-        background-color: #c33240;
+        background-color: #1a67a3;
       }
     </style>
     
@@ -214,13 +214,15 @@
       };
 
       // Check if the url is valid (only if online)
+      // and the URL belongs to a SAAS project
       function validateInstanceUrl() {
         const instanceUrl = instanceInput.value;
-        let domain = '.openproject.com';
+        const domains = ['.openproject.com', '.openproject-edge.com', '.openproject-stage.com'];
+        const isSAASDomain = domains.some(domain => instanceUrl.includes(domain));
 
         // If the url belongs to an OP SAAS instance
         // test it against the SAAS API (/instance)
-        if (instanceUrl.includes(domain)) {
+        if (isSAASDomain) {
           let regex = /(?:http[s]*\:\/\/)*(.*?)\.(?=[^\/]*\..{2,5})/i;
           const instanceName = instanceUrl.match(regex)[1];
           
@@ -240,44 +242,17 @@
           )
           .then(response => {
             if (response.ok) {
-              errorContainer.style.display = 'none';
-              submitButton.disabled = false;
-            } else {
-              showErrorMessage('<span>The organization already exists</span>');
+              showErrorMessage("<span>This URL doesn't belongs to an OpenProject instance</span>");
               submitButton.disabled = true;
+            } else {
+              errorContainer.style.display = 'none';
+              submitButton.disabled = false;              
             }
           })
           .catch(error => {
             showErrorMessage('<span>Please provide a valid OpenProject instance url</span>');
             submitButton.disabled = true;
-          })
-        // If the url belongs to a private instance
-        // test it thorugh JSONP
-        } else {
-          // TODO; Are we sure we can rely on 'api/v3'??
-          const instanceUrl = instanceInput.value + '/api/v3';
-
-          $(function() {
-            $.ajax({
-                url: instanceUrl,
-                dataType: "jsonp",
-                timeout: 5000,
-                crossDomain: true,
-                success: function () {
-                  errorContainer.style.display = 'none';
-                  submitButton.disabled = false;                  
-                },
-                error: function (parsedjson, b, c) {
-                  if (parsedjson.status === 200) {
-                    errorContainer.style.display = 'none';
-                    submitButton.disabled = false;
-                  } else {
-                    showErrorMessage('<span>Please provide a valid OpenProject instance url</span>');
-                    submitButton.disabled = true;
-                  }
-                }
-            });
-          });
+          })        
         }
       }
 
@@ -313,7 +288,7 @@
 
         allInstances.forEach((instance, index) => {
           // Set the value of the editable/main input
-          if (index === allInstances.length - 1) {
+          if (index === 0) {
             instanceInput.value = instance;
             submitButton.disabled = false;
           } else {
@@ -350,10 +325,6 @@
 
           window.RevitBridge.sendMessageToOpenProject = function (messageData) {
             const message = JSON.parse(messageData);
-
-            if (message.messagePayload && message.messagePayload.length) {
-              message.messagePayload = JSON.parse(message.messagePayload);
-            }
 
             if (message.messageType === 'AllInstances' &&
               Array.isArray(message.messagePayload) &&
