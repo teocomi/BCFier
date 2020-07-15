@@ -326,6 +326,10 @@
           window.RevitBridge.sendMessageToOpenProject = function (messageData) {
             const message = JSON.parse(messageData);
 
+            if (message.messagePayload && message.messagePayload.length) {
+              message.messagePayload = JSON.parse(message.messagePayload);
+            }
+
             if (message.messageType === 'AllInstances' &&
               Array.isArray(message.messagePayload) &&
               message.messagePayload.length) {
