@@ -260,12 +260,17 @@
       // and the URL belongs to a SAAS project
       function validateInstanceUrl() {
         const instanceUrl = instanceInput.value;
+        const protocols = ['http://', 'https://'];
         const domains = ['.openproject.com', '.openproject-edge.com', '.openproject-stage.com'];
         const isSAASDomain = domains.some(domain => instanceUrl.includes(domain));
+        const asCorrectProtocol = protocols.some(protocol => instanceUrl.includes(protocol));
+        console.log('asCorrectProtocol', asCorrectProtocol, instanceUrl)
+
+
 
         // If the url belongs to an OP SAAS instance
         // test it against the SAAS API (/instance)
-        if (isSAASDomain) {
+        if (isSAASDomain && asCorrectProtocol) {
           let regex = /(?:http[s]*\:\/\/)*(.*?)\.(?=[^\/]*\..{2,5})/i;
           const instanceName = instanceUrl.match(regex)[1];
           
@@ -296,6 +301,9 @@
             showErrorMessage('<span>Please provide a valid OpenProject instance url</span>');
             submitButton.disabled = true;
           })        
+        } else if (!asCorrectProtocol) {
+          showErrorMessage("<span>The URL must start with 'http://' or 'https://'</span>");
+          submitButton.disabled = true;
         }
       }
 
@@ -405,8 +413,7 @@
           instanceInput.addEventListener('input', debouncedValidateInstanceUrl);
         }
 
-        setupRevitCommunicationChannel();
-      });
+       setupRevitCommunicationChannel();
     </script>
   </head>
 
