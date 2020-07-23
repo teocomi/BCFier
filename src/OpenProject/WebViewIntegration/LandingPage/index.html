@@ -128,6 +128,29 @@
         border-radius: 2px 0 2px 0;
       }
 
+      .previous_instances_list {
+        max-width: 550px;
+        margin: 0 auto;
+      }
+
+      .list__block {
+        padding: 10px 0;
+        border-bottom: 1px solid #e7e7e7;
+      }
+
+      .list__block:nth-child(1) {
+        border-top: 1px solid #e7e7e7;
+      }
+
+      .list_item__wrapper {
+        display: flex;
+        place-content: center center;
+      }
+
+      .list_item__wrapper, .list_item__wrapper .go-button {
+        height: 35px;
+      }
+
       #submit-button, .go-button {
         margin: 0;
         line-height: inherit;
@@ -179,12 +202,15 @@
         display: none;
       }
 
-      .delete-button {
+      .delete-button, .list_item__wrapper .go-button{
         margin-left: 1rem;
         background-color: var(--blue);
-        color: var(--white);
+        background: #f8f8f8;
+        border: 1px solid #dddddd;
         width: 45px;
+        color: var(--black);
         transition: background-color .5s;
+        border-radius: 2px;
       }
 
       .delete-button:hover {
@@ -293,8 +319,9 @@
             submitButton.disabled = false;
           } else {
             // Create the list of the last used instance urls
-            const templateClone = document.querySelector('#inputTemplate').content.cloneNode(true);
-            const input = templateClone.querySelector('.instance_name_input_list');
+            const templateClone = document.querySelector('#listItemTemplate').content.cloneNode(true);
+            const listItem = templateClone.querySelector('.list_item__wrapper');
+            const url = document.createElement('p');
             const goButton = templateClone.querySelector('.go-button');
             const deleteButton = templateClone.querySelector('.delete-button');
             goButton.dataset.instance = instance;
@@ -310,7 +337,10 @@
               removeInstance(instanceToRemove);
             });
 
-            input.value = instance;
+            
+            
+            url.textContent = instance;
+            listItem.insertBefore(url, goButton);
 
             previousInstancesList.appendChild(templateClone);
           }
@@ -380,7 +410,7 @@
 
     <div class="main_container" role="document">
       <div class="claim__container">
-        <h1>Introduce the web address of your OpenProject environment</h1>        
+        <h1>Enter the web address of your OpenProject</h1>        
       </div>
 
       <div class="form__container">
@@ -416,26 +446,20 @@
     
     <div class="previous_instances_list">
     </div>
-    
-    <template id="inputTemplate">
-      <div class="form__wrapper">
-        <div class="input__wrapper">
-          <input type="text"
-                  name="company"
-                  class="instance_name_input_list"
-                  placeholder="https://example.openproject.com"
-                  disabled>
 
-        </div>
+    <template id="listItemTemplate">
+      <div class="list__block">
+        <div class="list_item__wrapper">
         
-        <button class="go-button" type="button" name="submit">
-          GO
-        </button>
-
-        <button class="delete-button" type="button" name="submit">
-          <i class="far fa-trash-alt"></i>
-        </button>
-      </div>
+          <button class="go-button" type="button" name="submit">
+            GO
+          </button>
+        
+          <button class="delete-button" type="button" name="submit">
+            <i class="far fa-trash-alt"></i>
+          </button>
+        </div>
+      </div>        
     </template>
   </body>
 </html>
