@@ -147,6 +147,13 @@
         place-content: center center;
       }
 
+      .list_item__wrapper p {
+        width: 400px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
       .list_item__wrapper, .list_item__wrapper .go-button {
         height: 35px;
       }
@@ -313,37 +320,31 @@
         }
 
         allInstances.forEach((instance, index) => {
-          // Set the value of the editable/main input
-          if (index === 0) {
-            instanceInput.value = instance;
-            submitButton.disabled = false;
-          } else {
-            // Create the list of the last used instance urls
-            const templateClone = document.querySelector('#listItemTemplate').content.cloneNode(true);
-            const listItem = templateClone.querySelector('.list_item__wrapper');
-            const url = document.createElement('p');
-            const goButton = templateClone.querySelector('.go-button');
-            const deleteButton = templateClone.querySelector('.delete-button');
-            goButton.dataset.instance = instance;
-            deleteButton.dataset.instance = instance;
+          // Create the list of the last used instance urls
+          const templateClone = document.querySelector('#listItemTemplate').content.cloneNode(true);
+          const listItem = templateClone.querySelector('.list_item__wrapper');
+          const url = document.createElement('div');
+          const goButton = templateClone.querySelector('.go-button');
+          const deleteButton = templateClone.querySelector('.delete-button');
+          goButton.dataset.instance = instance;
+          deleteButton.dataset.instance = instance;
 
-            goButton.addEventListener('click', event => {
-              window.RevitBridge.sendMessageToRevit('InstanceSelected', '0', event.target.dataset.instance);
-            });
+          goButton.addEventListener('click', event => {
+            window.RevitBridge.sendMessageToRevit('InstanceSelected', '0', event.target.dataset.instance);
+          });
 
-            deleteButton.addEventListener('click', event => {
-              const instanceToRemove = event.target.dataset.instance || event.target.parentElement.dataset.instance;
-              
-              removeInstance(instanceToRemove);
-            });
-
+          deleteButton.addEventListener('click', event => {
+            const instanceToRemove = event.target.dataset.instance || event.target.parentElement.dataset.instance;
             
-            
-            url.textContent = instance;
-            listItem.insertBefore(url, goButton);
+            removeInstance(instanceToRemove);
+          });
 
-            previousInstancesList.appendChild(templateClone);
-          }
+          
+          
+          url.innerHTML = `<p>${instance}</p>`;
+          listItem.insertBefore(url, goButton);
+
+          previousInstancesList.appendChild(templateClone);          
         });
       }
       
@@ -449,8 +450,7 @@
 
     <template id="listItemTemplate">
       <div class="list__block">
-        <div class="list_item__wrapper">
-        
+        <div class="list_item__wrapper">        
           <button class="go-button" type="button" name="submit">
             GO
           </button>
