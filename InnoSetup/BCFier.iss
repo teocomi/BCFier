@@ -22,6 +22,8 @@
 #define RevitAddin20  "{userappdata}\Autodesk\Revit\Addins\2020\"
 #define RevitFolder21 "{userappdata}\Autodesk\Revit\Addins\2021\"+RevitAppName
 #define RevitAddin21  "{userappdata}\Autodesk\Revit\Addins\2021\"
+#define RevitFolder22 "{userappdata}\Autodesk\Revit\Addins\2022\"+RevitAppName
+#define RevitAddin22  "{userappdata}\Autodesk\Revit\Addins\2022\"
 
 #define WinAppName    "Bcfier.Win"
 
@@ -63,6 +65,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: revit19; Description: Addin for Autodesk Revit 2019;  Types: full
 Name: revit20; Description: Addin for Autodesk Revit 2020;  Types: full
 Name: revit21; Description: Addin for Autodesk Revit 2021;  Types: full
+Name: revit22; Description: Addin for Autodesk Revit 2022;  Types: full
 Name: standalone; Description: BCFier for Windows (standalone viewer); Types: full
 
 
@@ -125,6 +128,13 @@ Source: "{#Repository}\{#RevitAppName}\bin\Release-2021\{#RevitAppName}.addin"; 
 Source: "{#Repository}\{#RevitAppName}\bin\Release-2021\Bcfier.dll"; DestDir: "{#RevitFolder21}"; Flags: ignoreversion; Components: revit21
 Source: "{#Repository}\{#RevitAppName}\bin\Release-2021\GongSolutions.WPF.DragDrop.dll"; DestDir: "{#RevitFolder21}"; Flags: ignoreversion; Components: revit21
 Source: "{#Repository}\{#RevitAppName}\bin\Release-2021\RestSharp.dll"; DestDir: "{#RevitFolder21}"; Flags: ignoreversion; Components: revit21
+
+;REVIT 2022                                                                                                                                    
+Source: "{#Repository}\{#RevitAppName}\bin\Release-2022\{#RevitAppName}.dll"; DestDir: "{#RevitFolder22}"; Flags: ignoreversion; Components: revit22  
+Source: "{#Repository}\{#RevitAppName}\bin\Release-2022\{#RevitAppName}.addin"; DestDir: "{#RevitAddin22}"; Flags: ignoreversion; Components: revit22
+Source: "{#Repository}\{#RevitAppName}\bin\Release-2022\Bcfier.dll"; DestDir: "{#RevitFolder22}"; Flags: ignoreversion; Components: revit22
+Source: "{#Repository}\{#RevitAppName}\bin\Release-2022\GongSolutions.WPF.DragDrop.dll"; DestDir: "{#RevitFolder22}"; Flags: ignoreversion; Components: revit22
+Source: "{#Repository}\{#RevitAppName}\bin\Release-2022\RestSharp.dll"; DestDir: "{#RevitFolder22}"; Flags: ignoreversion; Components: revit22
 
 
 
