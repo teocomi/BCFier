@@ -16,7 +16,9 @@ namespace Bcfier.Revit.Entry
   public class CmdMain : IExternalCommand
   {
 
-#if Version2021
+#if Version2022
+    public const string RevitVersion = "2022";
+#elif Version2021
         public const string RevitVersion = "2021";
 #elif Version2020
         public const string RevitVersion = "2020";
@@ -62,18 +64,18 @@ namespace Bcfier.Revit.Entry
       {
 
         //Version check
-        
+
         if (!commandData.Application.Application.VersionName.Contains(RevitVersion))
         {
           using (var td = new TaskDialog("Untested version"))
           {
             td.TitleAutoPrefix = false;
             td.MainInstruction = "Untested Revit Version";
-            td.MainContent = "This Add-In was built and tested only for Revit "+ RevitVersion + ", proceed at your own risk";
+            td.MainContent = "This Add-In was built and tested only for Revit " + RevitVersion + ", proceed at your own risk";
             td.Show();
           }
         }
-        
+
         // Form Running?
         if (_isRunning && _extAppBcfier != null && _extAppBcfier.RvtWindow.IsLoaded)
         {
