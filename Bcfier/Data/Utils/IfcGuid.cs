@@ -136,7 +136,7 @@ namespace Bcfier.Data.Utils
       // Creation of six 32 Bit integers from the components of the GUID structure
       num[0] = ( uint ) ( BitConverter.ToUInt32( b, 0 ) / 16777216 );
       num[1] = ( uint ) ( BitConverter.ToUInt32( b, 0 ) % 16777216 );
-      num[2] = ( uint ) ( BitConverter.ToUInt16( b, 4 ) * 256 + BitConverter.ToInt16( b, 6 ) / 256 );
+      num[2] = ( uint ) ( BitConverter.ToUInt16( b, 4 ) * 256 + BitConverter.ToUInt16( b, 6 ) / 256 );
       num[3] = ( uint ) ( ( BitConverter.ToUInt16( b, 6 ) % 256 ) * 65536 + b[8] * 256 + b[9] );
       num[4] = ( uint ) ( b[10] * 65536 + b[11] * 256 + b[12] );
       num[5] = ( uint ) ( b[13] * 65536 + b[14] * 256 + b[15] );
