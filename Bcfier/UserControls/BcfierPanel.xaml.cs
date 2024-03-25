@@ -475,7 +475,7 @@ namespace Bcfier.UserControls
         if (e.Data.GetDataPresent(DataFormats.FileDrop, true))
         {
           var filenames = e.Data.GetData(DataFormats.FileDrop, true) as string[];
-          if (filenames.Any(x => Path.GetExtension(x).ToUpperInvariant() != ".BCFZIP"))
+          if (filenames.Any(x => Path.GetExtension(x).ToUpperInvariant() != BcfContainer.FileExtension.ToUpperInvariant()))
             dropEnabled = false;
         }
         else
