@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace IPA.Bcfier.Services
 {
-    public class BcfConversionService
+    public class BcfConversionToModelService
     {
         public BcfFile ConvertBcfContainerToBcfFile(Dangl.BCF.BCFv3.BCFv3Container bcfContainer, string fileName)
         {
@@ -81,10 +81,16 @@ namespace IPA.Bcfier.Services
                     {
                         bcfTopic.AssignedTo = topic.Markup.Topic.AssignedTo;
                         bcfTopic.CreationAuthor = topic.Markup.Topic.CreationAuthor;
-                        bcfTopic.CreationDate = topic.Markup.Topic.CreationDate;
+                        if (topic.Markup.Topic.ShouldSerializeCreationDate())
+                        {
+                            bcfTopic.CreationDate = topic.Markup.Topic.CreationDate;
+                        }
                         bcfTopic.Description = topic.Markup.Topic.Description;
                         bcfTopic.ModifiedAuthor = topic.Markup.Topic.ModifiedAuthor;
-                        bcfTopic.ModifiedDate = topic.Markup.Topic.ModifiedDate;
+                        if (topic.Markup.Topic.ModifiedDateSpecified)
+                        {
+                            bcfTopic.ModifiedDate = topic.Markup.Topic.ModifiedDate;
+                        }
                         bcfTopic.ServerAssignedId = topic.Markup.Topic.ServerAssignedId;
                         bcfTopic.TopicStatus = topic.Markup.Topic.TopicStatus;
                         bcfTopic.Title = topic.Markup.Topic.Title;

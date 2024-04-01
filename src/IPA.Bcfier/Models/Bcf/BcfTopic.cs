@@ -19,13 +19,13 @@ namespace IPA.Bcfier.Models.Bcf
 
         public string CreationAuthor { get; set; } = string.Empty;
 
-        public DateTime CreationDate { get; set; }
+        public DateTime? CreationDate { get; set; }
 
         public string Description { get; set; } = string.Empty;
 
         public string ModifiedAuthor { get; set; } = string.Empty;
 
-        public DateTime ModifiedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
 
         public string ServerAssignedId { get; set; } = string.Empty;
 

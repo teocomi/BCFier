@@ -15,7 +15,7 @@ namespace IPA.Bcfier.Services
             using var bcfStreamCopy = new MemoryStream();
             await bcfFileStream.CopyToAsync(bcfStreamCopy);
             var bcfContainer = ReadBcfFile(bcfStreamCopy);
-            var bcfConversionService = new BcfConversionService();
+            var bcfConversionService = new BcfConversionToModelService();
             return bcfConversionService.ConvertBcfContainerToBcfFile(bcfContainer, fileName);
         }
 
