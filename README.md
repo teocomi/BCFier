@@ -1,5 +1,6 @@
 ![](/Assets/bcfier-text.png)
 
+[Documentation](https://docs.dangl-it.com/Projects/IPA.BCFier)
 
 
 ## Intro

@@ -1,0 +1,59 @@
+.toc-filter, .form-control {
+    border-radius: 0;
+    border: none;
+}
+
+.toc .nav > li > a:hover, .toc .nav > li > a:focus,
+.toc .nav > li.active > a:hover, .toc .nav > li.active > a:focus,
+.toc .nav > li.active > a, .toc .nav > li.active > a {
+    color: #fff;
+}
+
+button, a,
+.affix > ul > li.active > a, .affix > ul > li.active > a:before {
+    color: #00acc1;
+}
+
+.navbar-inverse {
+    border: none;
+    background-color: #00acc1;;
+    color: #fff;    
+}
+
+.navbar-inverse .navbar-nav>.active>a,
+.navbar-inverse .navbar-nav>.active>a:focus,
+.navbar-inverse .navbar-nav>.active>a:hover {
+    background-color: #3b4c55;
+    color: #00acc1;
+}
+
+.sidefilter, .sidetoc, .toc, body .toc {
+    background-color: #3b4c55;
+    color: #bdbdbd;
+}
+
+.sidefilter a, .sidetoc a, .toc a, .toc .nav > li > a {
+    color: #00acc1;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+    color: #fff;
+}
+
+.navbar-default {
+    background-color: #3b4c55;
+    color: #bdbdbd;
+}
+
+.navbar-default a {
+    color: #00acc1;
+}
+
+.footer {
+    background-color: #3b4c55;
+    color: #bdbdbd 
+}
+
+.footer a {
+    color: #00acc1;
+}
