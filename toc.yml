@@ -1,7 +1,7 @@
 - name: Home
   href: index.md
 - name: API Documentation
-  href: obj/api/
+  href: api/
 - name: DanglDocu
   href: https://docs.dangl-it.com
 - name: GitHub
