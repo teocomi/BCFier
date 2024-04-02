@@ -1,0 +1,41 @@
+.issue-list {
+  margin-top: 4px;
+  margin-left: 4px;
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  height: 100%;
+}
+
+.issue-list-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-bottom: 4px;
+
+  button {
+    width: 45%;
+  }
+}
+
+.topic-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-card-content {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+}
+
+.topic-info {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+}

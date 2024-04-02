@@ -3,7 +3,7 @@
   <bcfier-top-menu></bcfier-top-menu>
 </mat-toolbar>
 
-<mat-tab-group *ngIf="bcfFiles">
+<mat-tab-group *ngIf="bcfFiles" dynamicHeight>
   <mat-tab *ngFor="let bcfFile of bcfFiles | async">
     <ng-template mat-tab-label>
       {{ bcfFile.fileName }}
