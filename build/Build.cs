@@ -25,6 +25,16 @@ using Nuke.Common.Tools.AzureKeyVault;
 using static Nuke.GitHub.ChangeLogExtensions;
 using static Nuke.WebDocu.WebDocuTasks;
 using Nuke.WebDocu;
+using Nuke.Common.Tools.NSwag;
+using Octokit;
+using System.Text.RegularExpressions;
+using NJsonSchema.Generation;
+using System.Reflection;
+using NJsonSchema;
+using NSwag;
+using NSwag.CodeGeneration.TypeScript;
+using NJsonSchema.CodeGeneration.TypeScript;
+using System.Collections.Generic;
 
 class Build : NukeBuild
 {
@@ -45,6 +55,7 @@ class Build : NukeBuild
 
     AbsolutePath ChangeLogFile => RootDirectory / "CHANGELOG.md";
     AbsolutePath DocFxFile => RootDirectory / "docfx.json";
+    AbsolutePath SourceDirectory => RootDirectory / "src";
 
     [Parameter] private readonly string DocuBaseUrl = "https://docs.dangl-it.com";
     [Parameter] private readonly string DocuApiKey;
@@ -197,5 +208,65 @@ namespace IPA.BCFier
                 .SetRepositoryOwner(repositoryInfo.gitHubOwner)
                 .SetTag(releaseTag)
                 .SetToken(GitHubAuthenticationToken));
+        });
+
+    Target GenerateFrontendModels => _ => _
+        .Executes(() =>
+        {
+            var jsonSchemaSettings = new SystemTextJsonSchemaGeneratorSettings();
+            jsonSchemaSettings.SerializerOptions = new System.Text.Json.JsonSerializerOptions
+            {
+                PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase
+            };
+
+            var schema = JsonSchema.FromType<IPA.Bcfier.Models.Bcf.BcfFile>(jsonSchemaSettings);
+            var document = new OpenApiDocument();
+            foreach (var typeDef in schema.Definitions)
+            {
+                document.Definitions.TryAdd(typeDef.Key, typeDef.Value);
+            }
+
+            document.Definitions.Add(nameof(IPA.Bcfier.Models.Bcf.BcfFile), schema);
+
+            var typeScriptClientGeneratorSettings = new TypeScriptClientGeneratorSettings
+            {
+                Template = NSwag.CodeGeneration.TypeScript.TypeScriptTemplate.Angular,
+                RxJsVersion = 7.0m,
+            };
+            typeScriptClientGeneratorSettings.TypeScriptGeneratorSettings.TypeStyle = NJsonSchema.CodeGeneration.TypeScript.TypeScriptTypeStyle.Interface;
+            typeScriptClientGeneratorSettings.TypeScriptGeneratorSettings.EnumStyle = NJsonSchema.CodeGeneration.TypeScript.TypeScriptEnumStyle.Enum;
+            typeScriptClientGeneratorSettings.TypeScriptGeneratorSettings.TypeScriptVersion = 4.3m;
+
+            var typeScriptPropertyNameGenerator = new TypeScriptPropertyNameGenerator();
+            typeScriptClientGeneratorSettings.TypeScriptGeneratorSettings.PropertyNameGenerator = typeScriptPropertyNameGenerator;
+
+            var generator = new TypeScriptClientGenerator(document, typeScriptClientGeneratorSettings);
+
+            var typeScriptFile = generator.GenerateFile();
+
+            var typeScriptCode = string.Empty;
+            var lastLineWasEmpty = false;
+            foreach (var line in Regex.Split(typeScriptFile, "\r\n?|\n"))
+            {
+                if (!line.StartsWith("import")
+                    && !line.StartsWith("export const API_BASE_URL"))
+                {
+                    if (string.IsNullOrWhiteSpace(line))
+                    {
+                        if (!lastLineWasEmpty)
+                        {
+                            typeScriptCode += line + Environment.NewLine;
+                        }
+                        lastLineWasEmpty = true;
+                    }
+                    else
+                    {
+                        lastLineWasEmpty = false;
+                        typeScriptCode += line + Environment.NewLine;
+                    }
+                }
+            }
+
+            (SourceDirectory / "ipa-bcfier-ui" / "src" / "generated" / "models.ts").WriteAllText(typeScriptCode);
         });
 }
