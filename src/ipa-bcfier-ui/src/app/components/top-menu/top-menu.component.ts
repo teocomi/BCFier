@@ -3,6 +3,7 @@ import { BcfFile } from '../../../generated/models';
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { NotificationsService } from '../../services/notifications.service';
 
 @Component({
   selector: 'bcfier-top-menu',
@@ -12,7 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './top-menu.component.scss',
 })
 export class TopMenuComponent {
-  constructor(private bcfConversionService: BcfConversionService) {}
+  constructor(private bcfConversionService: BcfConversionService,
+    private notificationsService: NotificationsService) {}
 
   openBcf(): void {
     this.bcfConversionService.importBcfFile().subscribe({
@@ -20,7 +22,7 @@ export class TopMenuComponent {
         console.log(bcfFile);
       },
       error: (error) => {
-        console.log(error);
+        this.notificationsService.error('Error during BCF import.')
       },
     });
   }
