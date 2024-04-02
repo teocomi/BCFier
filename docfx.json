@@ -32,7 +32,8 @@
           "GitVersion.yml",
           "**/*.nupkg",
           "BCFier*/**/*",
-          "src/ipa-bcfier-ui/**/*"
+          "src/ipa-bcfier-ui/**/*",
+          "src/**/bin/**/*"
         ]
       }
     ],
