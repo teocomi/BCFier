@@ -9,6 +9,11 @@ jobs:
     env:
         GitHubAuthenticationToken: ${{ secrets.GITHUB_TOKEN }}
         DocuApiKey: ${{ secrets.DOCUAPIKEY }}
+        CodeSigningCertificateKeyVaultBaseUrl: ${{ secrets.CODESIGNINGKEYVAULTBASEURL }}
+        KeyVaultClientId: ${{ secrets.CODESIGNINGKEYVAULTCLIENTID }}
+        KeyVaultClientSecret: ${{ secrets.CODESIGNINGKEYVAULTCLIENTSECRET }}
+        CodeSigningKeyVaultTenantId: ${{ secrets.CODESIGNINGKEYVAULTTENANTID }}
+        CodeSigningCertificateName: ${{ secrets.CODESIGNINGKEYVAULTCERTIFICATENAME }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v1
@@ -20,5 +25,5 @@ jobs:
         with:
           name: Test Results (${{ runner.os }})
           path: output/**/*_testresults.xml
-      - name: UploadDocumentation+PublishGitHubRelease
-        run: ./build.ps1 UploadDocumentation+PublishGitHubRelease
+      - name: UploadDocumentation+PublishGitHubRelease+UploadElectronApp
+        run: ./build.ps1 UploadDocumentation+PublishGitHubRelease+UploadElectronApp

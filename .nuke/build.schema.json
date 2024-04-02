@@ -6,6 +6,15 @@
     "build": {
       "type": "object",
       "properties": {
+        "CodeSigningCertificateKeyVaultBaseUrl": {
+          "type": "string"
+        },
+        "CodeSigningCertificateName": {
+          "type": "string"
+        },
+        "CodeSigningKeyVaultTenantId": {
+          "type": "string"
+        },
         "Configuration": {
           "type": "string",
           "description": "Configuration to build - Default is 'Debug' (local) or 'Release' (server)",
@@ -22,6 +31,9 @@
           "type": "string"
         },
         "DocuBaseUrl": {
+          "type": "string"
+        },
+        "ExecutablesToSignFolder": {
           "type": "string"
         },
         "GitHubAuthenticationToken": {
@@ -51,6 +63,12 @@
             "VisualStudio",
             "VSCode"
           ]
+        },
+        "KeyVaultClientId": {
+          "type": "string"
+        },
+        "KeyVaultClientSecret": {
+          "type": "string"
         },
         "NoLogo": {
           "type": "boolean",
@@ -83,13 +101,18 @@
             "enum": [
               "BuildDocFxMetadata",
               "BuildDocumentation",
+              "BuildElectronApp",
               "Clean",
               "Compile",
+              "FrontEndRestore",
               "GenerateFrontendModels",
+              "GenerateFrontendVersion",
               "PublishGitHubRelease",
               "Restore",
+              "SignExecutables",
               "Tests",
-              "UploadDocumentation"
+              "UploadDocumentation",
+              "UploadElectronApp"
             ]
           }
         },
@@ -105,13 +128,18 @@
             "enum": [
               "BuildDocFxMetadata",
               "BuildDocumentation",
+              "BuildElectronApp",
               "Clean",
               "Compile",
+              "FrontEndRestore",
               "GenerateFrontendModels",
+              "GenerateFrontendVersion",
               "PublishGitHubRelease",
               "Restore",
+              "SignExecutables",
               "Tests",
-              "UploadDocumentation"
+              "UploadDocumentation",
+              "UploadElectronApp"
             ]
           }
         },

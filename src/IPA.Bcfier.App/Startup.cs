@@ -12,6 +12,7 @@ namespace IPA.Bcfier.App
             services.AddElectron();
             services.AddLocalizedSpaStaticFiles(".IPA.App.Locale", new[] { "en" }, "dist");
             services.AddSingleton<ElectronWindowProvider>();
+            services.AddHttpContextAccessor();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

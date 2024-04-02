@@ -48,7 +48,7 @@ namespace IPA.Bcfier.App.Controllers
             {
                 using var bcfFileStream = System.IO.File.OpenRead(fileSelectionResult.First());
                 var bcfFileName = Path.GetFileName(fileSelectionResult.FirstOrDefault());
-                var bcfResult = await new BcfImportService().ImportBcfFileAsync(bcfFileStream, bcfFileName);
+                var bcfResult = await new BcfImportService().ImportBcfFileAsync(bcfFileStream, bcfFileName ?? "issue.bcf");
                 return Ok(bcfResult);
             }
             catch (Exception e)

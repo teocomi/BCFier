@@ -195,3 +195,7 @@ FakesAssemblies/
 *.opt
 
 output/
+
+nuke2/
+
+src/IPA.Bcfier.App/wwwroot/dist/
