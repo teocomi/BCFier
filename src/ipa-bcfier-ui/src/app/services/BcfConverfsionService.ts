@@ -1,0 +1,19 @@
+import { BcfFile } from '../../generated/models';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class BcfConversionService {
+  constructor(private http: HttpClient) {}
+
+  importBcfFile(): Observable<BcfFile> {
+    return this.http.post<BcfFile>('/api/bcf-conversion/import', null);
+  }
+
+  exportBcfFile(bcfFile: BcfFile): Observable<void> {
+    throw new Error('Method not implemented.');
+  }
+}
