@@ -1,9 +1,11 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace IPA.Bcfier.Models.Bcf
 {
     public class BcfComment
     {
+        [Required]
         public Guid Id { get; set; } = Guid.NewGuid();
 
         public string Text { get; set; } = string.Empty;

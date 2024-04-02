@@ -1,18 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace IPA.Bcfier.Models.Bcf
 {
     public class BcfTopic
     {
+        [Required]
         public Guid Id { get; set; } = Guid.NewGuid();
 
+        [Required]
         public List<BcfTopicFile> Files { get; set; } = new();
 
+        [Required]
         public List<BcfViewpoint> Viewpoints { get; set; } = new();
 
+        [Required]
         public List<BcfDocumentReference> DocumentReferences { get; set; } = new();
 
+        [Required]
         public List<BcfComment> Comments { get; set; } = new();
 
         public string AssignedTo { get; set; } = string.Empty;
@@ -43,10 +49,13 @@ namespace IPA.Bcfier.Models.Bcf
 
         public int Index { get; set; }
 
+        [Required]
         public List<string> Labels { get; set; } = new();
 
+        [Required]
         public List<Guid> RelatedTopicIds { get; set; } = new();
 
+        [Required]
         public List<string> ReferenceLinks { get; set; } = new();
     }
 }
