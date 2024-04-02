@@ -219,14 +219,17 @@ namespace IPA.Bcfier
                 PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase
             };
 
-            var schema = JsonSchema.FromType<IPA.Bcfier.Models.Bcf.BcfFile>(jsonSchemaSettings);
             var document = new OpenApiDocument();
-            foreach (var typeDef in schema.Definitions)
+
+            var bcfFileSchema = JsonSchema.FromType<IPA.Bcfier.Models.Bcf.BcfFile>(jsonSchemaSettings);
+            document.Definitions.Add(nameof(IPA.Bcfier.Models.Bcf.BcfFile), bcfFileSchema);
+            foreach (var typeDef in bcfFileSchema.Definitions)
             {
                 document.Definitions.TryAdd(typeDef.Key, typeDef.Value);
             }
 
-            document.Definitions.Add(nameof(IPA.Bcfier.Models.Bcf.BcfFile), schema);
+            var frontendConfigSchema = JsonSchema.FromType<IPA.Bcfier.Models.Config.FrontendConfig>(jsonSchemaSettings);
+            document.Definitions.Add(nameof(IPA.Bcfier.Models.Config.FrontendConfig), frontendConfigSchema);
 
             var typeScriptClientGeneratorSettings = new TypeScriptClientGeneratorSettings
             {

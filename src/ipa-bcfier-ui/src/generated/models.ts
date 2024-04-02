@@ -153,3 +153,7 @@ export interface BcfFile {
     projectExtensions?: BcfProjectExtensions | undefined;
     topics: BcfTopic[];
 }
+
+export interface FrontendConfig {
+    isInElectronMode: boolean;
+}
