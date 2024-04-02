@@ -335,7 +335,7 @@ export const version = {{
         .DependsOn(UploadDocumentation)
         .Requires(() => DocuApiKey)
         .Requires(() => DocuBaseUrl)
-        //.OnlyWhenDynamic(() => IsOnBranch("master") || IsOnBranch("develop"))
+        .OnlyWhenDynamic(() => IsOnBranch("master") || IsOnBranch("develop"))
         .Executes(() =>
         {
             var changeLog = GetCompleteChangeLog(ChangeLogFile);
