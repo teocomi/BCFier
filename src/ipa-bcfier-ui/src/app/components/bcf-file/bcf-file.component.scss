@@ -12,6 +12,7 @@
   flex-direction: column;
   width: 30%;
   height: 100%;
+  overflow: auto;
 }
 
 .issue-list-buttons {
@@ -50,4 +51,5 @@ mat-card-content {
 .issue-details {
   padding-left: 12px;
   width: 70%;
+  overflow: auto;
 }

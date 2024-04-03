@@ -34,8 +34,8 @@
         (click)="selectTopic(topic)"
       >
         <mat-progress-bar
-          *ngIf="selectedTopic?.id === topic.id"
           mode="determinate"
+          [color]="selectedTopic?.id === topic.id ? 'primary' : 'accent'"
           value="100"
         ></mat-progress-bar>
         <mat-card-header>
