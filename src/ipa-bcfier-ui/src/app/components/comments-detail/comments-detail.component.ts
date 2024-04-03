@@ -3,8 +3,10 @@ import { Component, Input, OnInit } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ImagePreviewComponent } from '../image-preview/image-preview.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { NotificationsService } from '../../services/notifications.service';
@@ -36,7 +38,8 @@ export class CommentsDetailComponent implements OnInit {
 
   constructor(
     private settingsMessengerService: SettingsMessengerService,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+    private matDialog: MatDialog
   ) {}
 
   ngOnInit(): void {}
@@ -93,6 +96,8 @@ export class CommentsDetailComponent implements OnInit {
   }
 
   showImageFullScreen(viewpoint: BcfViewpoint): void {
-    this.notificationsService.info('Show image full screen');
+    this.matDialog.open(ImagePreviewComponent, {
+      data: viewpoint,
+    });
   }
 }
