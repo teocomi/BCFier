@@ -12,10 +12,15 @@
   max-height: 300px;
 }
 
-.viewpoint-author {
+.comment-author {
   margin-right: 8px;
 }
 
 mat-card-content {
   padding-top: 12px;
+}
+
+.image-buttons {
+  position: absolute;
+  right: 0px;
 }

@@ -70,6 +70,29 @@ export class CommentsDetailComponent implements OnInit {
     this.topic.comments = this.topic.comments.filter(
       (c) => c.id !== comment.id
     );
+
     this.notificationsService.success('Comment removed');
+  }
+
+  deleteViewpoint(viewpoint: BcfViewpoint): void {
+    this.topic.viewpoints = this.topic.viewpoints.filter(
+      (v) => v.id !== viewpoint.id
+    );
+
+    this.topic.comments.forEach((c) => {
+      if (c.viewpointId === viewpoint.id) {
+        c.viewpointId = undefined;
+      }
+    });
+
+    // When we're deleting a viewpoint, we also want to ensure that
+    // all other places where the comments are used are reevaluated,
+    // since comments that originally belonged to the viewpoint
+    // are moved to general comments now
+    this.topic.comments = [...this.topic.comments];
+  }
+
+  showImageFullScreen(viewpoint: BcfViewpoint): void {
+    this.notificationsService.info('Show image full screen');
   }
 }

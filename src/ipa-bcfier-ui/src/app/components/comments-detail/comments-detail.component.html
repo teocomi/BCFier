@@ -1,11 +1,19 @@
 <mat-card>
   <mat-card-title class="image-title">
     <img class="viewpoint-image" [bcfierViewpointImage]="viewpoint" />
+    <div class="image-buttons" *ngIf="viewpoint">
+      <button mat-icon-button (click)="showImageFullScreen(viewpoint)">
+        <mat-icon>fullscreen</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="deleteViewpoint(viewpoint)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
   </mat-card-title>
   <mat-card-content>
     <div *ngFor="let comment of comments">
       <span class="comment-header">
-        <strong class="viewpoint-author">{{ comment.author }}</strong>
+        <strong class="comment-author">{{ comment.author }}</strong>
         <span>{{ comment.creationDate | date : "dd.MM.yyyy HH:mm" }}</span>
 
         <button mat-icon-button color="warn" (click)="removeComment(comment)">
