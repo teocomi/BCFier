@@ -55,4 +55,9 @@ export class TopMenuComponent {
       throw new Error('Not implemented');
     }
   }
+
+  saveBcf(): void {
+    console.log('Calling save');
+    this.bcfFilesMessengerService.saveCurrentActiveBcfFile();
+  }
 }

@@ -2,6 +2,7 @@
 using ElectronNET.API;
 using IPA.Bcfier.App.Services;
 using IPA.Bcfier.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IPA.Bcfier.App
 {
@@ -15,6 +16,11 @@ namespace IPA.Bcfier.App
             services.AddSingleton<ElectronWindowProvider>();
             services.AddTransient<SettingsService>();
             services.AddHttpContextAccessor();
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

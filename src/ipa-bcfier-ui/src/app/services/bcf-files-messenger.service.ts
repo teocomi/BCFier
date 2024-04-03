@@ -1,6 +1,7 @@
+import { ReplaySubject, Subject } from 'rxjs';
+
 import { BcfFile } from '../../generated/models';
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,9 +13,20 @@ export class BcfFilesMessengerService {
   public bcfFiles = this.bcfFilesSubject.asObservable();
   private currentBcfFiles: BcfFile[] = [];
 
+  private bcfFileSaveRequestedSource = new Subject<void>();
+  bcfFileSaveRequested = this.bcfFileSaveRequestedSource.asObservable();
+
+  private bcfFileSelectedSource = new Subject<BcfFile>();
+  bcfFileSelected = this.bcfFileSelectedSource.asObservable();
+
+  saveCurrentActiveBcfFile(): void {
+    this.bcfFileSaveRequestedSource.next();
+  }
+
   openBcfFile(bcfFile: BcfFile) {
     this.currentBcfFiles.push(bcfFile);
     this.bcfFilesSubject.next(this.currentBcfFiles);
+    this.bcfFileSelectedSource.next(bcfFile);
   }
 
   closeBcfFile(bcfFile: BcfFile) {

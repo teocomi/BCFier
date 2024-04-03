@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IPA.Bcfier.Models.Bcf
 {
-
     public class BcfFile
     {
         [Required]

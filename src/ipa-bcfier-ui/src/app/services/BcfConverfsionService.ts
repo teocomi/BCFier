@@ -14,6 +14,6 @@ export class BcfConversionService {
   }
 
   exportBcfFile(bcfFile: BcfFile): Observable<void> {
-    throw new Error('Method not implemented.');
+    return this.http.post<void>('/api/bcf-conversion/export', bcfFile);
   }
 }
