@@ -1,11 +1,9 @@
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
-import { AppConfigService } from '../../services/AppConfigService';
 import { BackendService } from '../../services/BackendService';
 import { BcfFile } from '../../../generated/models';
 import { BcfFilesMessengerService } from '../../services/bcf-files-messenger.service';
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { NotificationsService } from '../../services/notifications.service';
@@ -26,9 +24,7 @@ export class TopMenuComponent {
     private backendService: BackendService,
     private notificationsService: NotificationsService,
     private bcfFilesMessengerService: BcfFilesMessengerService,
-    private matDialog: MatDialog,
-    private appConfigService: AppConfigService,
-    private http: HttpClient
+    private matDialog: MatDialog
   ) {}
 
   openBcf(): void {
@@ -51,13 +47,7 @@ export class TopMenuComponent {
   }
 
   openDocumentation(): void {
-    if (this.appConfigService.getFrontendConfig().isInElectronMode) {
-      this.http.post('/api/documentation', null).subscribe(() => {
-        /* Not doing anything with the result */
-      });
-    } else {
-      throw new Error('Not implemented');
-    }
+    this.backendService.openDocumentation();
   }
 
   saveBcf(): void {

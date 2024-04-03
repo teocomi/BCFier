@@ -6,9 +6,8 @@ import {
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
-import { AddSnapshotViewpointComponent } from '../add-snapshot-viewpoint/add-snapshot-viewpoint.component';
 import { AddStringValueComponent } from '../add-string-value/add-string-value.component';
-import { AppConfigService } from '../../services/AppConfigService';
+import { BackendService } from '../../services/BackendService';
 import { CommentsDetailComponent } from '../comments-detail/comments-detail.component';
 import { CommentsViewpointFilterPipe } from '../../pipes/comments-viewpoint-filter.pipe';
 import { CommonModule } from '@angular/common';
@@ -46,7 +45,7 @@ export class TopicDetailComponent implements OnInit {
 
   constructor(
     private matDialog: MatDialog,
-    private appConfigService: AppConfigService
+    private backendService: BackendService
   ) {}
 
   ngOnInit(): void {
@@ -100,17 +99,10 @@ export class TopicDetailComponent implements OnInit {
   }
 
   addViewpoint(): void {
-    if (this.appConfigService.getFrontendConfig().isInElectronMode) {
-      this.matDialog
-        .open(AddSnapshotViewpointComponent)
-        .afterClosed()
-        .subscribe((viewpoint) => {
-          if (viewpoint) {
-            this.topic.viewpoints.push(viewpoint);
-          }
-        });
-    } else {
-      throw new Error('Not implemented');
-    }
+    this.backendService.addViewpoint().subscribe((viewpoint) => {
+      if (viewpoint) {
+        this.topic.viewpoints.push(viewpoint);
+      }
+    });
   }
 }
