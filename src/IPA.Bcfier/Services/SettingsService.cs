@@ -19,9 +19,10 @@ namespace IPA.Bcfier.Services
                 };
             }
 
-            var serializedSettings = await File.ReadAllTextAsync(settingsPath);
+            using var settingsFileStream = File.OpenRead(settingsPath);
+            using var streamReader = new StreamReader(settingsFileStream);
+            var serializedSettings = await streamReader.ReadToEndAsync();
             var deserializedSettings = JsonConvert.DeserializeObject<Settings>(serializedSettings);
-
 
             if (deserializedSettings == null)
             {
@@ -37,7 +38,9 @@ namespace IPA.Bcfier.Services
         public async Task SaveSettingsAsync(Settings settings)
         {
             var serializedSettings = JsonConvert.SerializeObject(settings);
-            await File.WriteAllTextAsync(GetPathToSettingsFile(), serializedSettings);
+            using var settingsFileStream = File.OpenWrite(GetPathToSettingsFile());
+            using var streamWriter = new StreamWriter(settingsFileStream);
+            await streamWriter.WriteAsync(serializedSettings);
         }
 
         private string GetPathToSettingsFile()
