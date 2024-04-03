@@ -1,0 +1,13 @@
+.menu-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.menu-band {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.version-label {
+  font-size: small;
+}

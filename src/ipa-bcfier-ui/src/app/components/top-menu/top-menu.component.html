@@ -1,0 +1,33 @@
+<div class="menu-band">
+  <div class="menu-buttons">
+    <button mat-raised-button (click)="newBcfFile()">
+      <mat-icon>edit_document</mat-icon>
+      New BCF
+    </button>
+    <button mat-raised-button (click)="saveBcf()">
+      <mat-icon>save</mat-icon>
+      Save as...
+    </button>
+    <button mat-raised-button (click)="openBcf()">
+      <mat-icon>folder_open</mat-icon>
+      Open BCF
+    </button>
+    <button mat-raised-button>
+      <mat-icon>file_copy</mat-icon>
+      Merge...
+    </button>
+    <button mat-raised-button (click)="openSettings()">
+      <mat-icon>settings</mat-icon>
+      Settings
+    </button>
+    <button mat-raised-button (click)="openDocumentation()">
+      <mat-icon>support</mat-icon>
+      Help
+    </button>
+  </div>
+  <div>
+    <span class="version-label">
+      <strong>IPA.</strong>BCFier v{{ version }}
+    </span>
+  </div>
+</div>

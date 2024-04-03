@@ -1,0 +1,62 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "./src",
+          "files": [
+            "IPA.BCFier/*.csproj"
+          ],
+          "exclude": [
+            "**/bin/**",
+            "**/obj/**"
+          ]
+        }
+      ],
+      "dest": "./api",
+      "properties": {
+        "TargetFramework": "netstandard2.0"
+      }
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "**/*.md",
+          "**/*.yml"
+        ],
+        "exclude": [
+          "output/**/*",
+          "docs/**/*",
+          "GitVersion.yml",
+          "**/*.nupkg",
+          "BCFier*/**/*",
+          "src/ipa-bcfier-ui/**/*",
+          "src/**/bin/**/*"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "**.png"
+        ]
+      }
+    ],
+    "overwrite": "specs/*.md",
+    "globalMetadata": {
+      "_appTitle": "IPA.BCFier Documentation",
+      "_appFooter": "&copy; <a href=\"https://www.dangl-it.com\" target=\"_blank\">Dangl IT GmbH</a>",
+      "_appLogoPath": "app-logo.png",
+      "_appFaviconPath": "app-logo.png",
+      "_enableSearch": true,
+      "_gitUrlPattern": "github"
+    },
+    "dest": "./output/docs",
+    "template": [
+      "default",
+      "docs/template"
+    ]
+  }
+}

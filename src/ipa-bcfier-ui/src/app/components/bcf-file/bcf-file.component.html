@@ -1,0 +1,71 @@
+<div class="wrapper">
+  <div class="issue-list">
+    <div class="issue-list-buttons">
+      <button mat-raised-button color="primary" (click)="addIssue()">
+        Add Issue
+      </button>
+      <button
+        mat-raised-button
+        color="warn"
+        [disabled]="!selectedTopic"
+        (click)="removeIssue()"
+      >
+        Delete Issue
+      </button>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label>Search</mat-label>
+        <input
+          matInput
+          placeholder="Title or description"
+          [(ngModel)]="search"
+        />
+        @if (search) {
+        <button matSuffix mat-icon-button (click)="search = ''">
+          <mat-icon>close</mat-icon>
+        </button>
+        }
+      </mat-form-field>
+    </div>
+    <div class="topic-list">
+      <mat-card
+        *ngFor="let topic of bcfFile.topics | topicFilter : search"
+        (click)="selectTopic(topic)"
+      >
+        <mat-progress-bar
+          mode="determinate"
+          [color]="selectedTopic?.id === topic.id ? 'primary' : 'accent'"
+          value="100"
+        ></mat-progress-bar>
+        <mat-card-header>
+          <mat-card-title-group>
+            <mat-card-title>{{ topic.title }}</mat-card-title>
+            <mat-card-subtitle>{{
+              topic.creationDate | date : "dd.MM.yyyy"
+            }}</mat-card-subtitle>
+
+            <img mat-card-md-image [bcfierTopicPreviewImage]="topic" />
+          </mat-card-title-group>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="topic-info">
+            <mat-icon color="primary">chat</mat-icon>
+            {{ topic.comments.length }}
+          </div>
+          <div class="topic-info">
+            <mat-icon color="primary">visibility</mat-icon>
+            {{ topic.viewpoints.length }}
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <div class="issue-details">
+    <bcfier-topic-detail
+      *ngIf="selectedTopic"
+      [topic]="selectedTopic"
+      [bcfFile]="bcfFile"
+    ></bcfier-topic-detail>
+  </div>
+</div>

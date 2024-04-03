@@ -1,0 +1,29 @@
+name: continuous
+
+on: [push]
+
+jobs:
+  windows-latest:
+    name: windows-latest
+    runs-on: windows-latest
+    env:
+        GitHubAuthenticationToken: ${{ secrets.GITHUB_TOKEN }}
+        DocuApiKey: ${{ secrets.DOCUAPIKEY }}
+        CodeSigningCertificateKeyVaultBaseUrl: ${{ secrets.CODESIGNINGKEYVAULTBASEURL }}
+        KeyVaultClientId: ${{ secrets.CODESIGNINGKEYVAULTCLIENTID }}
+        KeyVaultClientSecret: ${{ secrets.CODESIGNINGKEYVAULTCLIENTSECRET }}
+        CodeSigningKeyVaultTenantId: ${{ secrets.CODESIGNINGKEYVAULTTENANTID }}
+        CodeSigningCertificateName: ${{ secrets.CODESIGNINGKEYVAULTCERTIFICATENAME }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v1
+      - name: Tests
+        run: ./build.ps1 Tests -Configuration Debug
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: Test Results (${{ runner.os }})
+          path: output/**/*_testresults.xml
+      - name: UploadDocumentation+PublishGitHubRelease+UploadElectronApp
+        run: ./build.ps1 UploadDocumentation+PublishGitHubRelease+UploadElectronApp

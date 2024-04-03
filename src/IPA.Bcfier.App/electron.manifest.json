@@ -1,0 +1,47 @@
+{
+  "executable": "IPA.Bcfier.App",
+  "splashscreen": {
+    "imageFile": "bcfier.png"
+  },
+  "name": "IPA.Bcfier",
+  "author": "Dangl IT GmbH",
+  "singleInstance": false,
+  "environment": "Production",
+  "build": {
+    "appId": "com.IPA.Bcfier.app",
+    "productName": "IPA.Bcfier",
+    "copyright": "Copyright © 2024 Dangl IT GmbH",
+    "afterSign": "../../../electronAfterPackHook.js",
+    "buildVersion": "3.0.0-initial-frontend.15",
+    "compression": "maximum",
+    "directories": {
+      "output": "../../../bin/Desktop"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "uninstallDisplayName": "${productName}",
+      "perMachine": true
+    },
+    "extraResources": [
+      {
+        "from": "./bin",
+        "to": "bin",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "files": [
+      {
+        "from": "./ElectronHostHook/node_modules",
+        "to": "ElectronHostHook/node_modules",
+        "filter": [
+          "**/*"
+        ]
+      },
+      "**/*"
+    ]
+  }
+}

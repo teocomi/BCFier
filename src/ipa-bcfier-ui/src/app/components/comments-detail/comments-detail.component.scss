@@ -1,0 +1,26 @@
+.comment-field {
+  width: 100%;
+}
+
+.image-title {
+  display: flex;
+  justify-content: center;
+}
+
+.viewpoint-image {
+  max-width: 100%;
+  max-height: 300px;
+}
+
+.comment-author {
+  margin-right: 8px;
+}
+
+mat-card-content {
+  padding-top: 12px;
+}
+
+.image-buttons {
+  position: absolute;
+  right: 0px;
+}

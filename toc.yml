@@ -1,0 +1,8 @@
+- name: Home
+  href: index.md
+- name: API Documentation
+  href: api/
+- name: DanglDocu
+  href: https://docs.dangl-it.com
+- name: GitHub
+  href: https://github.com/Dangl-IT/IPA.BCFier
