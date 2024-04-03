@@ -1,6 +1,7 @@
 ﻿using Dangl.Data.Shared.AspNetCore.SpaUtilities;
 using ElectronNET.API;
 using IPA.Bcfier.App.Services;
+using IPA.Bcfier.Services;
 
 namespace IPA.Bcfier.App
 {
@@ -12,6 +13,7 @@ namespace IPA.Bcfier.App
             services.AddElectron();
             services.AddLocalizedSpaStaticFiles(".IPA.App.Locale", new[] { "en" }, "dist");
             services.AddSingleton<ElectronWindowProvider>();
+            services.AddTransient<SettingsService>();
             services.AddHttpContextAccessor();
         }
 

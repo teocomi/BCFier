@@ -157,3 +157,7 @@ export interface BcfFile {
 export interface FrontendConfig {
     isInElectronMode: boolean;
 }
+
+export interface Settings {
+    username: string;
+}

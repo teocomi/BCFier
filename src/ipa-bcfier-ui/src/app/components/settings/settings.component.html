@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Settings</h2>
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Username</mat-label>
+    <input matInput [(ngModel)]="username" />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button (click)="save()">Save</button>
+  <button mat-raised-button (click)="close()" color="warn">Cancel</button>
+</mat-dialog-actions>

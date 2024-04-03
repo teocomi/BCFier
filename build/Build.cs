@@ -398,6 +398,9 @@ export const version = {{
             var frontendConfigSchema = JsonSchema.FromType<IPA.Bcfier.Models.Config.FrontendConfig>(jsonSchemaSettings);
             document.Definitions.Add(nameof(IPA.Bcfier.Models.Config.FrontendConfig), frontendConfigSchema);
 
+            var settingsSchema = JsonSchema.FromType<IPA.Bcfier.Models.Settings.Settings>(jsonSchemaSettings);
+            document.Definitions.Add(nameof(IPA.Bcfier.Models.Settings.Settings), settingsSchema);
+
             var typeScriptClientGeneratorSettings = new TypeScriptClientGeneratorSettings
             {
                 Template = NSwag.CodeGeneration.TypeScript.TypeScriptTemplate.Angular,
