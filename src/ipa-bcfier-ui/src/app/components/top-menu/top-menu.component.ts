@@ -42,6 +42,10 @@ export class TopMenuComponent {
     });
   }
 
+  newBcfFile(): void {
+    this.bcfFilesMessengerService.createNewBcfFile();
+  }
+
   openSettings(): void {
     this.matDialog.open(SettingsComponent);
   }

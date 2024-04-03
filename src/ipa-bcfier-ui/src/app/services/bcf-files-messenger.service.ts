@@ -18,6 +18,27 @@ export class BcfFilesMessengerService {
 
   private bcfFileSelectedSource = new Subject<BcfFile>();
   bcfFileSelected = this.bcfFileSelectedSource.asObservable();
+  createNewBcfFile(): void {
+    const bcfFile: BcfFile = {
+      fileName: 'issues.bcf',
+      topics: [],
+      fileAttachments: [],
+      project: {
+        id: crypto.randomUUID(),
+      },
+      projectExtensions: {
+        priorities: [],
+        snippetTypes: [],
+        topicLabels: [],
+        topicStatuses: [],
+        topicTypes: [],
+        users: [],
+      },
+    };
+    this.currentBcfFiles.push(bcfFile);
+    this.bcfFilesSubject.next(this.currentBcfFiles);
+    this.bcfFileSelectedSource.next(bcfFile);
+  }
 
   saveCurrentActiveBcfFile(): void {
     this.bcfFileSaveRequestedSource.next();
