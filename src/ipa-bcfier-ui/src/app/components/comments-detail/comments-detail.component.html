@@ -1,0 +1,32 @@
+<mat-card>
+  <mat-card-title class="image-title">
+    <img class="viewpoint-image" [bcfierViewpointImage]="viewpoint" />
+  </mat-card-title>
+  <mat-card-content>
+    <div *ngFor="let comment of comments">
+      <span class="comment-header">
+        <strong class="viewpoint-author">{{ comment.author }}</strong>
+        <span>{{ comment.creationDate | date : "dd.MM.yyyy HH:mm" }}</span>
+
+        <button mat-icon-button color="warn" (click)="removeComment(comment)">
+          <mat-icon>close</mat-icon>
+        </button>
+      </span>
+      <p>{{ comment.text }}</p>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <mat-form-field class="comment-field">
+      <mat-label>Add comment</mat-label>
+      <input matInput [(ngModel)]="newComment" />
+      <button
+        mat-icon-button
+        matSuffix
+        [disabled]="!newComment"
+        (click)="addComment()"
+      >
+        <mat-icon>send</mat-icon>
+      </button>
+    </mat-form-field>
+  </mat-card-actions>
+</mat-card>

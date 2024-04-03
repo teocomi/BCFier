@@ -21,6 +21,8 @@
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
+    "@ngx-dropzone/cdk": "^17.2.0",
+    "@ngx-dropzone/material": "^17.2.0",
     "ngx-toastr": "18.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

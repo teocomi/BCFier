@@ -1,0 +1,72 @@
+<div class="wrapper">
+  <mat-form-field class="top-field">
+    <mat-label>Title</mat-label>
+    <input matInput [(ngModel)]="topic.title" />
+  </mat-form-field>
+
+  <div class="info-select">
+    <div>
+      <span>{{ topic.creationDate | date : "dd.MM.yyyy HH:mm" }}</span>
+    </div>
+
+    <mat-form-field>
+      <mat-label>Status</mat-label>
+      <mat-select [(value)]="topic.topicStatus">
+        @for (status of extensions.topicStatuses; track status) {
+        <mat-option [value]="status">{{ status }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <button matSuffix color="primary" mat-icon-button (click)="addNewStatus()">
+      <mat-icon>add</mat-icon>
+    </button>
+
+    <mat-form-field>
+      <mat-label>Type</mat-label>
+      <mat-select [(value)]="topic.topicType">
+        @for (type of extensions.topicTypes; track type) {
+        <mat-option [value]="type">{{ type }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <button matSuffix color="primary" mat-icon-button (click)="addNewType()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  <mat-form-field class="top-field">
+    <mat-label>Description</mat-label>
+    <input matInput [(ngModel)]="topic.description" />
+  </mat-form-field>
+
+  <div>
+    <h3>Viewpoints</h3>
+    <button
+      mat-raised-button
+      color="primary"
+      class="full-width-button"
+      (click)="addViewpoint()"
+    >
+      Add Viewpoint
+    </button>
+    <div>
+      <div *ngFor="let viewpoint of topic.viewpoints">
+        <bcfier-comments-detail
+          [comments]="topic.comments | commentsViewpointFilter : viewpoint.id"
+          [viewpoint]="viewpoint"
+          [topic]="topic"
+        ></bcfier-comments-detail>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h3>Comments</h3>
+    <div>
+      <bcfier-comments-detail
+        [comments]="topic.comments | commentsViewpointFilter"
+        [topic]="topic"
+      ></bcfier-comments-detail>
+    </div>
+  </div>
+</div>

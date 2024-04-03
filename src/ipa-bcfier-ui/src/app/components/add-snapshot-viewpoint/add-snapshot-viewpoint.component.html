@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Add Viewpoint</h2>
+<mat-dialog-content>
+  <p>You can create a new viewpoint without geometry here.</p>
+  <mat-form-field appearance="fill" class="upload-form">
+    <mat-label>Drop an Image File</mat-label>
+    <ngx-mat-dropzone>
+      <input type="file" fileInput [formControl]="fileCtrl" />
+      @if (fileCtrl.value) {
+      <mat-chip-row (removed)="clear()">
+        {{ fileCtrl.value.name }}
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-row>
+      }
+    </ngx-mat-dropzone>
+    <mat-icon matSuffix color="primary">image</mat-icon>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button (click)="save()" [disabled]="!fileCtrl.value">
+    Save
+  </button>
+  <button mat-raised-button (click)="close()" color="warn">Cancel</button>
+</mat-dialog-actions>

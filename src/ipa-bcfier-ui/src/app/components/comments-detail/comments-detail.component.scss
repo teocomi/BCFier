@@ -1,0 +1,28 @@
+.comment-field {
+  width: 100%;
+}
+
+.image-title {
+  display: flex;
+  justify-content: center;
+}
+
+.viewpoint-image {
+  max-width: 100%;
+  max-height: 300px;
+}
+
+.viewpoint-author {
+  margin-right: 8px;
+}
+
+mat-card-content {
+  padding-top: 12px;
+}
+
+/*
+.comment-header {
+  display: flex;
+  flex-direction: row;
+}
+*/
