@@ -1,3 +1,10 @@
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  height: 100%;
+}
+
 .issue-list {
   margin-top: 4px;
   margin-left: 4px;
