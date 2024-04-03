@@ -1,7 +1,7 @@
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 import { AppConfigService } from '../../services/AppConfigService';
-import { BcfConversionService } from '../../services/BcfConverfsionService';
+import { BackendService } from '../../services/BackendService';
 import { BcfFile } from '../../../generated/models';
 import { BcfFilesMessengerService } from '../../services/bcf-files-messenger.service';
 import { Component } from '@angular/core';
@@ -23,7 +23,7 @@ export class TopMenuComponent {
   version = version.version;
 
   constructor(
-    private bcfConversionService: BcfConversionService,
+    private backendService: BackendService,
     private notificationsService: NotificationsService,
     private bcfFilesMessengerService: BcfFilesMessengerService,
     private matDialog: MatDialog,
@@ -32,7 +32,7 @@ export class TopMenuComponent {
   ) {}
 
   openBcf(): void {
-    this.bcfConversionService.importBcfFile().subscribe({
+    this.backendService.importBcfFile().subscribe({
       next: (bcfFile: BcfFile) => {
         this.bcfFilesMessengerService.openBcfFile(bcfFile);
       },

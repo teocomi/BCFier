@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class BcfConversionService {
+export class BackendService {
   constructor(private http: HttpClient) {}
 
   importBcfFile(): Observable<BcfFile> {

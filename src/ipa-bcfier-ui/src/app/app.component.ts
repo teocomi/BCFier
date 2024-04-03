@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { MatTabGroup, MatTabsModule } from '@angular/material/tabs';
 import { Observable, take } from 'rxjs';
 
-import { BcfConversionService } from './services/BcfConverfsionService';
+import { BackendService } from './services/BackendService';
 import { BcfFile } from '../generated/models';
 import { BcfFileComponent } from './components/bcf-file/bcf-file.component';
 import { BcfFilesMessengerService } from './services/bcf-files-messenger.service';
@@ -34,7 +34,7 @@ export class AppComponent {
 
   constructor(
     private bcfFilesMessengerService: BcfFilesMessengerService,
-    private bcfConversionService: BcfConversionService,
+    private backendService: BackendService,
     private notificationsService: NotificationsService
   ) {
     this.bcfFiles = bcfFilesMessengerService.bcfFiles;
@@ -47,7 +47,7 @@ export class AppComponent {
 
         const selectedIndex = this.tabGroup.selectedIndex;
         const bcfFileToSave = bcfFiles[selectedIndex];
-        this.bcfConversionService.exportBcfFile(bcfFileToSave).subscribe(() => {
+        this.backendService.exportBcfFile(bcfFileToSave).subscribe(() => {
           this.notificationsService.success('BCF file saved successfully.');
         });
       });
