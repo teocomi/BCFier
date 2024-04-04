@@ -249,9 +249,6 @@ export const version = {{
         {
             CopyDirectoryRecursively(SourceDirectory / "ipa-bcfier-ui" / "dist" / "ipa-bcfier-ui" / "browser", SourceDirectory / "IPA.Bcfier.Revit" / "Resources" / "Browser", DirectoryExistsPolicy.Merge, FileExistsPolicy.Overwrite);
 
-            // Now there's a problem with files that have dashes in them, which we don'
-
-
             DotNetBuild(c => c.SetProjectFile(SourceDirectory / "IPA.Bcfier.Revit" / "IPA.Bcfier.Revit.csproj")
                             .SetConfiguration("Release")
                             .SetAssemblyVersion(GitVersion.AssemblySemVer)
