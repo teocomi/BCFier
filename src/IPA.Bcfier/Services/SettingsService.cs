@@ -38,7 +38,13 @@ namespace IPA.Bcfier.Services
         public async Task SaveSettingsAsync(Settings settings)
         {
             var serializedSettings = JsonConvert.SerializeObject(settings);
-            using var settingsFileStream = File.OpenWrite(GetPathToSettingsFile());
+            var settingsFilePath = GetPathToSettingsFile();
+            if (File.Exists(settingsFilePath))
+            {
+                File.Delete(settingsFilePath);
+            }
+
+            using var settingsFileStream = File.Create(settingsFilePath);
             using var streamWriter = new StreamWriter(settingsFileStream);
             await streamWriter.WriteAsync(serializedSettings);
         }
