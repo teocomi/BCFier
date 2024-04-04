@@ -226,14 +226,12 @@ export const version = {{
             Npm("ci", SourceDirectory / "ipa-bcfier-ui");
         });
 
-    Target BuildElectronApp => _ => _
+    Target BuildFrontend => _ => _
         .DependsOn(Clean)
-        .DependsOn(Compile)
         .DependsOn(FrontEndRestore)
         .DependsOn(GenerateFrontendVersion)
         .Executes(() =>
         {
-            // This builds the frontend
             NpmRun(c =>
             {
                 c = c
@@ -242,7 +240,31 @@ export const version = {{
 
                 return c;
             });
+        });
 
+    Target BuildRevitPlugin => _ => _
+        .DependsOn(BuildFrontend)
+        .DependsOn(Compile)
+        .Executes(() =>
+        {
+            CopyDirectoryRecursively(SourceDirectory / "ipa-bcfier-ui" / "dist" / "ipa-bcfier-ui" / "browser", SourceDirectory / "IPA.Bcfier.Revit" / "Resources" / "Browser", DirectoryExistsPolicy.Merge, FileExistsPolicy.Overwrite);
+
+            // Now there's a problem with files that have dashes in them, which we don'
+
+
+            DotNetBuild(c => c.SetProjectFile(SourceDirectory / "IPA.Bcfier.Revit" / "IPA.Bcfier.Revit.csproj")
+                            .SetConfiguration("Release")
+                            .SetAssemblyVersion(GitVersion.AssemblySemVer)
+                            .SetFileVersion(GitVersion.AssemblySemVer)
+                            .SetInformationalVersion(GitVersion.InformationalVersion)
+                            .EnableNoRestore());
+        });
+
+    Target BuildElectronApp => _ => _
+        .DependsOn(BuildFrontend)
+        .DependsOn(Compile)
+        .Executes(() =>
+        {
             CopyDirectoryRecursively(SourceDirectory / "ipa-bcfier-ui" / "dist" / "ipa-bcfier-ui" / "browser", SourceDirectory / "IPA.Bcfier.App" / "wwwroot" / "dist" / "en", DirectoryExistsPolicy.Merge, FileExistsPolicy.Overwrite);
 
             // To ensure the tool is always up to date
