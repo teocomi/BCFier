@@ -272,7 +272,7 @@ export const version = {{
 
             InnoSetup($"/dAppVersion=\"{GitVersion.AssemblySemVer}\" {pluginOutputDirectory / "Installer.iss"}");
 
-            SignExecutablesInFolder(OutputDirectory, false);
+            SignExecutablesInFolder(installerDirectory / "output", false);
         });
 
     Target UploadRevitPlugin => _ => _
