@@ -39,6 +39,11 @@ namespace IPA.Bcfier.Revit
                 await new Services.SettingsService().SaveSettingsAsync(userSettings!);
                 await javascriptCallback.ExecuteAsync(JsonConvert.SerializeObject(userSettings, serializerSettings));
             }
+            else if (classData.Command == "openDocumentation")
+            {
+                System.Diagnostics.Process.Start("https://docs.dangl-it.com/Projects/IPA.BCFier");
+                await javascriptCallback.ExecuteAsync();
+            }
             else
             {
                 // TODO return error for unrecognized commands

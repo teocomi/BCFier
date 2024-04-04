@@ -23,11 +23,13 @@ export class RevitBackendService {
   importBcfFile(bcfFile: File): Observable<BcfFile> {
     throw new Error('Method not implemented.');
   }
+
   exportBcfFile(bcfFile: BcfFile): Observable<void> {
     throw new Error('Method not implemented.');
   }
+
   openDocumentation(): void {
-    throw new Error('Method not implemented.');
+    this.sendCommand<void>('openDocumentation', null);
   }
 
   getSettings(): Observable<Settings> {
@@ -37,6 +39,7 @@ export class RevitBackendService {
   saveSettings(settings: Settings): Observable<void> {
     return this.sendCommand<void>('setSettings', settings);
   }
+
   addViewpoint(): Observable<BcfViewpoint | null> {
     throw new Error('Method not implemented.');
   }
