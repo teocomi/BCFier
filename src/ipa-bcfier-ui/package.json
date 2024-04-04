@@ -24,6 +24,7 @@
     "@ngx-dropzone/cdk": "^17.2.0",
     "@ngx-dropzone/material": "^17.2.0",
     "ngx-toastr": "18.0.0",
+    "uuid": "9.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
@@ -33,6 +34,7 @@
     "@angular/cli": "^17.3.2",
     "@angular/compiler-cli": "^17.3.0",
     "@types/jasmine": "~5.1.0",
+    "@types/uuid": "9.0.8",
     "google-fonts-helper": "^3.5.0",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",

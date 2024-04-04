@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { NotificationsService } from '../../services/notifications.service';
 import { SettingsMessengerService } from '../../services/settings-messenger.service';
 import { ViewpointImageDirective } from '../../directives/viewpoint-image.directive';
+import { getNewRandomGuid } from '../../functions/uuid';
 import { take } from 'rxjs';
 
 @Component({
@@ -53,7 +54,7 @@ export class CommentsDetailComponent implements OnInit {
       .pipe(take(1))
       .subscribe((settings) => {
         const newComment = {
-          id: crypto.randomUUID(),
+          id: getNewRandomGuid(),
           author: settings.username,
           creationDate: new Date(),
           viewpointId: this.viewpoint?.id,

@@ -11,6 +11,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TopicDetailComponent } from '../topic-detail/topic-detail.component';
 import { TopicFilterPipe } from '../../pipes/topic-filter.pipe';
 import { TopicPreviewImageDirective } from '../../directives/topic-preview-image.directive';
+import { getNewRandomGuid } from '../../functions/uuid';
 
 @Component({
   selector: 'bcfier-bcf-file',
@@ -54,7 +55,7 @@ export class BcfFileComponent {
   addIssue(): void {
     const newIssue: BcfTopic = {
       comments: [],
-      id: crypto.randomUUID(),
+      id: getNewRandomGuid(),
       files: [],
       labels: [],
       referenceLinks: [],
