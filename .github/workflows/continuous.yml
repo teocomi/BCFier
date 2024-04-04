@@ -45,7 +45,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v1
       - name: UploadElectronApp
-        run: ./build.ps1 UploadElectronApp --skip UploadDocumentation
+        run: ./build.ps1 UploadElectronApp --skip UploadDocumentation BuildDocumentation BuildDocFxMetadata
   upload-revit-plugin:
     needs: upload-docs
     name: upload-revit-plugin
