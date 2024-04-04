@@ -1,6 +1,7 @@
 ﻿using CefSharp;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using IPA.Bcfier.Models.Settings;
 
 namespace IPA.Bcfier.Revit
 {
@@ -30,6 +31,12 @@ namespace IPA.Bcfier.Revit
             if (classData.Command == "getSettings")
             {
                 var userSettings = await new Services.SettingsService().LoadSettingsAsync();
+                await javascriptCallback.ExecuteAsync(JsonConvert.SerializeObject(userSettings, serializerSettings));
+            }
+            else if (classData.Command == "setSettings")
+            {
+                var userSettings = JsonConvert.DeserializeObject<Settings>(classData.Data);
+                await new Services.SettingsService().SaveSettingsAsync(userSettings!);
                 await javascriptCallback.ExecuteAsync(JsonConvert.SerializeObject(userSettings, serializerSettings));
             }
             else

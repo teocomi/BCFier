@@ -33,8 +33,9 @@ export class RevitBackendService {
   getSettings(): Observable<Settings> {
     return this.sendCommand<Settings>('getSettings', null);
   }
+
   saveSettings(settings: Settings): Observable<void> {
-    throw new Error('Method not implemented.');
+    return this.sendCommand<void>('setSettings', settings);
   }
   addViewpoint(): Observable<BcfViewpoint | null> {
     throw new Error('Method not implemented.');
@@ -48,7 +49,11 @@ export class RevitBackendService {
         data: JSON.stringify(data),
       }),
       (value) => {
-        subject.next(JSON.parse(value));
+        if (value) {
+          subject.next(JSON.parse(value));
+        } else {
+          subject.next(null as T);
+        }
         setTimeout(() => {
           subject.complete();
         }, 0);

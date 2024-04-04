@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "npm run install-fonts && ng build",
+    "build": "npm run install-fonts && ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "install-fonts": "node ./copyFonts.js"

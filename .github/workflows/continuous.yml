@@ -3,8 +3,35 @@ name: continuous
 on: [push]
 
 jobs:
-  windows-latest:
-    name: windows-latest
+  tests:
+    name: tests
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v1
+      - name: Tests
+        run: ./build.ps1 Tests -Configuration Debug
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: Test Results (${{ runner.os }})
+          path: output/**/*_testresults.xml
+  upload-docs:
+    needs: tests
+    name: upload-docs
+    runs-on: windows-latest
+    env:
+        GitHubAuthenticationToken: ${{ secrets.GITHUB_TOKEN }}
+        DocuApiKey: ${{ secrets.DOCUAPIKEY }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v1
+      - name: UploadDocumentation+PublishGitHubRelease
+        run: ./build.ps1 UploadDocumentation+PublishGitHubRelease
+  upload-electron-app:
+    needs: upload-docs
+    name: upload-electron-app
     runs-on: windows-latest
     env:
         GitHubAuthenticationToken: ${{ secrets.GITHUB_TOKEN }}
@@ -17,13 +44,22 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v1
-      - name: Tests
-        run: ./build.ps1 Tests -Configuration Debug
-      - name: Upload Test Results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: Test Results (${{ runner.os }})
-          path: output/**/*_testresults.xml
-      - name: UploadDocumentation+PublishGitHubRelease+UploadElectronApp
-        run: ./build.ps1 UploadDocumentation+PublishGitHubRelease+UploadElectronApp
+      - name: UploadElectronApp
+        run: ./build.ps1 UploadElectronApp
+  upload-revit-plugin:
+    needs: upload-docs
+    name: upload-revit-plugin
+    runs-on: windows-latest
+    env:
+        GitHubAuthenticationToken: ${{ secrets.GITHUB_TOKEN }}
+        DocuApiKey: ${{ secrets.DOCUAPIKEY }}
+        CodeSigningCertificateKeyVaultBaseUrl: ${{ secrets.CODESIGNINGKEYVAULTBASEURL }}
+        KeyVaultClientId: ${{ secrets.CODESIGNINGKEYVAULTCLIENTID }}
+        KeyVaultClientSecret: ${{ secrets.CODESIGNINGKEYVAULTCLIENTSECRET }}
+        CodeSigningKeyVaultTenantId: ${{ secrets.CODESIGNINGKEYVAULTTENANTID }}
+        CodeSigningCertificateName: ${{ secrets.CODESIGNINGKEYVAULTCERTIFICATENAME }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v1
+      - name: UploadRevitPlugin
+        run: ./build.ps1 UploadRevitPlugin

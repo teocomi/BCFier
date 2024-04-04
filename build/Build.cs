@@ -66,6 +66,7 @@ class Build : NukeBuild
     [Parameter] readonly string CodeSigningCertificateName;
 
     [Parameter] AbsolutePath ExecutablesToSignFolder;
+    [NuGetPackage("Tools.InnoSetup", "tools/ISCC.exe")] readonly Tool InnoSetup;
 
     [NuGetPackage("AzureSignTool", "tools/net8.0/any/AzureSignTool.dll")]
     readonly Tool AzureSign;
@@ -178,7 +179,7 @@ namespace IPA.Bcfier
              Directory.Delete(RootDirectory / "obj", true);
          });
 
-    private Target UploadDocumentation => _ => _
+    Target UploadDocumentation => _ => _
          .DependsOn(BuildDocumentation)
          .Requires(() => DocuApiKey)
          .Requires(() => DocuBaseUrl)
@@ -249,13 +250,49 @@ export const version = {{
         {
             CopyDirectoryRecursively(SourceDirectory / "ipa-bcfier-ui" / "dist" / "ipa-bcfier-ui" / "browser", SourceDirectory / "IPA.Bcfier.Revit" / "Resources" / "Browser", DirectoryExistsPolicy.Merge, FileExistsPolicy.Overwrite);
 
+            var pluginOutputDirectory = OutputDirectory / "RevitPlugin";
             DotNetBuild(c => c.SetProjectFile(SourceDirectory / "IPA.Bcfier.Revit" / "IPA.Bcfier.Revit.csproj")
                             .SetConfiguration("Release")
+                            .SetOutputDirectory(pluginOutputDirectory)
                             .SetAssemblyVersion(GitVersion.AssemblySemVer)
                             .SetFileVersion(GitVersion.AssemblySemVer)
                             .SetInformationalVersion(GitVersion.InformationalVersion)
                             .EnableNoRestore());
+            SignExecutablesInFolder(pluginOutputDirectory, false);
+
+            File.Copy(SourceDirectory / "IPA.Bcfier.Revit" / "Installer.iss", pluginOutputDirectory / "Installer.iss", overwrite: true);
+
+            var installerDirectory = pluginOutputDirectory / "Installer";
+            installerDirectory.CreateOrCleanDirectory();
+            CopyDirectoryRecursively(SourceDirectory / "IPA.Bcfier.Revit" / "InstallerAssets", installerDirectory / "InstallerAssets", DirectoryExistsPolicy.Merge, FileExistsPolicy.Overwrite);
+            File.Copy(pluginOutputDirectory / "Dangl.BCF.dll", installerDirectory / "Dangl.BCF.dll");
+            File.Copy(pluginOutputDirectory / "IPA.Bcfier.dll", installerDirectory/ "IPA.Bcfier.dll");
+            File.Copy(pluginOutputDirectory / "IPA.Bcfier.Revit.dll", installerDirectory/ "IPA.Bcfier.Revit.dll");
+            File.Copy(pluginOutputDirectory / "IPA.Bcfier.Revit.addin", installerDirectory/ "IPA.Bcfier.Revit.addin");
+
+            InnoSetup($"/dAppVersion=\"{GitVersion.AssemblySemVer}\" {pluginOutputDirectory / "Installer.iss"}");
+
+            SignExecutablesInFolder(OutputDirectory, false);
         });
+
+    Target UploadRevitPlugin => _ => _
+        .DependsOn(BuildRevitPlugin)
+        .Executes(() =>
+        {
+            var changeLog = GetCompleteChangeLog(ChangeLogFile);
+            var assets = (OutputDirectory / "RevitPlugin" / "Installer" / "output").GlobFiles("*.exe")
+                .Select(f => f.ToString())
+                .ToArray();
+            Assert.NotEmpty(assets);
+
+            AssetFileUpload(s => s
+                           .SetDocuBaseUrl(DocuBaseUrl)
+                           .SetDocuApiKey(DocuApiKey)
+                           .SetVersion(GitVersion.NuGetVersion)
+                           .SetAssetFilePaths(assets)
+                           .SetSkipForVersionConflicts(true));
+        });
+
 
     Target BuildElectronApp => _ => _
         .DependsOn(BuildFrontend)
@@ -271,17 +308,17 @@ export const version = {{
                         new[] { "Windows_X64", "/target win" }
                     );
 
-            SignExecutablesInFolder(OutputDirectory / "electron");
+            SignExecutablesInFolder(OutputDirectory / "electron", false);
         });
 
     Target SignExecutables => _ => _
         .Requires(() => ExecutablesToSignFolder)
         .Executes(() =>
         {
-            SignExecutablesInFolder(ExecutablesToSignFolder);
+            SignExecutablesInFolder(ExecutablesToSignFolder, false);
         });
 
-    private void SignExecutablesInFolder(AbsolutePath folderPath)
+    private void SignExecutablesInFolder(AbsolutePath folderPath, bool includeDll)
     {
         Assert.True(!string.IsNullOrWhiteSpace(CodeSigningCertificateKeyVaultBaseUrl), "!string.IsNullOrWhitespace(CodeSigningCertificateKeyVaultBaseUrl)");
         Assert.True(!string.IsNullOrWhiteSpace(KeyVaultClientId), "!string.IsNullOrWhitespace(KeyVaultClientId)");
@@ -289,7 +326,8 @@ export const version = {{
         Assert.True(!string.IsNullOrWhiteSpace(CodeSigningKeyVaultTenantId), "!string.IsNullOrWhitespace(CodeSigningKeyVaultTenantId)");
         Assert.True(!string.IsNullOrWhiteSpace(CodeSigningCertificateName), "!string.IsNullOrWhitespace(CodeSigningCertificateName)");
 
-        var inputFiles = folderPath.GlobFiles("*.exe");
+        var globPattern = includeDll ? "*.dll,*.exe" : "*.exe";
+        var inputFiles = folderPath.GlobFiles(globPattern);
         var filesListPath = OutputDirectory / $"{Guid.NewGuid()}.txt";
         filesListPath.WriteAllText(inputFiles.Select(f => f.ToString()).Join(Environment.NewLine) + Environment.NewLine);
 
@@ -354,7 +392,6 @@ export const version = {{
         .DependsOn(UploadDocumentation)
         .Requires(() => DocuApiKey)
         .Requires(() => DocuBaseUrl)
-        .OnlyWhenDynamic(() => IsOnBranch("master") || IsOnBranch("develop"))
         .Executes(() =>
         {
             var changeLog = GetCompleteChangeLog(ChangeLogFile);
@@ -373,7 +410,7 @@ export const version = {{
 
     Target PublishGitHubRelease => _ => _
         .Requires(() => GitHubAuthenticationToken)
-        .OnlyWhenDynamic(() => GitVersion.BranchName.Equals("master") || GitVersion.BranchName.Equals("origin/master"))
+        .OnlyWhenDynamic(() => IsOnBranch("master"))
         .Executes(async () =>
         {
             var releaseTag = $"v{GitVersion.MajorMinorPatch}";

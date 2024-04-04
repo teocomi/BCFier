@@ -23,6 +23,7 @@
       <IncludeAssets>runtime; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageDownload Include="AzureSignTool" Version="[5.0.0]" />
+    <PackageDownload Include="Tools.InnoSetup" Version="[6.2.2]" />
   </ItemGroup>
 
   <ItemGroup>

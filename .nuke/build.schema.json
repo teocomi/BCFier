@@ -114,7 +114,8 @@
               "SignExecutables",
               "Tests",
               "UploadDocumentation",
-              "UploadElectronApp"
+              "UploadElectronApp",
+              "UploadRevitPlugin"
             ]
           }
         },
@@ -143,7 +144,8 @@
               "SignExecutables",
               "Tests",
               "UploadDocumentation",
-              "UploadElectronApp"
+              "UploadElectronApp",
+              "UploadRevitPlugin"
             ]
           }
         },

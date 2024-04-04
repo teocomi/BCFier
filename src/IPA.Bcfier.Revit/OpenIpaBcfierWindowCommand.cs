@@ -22,6 +22,7 @@ namespace IPA.Bcfier.Revit
 #endif
             browser.JavascriptObjectRepository.Register("bcfierJavascriptBridge", new BcfierJavascriptBridge(), true);
             browser.RequestHandler = new PluginRequestHandler(proxyToLocalhost);
+#if DEBUG_BUILD
             browser.IsBrowserInitializedChanged += (s, e) =>
             {
                 if (browser.IsBrowserInitialized)
@@ -29,7 +30,7 @@ namespace IPA.Bcfier.Revit
                     browser.ShowDevTools();
                 }
             };
-
+#endif
 
 #if DEBUG_BUILD
             browser.Load("http://localhost:4200");
