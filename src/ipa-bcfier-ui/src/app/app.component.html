@@ -4,7 +4,7 @@
 </mat-toolbar>
 
 <mat-tab-group *ngIf="bcfFiles" dynamicHeight #tabGroup>
-  <mat-tab *ngFor="let bcfFile of bcfFiles | async">
+  <mat-tab *ngFor="let bcfFile of bcfFiles | async; let index = index">
     <ng-template mat-tab-label>
       {{ bcfFile.fileName }}
       <button
@@ -16,6 +16,9 @@
         <mat-icon>close</mat-icon>
       </button>
     </ng-template>
-    <bcfier-bcf-file [bcfFile]="bcfFile"></bcfier-bcf-file>
+    <bcfier-bcf-file
+      [bcfFile]="bcfFile"
+      *ngIf="tabGroup.selectedIndex === index"
+    ></bcfier-bcf-file>
   </mat-tab>
 </mat-tab-group>
