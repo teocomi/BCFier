@@ -1,4 +1,4 @@
-﻿using Autodesk.Revit.Attributes;
+using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using CefSharp;
@@ -14,6 +14,8 @@ namespace IPA.Bcfier.Revit
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
+            EnsureDependentAssembliesAreLoaded();
+
             var browser = new ChromiumWebBrowser();
 #if DEBUG_BUILD
             var proxyToLocalhost = true;
@@ -49,6 +51,17 @@ namespace IPA.Bcfier.Revit
             window.Show();
 
             return Result.Succeeded;
+        }
+
+        private void EnsureDependentAssembliesAreLoaded()
+        {
+            // I didn't find out why this is required, but apparently Revit
+            // does something to resolve assemblies, and this seems to fail
+            // when the assemblies are not directly loaded due to execution in the
+            // initial command but only later, like in our case when an event from
+            // the browser is triggering some action
+            typeof(IPA.Bcfier.Models.Bcf.BcfComment).ToString();
+            typeof(Dangl.BCF.APIObjects.V21.Auth_GET).ToString();
         }
     }
 }
