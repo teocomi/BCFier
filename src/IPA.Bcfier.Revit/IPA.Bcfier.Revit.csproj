@@ -10,8 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CefSharp.Wpf" Version="105.3.390" />
-    <PackageReference Include="Revit_All_Main_Versions_API_x64" Version="2024.0.0" />
+    <PackageReference Include="CefSharp.Wpf" Version="105.3.390" PrivateAssets="build">
+    </PackageReference>
+    <PackageReference Include="CefSharp.Common" Version="105.3.390" PrivateAssets="all" ExcludeAssets="build;runtime;contentFiles">
+    </PackageReference>
+    <PackageReference Include="cef.redist.x86" Version="105.3.39" ExcludeAssets="all">
+    </PackageReference>
+    <PackageReference Include="cef.redist.x64" Version="105.3.39" ExcludeAssets="all">
+    </PackageReference>
+    <PackageReference Include="Revit_All_Main_Versions_API_x64" Version="2024.0.0" ExcludeAssets="build;runtime;contentFiles"/>
   </ItemGroup>
 
   <ItemGroup>
