@@ -1,4 +1,4 @@
-using Autodesk.Revit.Attributes;
+﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using CefSharp;
@@ -22,7 +22,9 @@ namespace IPA.Bcfier.Revit
 #else
             var proxyToLocalhost = false;
 #endif
-            browser.JavascriptObjectRepository.Register("bcfierJavascriptBridge", new BcfierJavascriptBridge(), true);
+
+            var taskQueueHandler = new RevitTaskQueueHandler();
+            browser.JavascriptObjectRepository.Register("bcfierJavascriptBridge", new BcfierJavascriptBridge(taskQueueHandler), true);
             browser.RequestHandler = new PluginRequestHandler(proxyToLocalhost);
 #if DEBUG_BUILD
             browser.IsBrowserInitializedChanged += (s, e) =>
@@ -40,6 +42,8 @@ namespace IPA.Bcfier.Revit
             browser.Load("index.html");
 #endif
 
+            commandData.Application.Idling += taskQueueHandler.OnIdling;
+
             var window = new Window();
             window.Content = browser;
             using var iconStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("IPA.Bcfier.Revit.Resources.Browser.favicon.ico");
@@ -47,6 +51,12 @@ namespace IPA.Bcfier.Revit
             {
                 window.Icon = BitmapFrame.Create(iconStream);
             }
+
+            window.Closed += (s, e) =>
+            {
+                commandData.Application.Idling -= taskQueueHandler.OnIdling;
+                browser.Dispose();
+            };
 
             window.Show();
 

@@ -2,11 +2,21 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using IPA.Bcfier.Models.Settings;
+using IPA.Bcfier.Services;
+using Autodesk.Revit.UI;
+using Microsoft.Win32;
 
 namespace IPA.Bcfier.Revit
 {
     public class BcfierJavascriptBridge
     {
+        private readonly RevitTaskQueueHandler _revitTaskQueueHandler;
+
+        public BcfierJavascriptBridge(RevitTaskQueueHandler revitTaskQueueHandler)
+        {
+            _revitTaskQueueHandler = revitTaskQueueHandler;
+        }
+
         private class DataClass
         {
             public string Command { get; set; }
@@ -18,7 +28,7 @@ namespace IPA.Bcfier.Revit
         {
             var classData = JsonConvert.DeserializeObject<DataClass>(data)!;
 
-            DefaultContractResolver contractResolver = new DefaultContractResolver
+            var contractResolver = new DefaultContractResolver
             {
                 NamingStrategy = new CamelCaseNamingStrategy()
             };
@@ -43,6 +53,12 @@ namespace IPA.Bcfier.Revit
             {
                 System.Diagnostics.Process.Start("https://docs.dangl-it.com/Projects/IPA.BCFier");
                 await javascriptCallback.ExecuteAsync();
+            }
+            else if (classData.Command == "importBcfFile")
+            {
+                // Since we need a Revit context (more specifically access to the UI thread), 
+                // we're enqueuing that task to be executed in the Revit context
+                _revitTaskQueueHandler.OpenBcfFileCallbacks.Enqueue(javascriptCallback);
             }
             else
             {

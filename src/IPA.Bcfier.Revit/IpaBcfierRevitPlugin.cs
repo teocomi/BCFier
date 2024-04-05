@@ -18,8 +18,6 @@ namespace IPA.Bcfier.Revit
             pushButton.ToolTip = "Launch IPA.Bcfier Revit Plugin";
             pushButton.LargeImage = bitmapImage;
 
-            application.Idling += IdlingHandler.OnIdling;
-
             return Result.Succeeded;
         }
 
