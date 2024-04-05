@@ -1,4 +1,5 @@
 import { BcfFile, BcfViewpoint, Settings } from '../../generated/models';
+import { NgZone, inject } from '@angular/core';
 import { Observable, Subject, of } from 'rxjs';
 
 export class RevitBackendService {
@@ -8,6 +9,8 @@ export class RevitBackendService {
       callback: (jsonValue: string) => void
     ) => void;
   } | null = null;
+
+  private ngZone: NgZone = inject(NgZone);
 
   constructor() {
     const setupBridge = () => {
@@ -20,8 +23,8 @@ export class RevitBackendService {
     setupBridge();
   }
 
-  importBcfFile(bcfFile: File): Observable<BcfFile> {
-    throw new Error('Method not implemented.');
+  importBcfFile(): Observable<BcfFile> {
+    return this.sendCommand<BcfFile>('importBcfFile', null);
   }
 
   exportBcfFile(bcfFile: BcfFile): Observable<void> {
@@ -52,14 +55,17 @@ export class RevitBackendService {
         data: JSON.stringify(data),
       }),
       (value) => {
-        if (value) {
-          subject.next(JSON.parse(value));
-        } else {
-          subject.next(null as T);
-        }
-        setTimeout(() => {
-          subject.complete();
-        }, 0);
+        this.ngZone.run(() => {
+          if (value) {
+            subject.next(JSON.parse(value));
+          } else {
+            subject.next(null as T);
+          }
+
+          setTimeout(() => {
+            subject.complete();
+          }, 0);
+        });
       }
     );
 
