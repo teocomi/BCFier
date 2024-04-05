@@ -5,6 +5,8 @@ using IPA.Bcfier.Models.Settings;
 using IPA.Bcfier.Services;
 using Autodesk.Revit.UI;
 using Microsoft.Win32;
+using IPA.Bcfier.Revit.Models;
+using IPA.Bcfier.Models.Bcf;
 
 namespace IPA.Bcfier.Revit
 {
@@ -59,6 +61,14 @@ namespace IPA.Bcfier.Revit
                 // Since we need a Revit context (more specifically access to the UI thread), 
                 // we're enqueuing that task to be executed in the Revit context
                 _revitTaskQueueHandler.OpenBcfFileCallbacks.Enqueue(javascriptCallback);
+            }
+            else if (classData.Command == "exportBcfFile")
+            {
+                _revitTaskQueueHandler.SaveBcfFileCallbacks.Enqueue(new SaveBcfFileQueueItem
+                {
+                    Callback = javascriptCallback,
+                    BcfFile = JsonConvert.DeserializeObject<BcfFile>(classData.Data)
+                });
             }
             else
             {

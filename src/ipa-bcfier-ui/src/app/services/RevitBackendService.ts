@@ -28,7 +28,7 @@ export class RevitBackendService {
   }
 
   exportBcfFile(bcfFile: BcfFile): Observable<void> {
-    throw new Error('Method not implemented.');
+    return this.sendCommand<void>('exportBcfFile', bcfFile);
   }
 
   openDocumentation(): void {
