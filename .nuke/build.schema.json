@@ -102,6 +102,8 @@
               "BuildDocFxMetadata",
               "BuildDocumentation",
               "BuildElectronApp",
+              "BuildFrontend",
+              "BuildRevitPlugin",
               "Clean",
               "Compile",
               "FrontEndRestore",
@@ -112,7 +114,8 @@
               "SignExecutables",
               "Tests",
               "UploadDocumentation",
-              "UploadElectronApp"
+              "UploadElectronApp",
+              "UploadRevitPlugin"
             ]
           }
         },
@@ -129,6 +132,8 @@
               "BuildDocFxMetadata",
               "BuildDocumentation",
               "BuildElectronApp",
+              "BuildFrontend",
+              "BuildRevitPlugin",
               "Clean",
               "Compile",
               "FrontEndRestore",
@@ -139,7 +144,8 @@
               "SignExecutables",
               "Tests",
               "UploadDocumentation",
-              "UploadElectronApp"
+              "UploadElectronApp",
+              "UploadRevitPlugin"
             ]
           }
         },

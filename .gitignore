@@ -199,3 +199,5 @@ output/
 nuke2/
 
 src/IPA.Bcfier.App/wwwroot/dist/
+
+src/IPA.Bcfier.Revit/Resources/Browser/

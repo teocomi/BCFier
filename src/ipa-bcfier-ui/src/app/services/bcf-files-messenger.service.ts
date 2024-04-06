@@ -2,6 +2,7 @@ import { ReplaySubject, Subject } from 'rxjs';
 
 import { BcfFile } from '../../generated/models';
 import { Injectable } from '@angular/core';
+import { getNewRandomGuid } from '../functions/uuid';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +25,7 @@ export class BcfFilesMessengerService {
       topics: [],
       fileAttachments: [],
       project: {
-        id: crypto.randomUUID(),
+        id: getNewRandomGuid(),
       },
       projectExtensions: {
         priorities: [],

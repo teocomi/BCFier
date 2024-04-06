@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { getNewRandomGuid } from '../../functions/uuid';
 
 @Component({
   selector: 'bcfier-add-snapshot-viewpoint',
@@ -48,7 +49,7 @@ export class AddSnapshotViewpointComponent {
     const base64 = await this.readFileAsBase64(file);
 
     const viewpoint: BcfViewpoint = {
-      id: crypto.randomUUID(),
+      id: getNewRandomGuid(),
       clippingPlanes: [],
       lines: [],
       viewpointComponents: {

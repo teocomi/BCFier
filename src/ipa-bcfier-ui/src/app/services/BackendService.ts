@@ -60,4 +60,8 @@ export class BackendService {
 
     return subject.asObservable();
   }
+
+  selectViewpoint(viewpoint: BcfViewpoint): void {
+    // Not doing anything in the standalone version
+  }
 }

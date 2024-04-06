@@ -1,6 +1,7 @@
 import { BcfComment, BcfTopic, BcfViewpoint } from '../../../generated/models';
 import { Component, Input, OnInit } from '@angular/core';
 
+import { BackendService } from '../../services/BackendService';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ImagePreviewComponent } from '../image-preview/image-preview.component';
@@ -12,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { NotificationsService } from '../../services/notifications.service';
 import { SettingsMessengerService } from '../../services/settings-messenger.service';
 import { ViewpointImageDirective } from '../../directives/viewpoint-image.directive';
+import { getNewRandomGuid } from '../../functions/uuid';
 import { take } from 'rxjs';
 
 @Component({
@@ -39,7 +41,8 @@ export class CommentsDetailComponent implements OnInit {
   constructor(
     private settingsMessengerService: SettingsMessengerService,
     private notificationsService: NotificationsService,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private backendService: BackendService
   ) {}
 
   ngOnInit(): void {}
@@ -53,7 +56,7 @@ export class CommentsDetailComponent implements OnInit {
       .pipe(take(1))
       .subscribe((settings) => {
         const newComment = {
-          id: crypto.randomUUID(),
+          id: getNewRandomGuid(),
           author: settings.username,
           creationDate: new Date(),
           viewpointId: this.viewpoint?.id,
@@ -99,5 +102,11 @@ export class CommentsDetailComponent implements OnInit {
     this.matDialog.open(ImagePreviewComponent, {
       data: viewpoint,
     });
+  }
+
+  selectViewpoint(): void {
+    if (this.viewpoint) {
+      this.backendService.selectViewpoint(this.viewpoint);
+    }
   }
 }
