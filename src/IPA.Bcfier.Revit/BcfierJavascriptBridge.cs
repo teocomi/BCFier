@@ -73,6 +73,15 @@ namespace IPA.Bcfier.Revit
             {
                 _revitTaskQueueHandler.CreateRevitViewpointCallbacks.Enqueue(javascriptCallback);
             }
+            else if (classData.Command == "showViewpoint")
+            {
+                var viewpoint = JsonConvert.DeserializeObject<BcfViewpoint>(classData.Data);
+                _revitTaskQueueHandler.ShowViewpointQueueItems.Enqueue(new ShowViewpointQueueItem
+                {
+                    Callback = javascriptCallback,
+                    Viewpoint = viewpoint
+                });
+            }
             else
             {
                 // TODO return error for unrecognized commands

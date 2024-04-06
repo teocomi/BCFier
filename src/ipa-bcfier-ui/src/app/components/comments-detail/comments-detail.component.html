@@ -1,6 +1,10 @@
 <mat-card>
   <mat-card-title class="image-title">
-    <img class="viewpoint-image" [bcfierViewpointImage]="viewpoint" />
+    <img
+      class="viewpoint-image"
+      [bcfierViewpointImage]="viewpoint"
+      (click)="selectViewpoint()"
+    />
     <div class="image-buttons" *ngIf="viewpoint">
       <button mat-icon-button (click)="showImageFullScreen(viewpoint)">
         <mat-icon>fullscreen</mat-icon>

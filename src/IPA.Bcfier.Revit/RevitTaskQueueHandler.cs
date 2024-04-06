@@ -1,6 +1,7 @@
 ﻿using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Events;
 using CefSharp;
+using IPA.Bcfier.Models.Bcf;
 using IPA.Bcfier.Revit.Models;
 using IPA.Bcfier.Revit.Services;
 using IPA.Bcfier.Services;
@@ -12,10 +13,13 @@ namespace IPA.Bcfier.Revit
 {
     public class RevitTaskQueueHandler
     {
-        public Queue<IJavascriptCallback> OpenBcfFileCallbacks = new Queue<IJavascriptCallback>();
-        public Queue<SaveBcfFileQueueItem> SaveBcfFileCallbacks = new Queue<SaveBcfFileQueueItem>();
-        public Queue<IJavascriptCallback> CreateRevitViewpointCallbacks = new Queue<IJavascriptCallback>();
+        public Queue<IJavascriptCallback> OpenBcfFileCallbacks { get; } = new Queue<IJavascriptCallback>();
+        public Queue<SaveBcfFileQueueItem> SaveBcfFileCallbacks { get; } = new Queue<SaveBcfFileQueueItem>();
+        public Queue<IJavascriptCallback> CreateRevitViewpointCallbacks { get; } = new Queue<IJavascriptCallback>();
+        public Queue<ShowViewpointQueueItem> ShowViewpointQueueItems { get; } = new Queue<ShowViewpointQueueItem>();
         private bool shouldUnregister = false;
+
+        private Queue<ViewContinuationInstructions> AfterViewCreationCallbackQueue { get; } = new Queue<ViewContinuationInstructions>();
 
         public void OnIdling(object sender, IdlingEventArgs args)
         {
@@ -47,6 +51,50 @@ namespace IPA.Bcfier.Revit
                 var uiDocument = uiApplication.ActiveUIDocument;
                 var callback = CreateRevitViewpointCallbacks.Dequeue();
                 HandleCreateRevitViewpointCallback(callback, uiDocument);
+            }
+
+            if (ShowViewpointQueueItems.Count > 0)
+            {
+                var uiDocument = uiApplication.ActiveUIDocument;
+                var showViewpointQueueItem = ShowViewpointQueueItems.Dequeue();
+                HandleShowRevitViewpointCallback(showViewpointQueueItem.Callback, showViewpointQueueItem.Viewpoint, uiDocument);
+            }
+
+            if (AfterViewCreationCallbackQueue.Count > 0)
+            {
+                var uiDocument = uiApplication.ActiveUIDocument;
+                HandlAfterViewCreationCallbackQueueItems(uiDocument);
+            }
+        }
+
+        private void HandlAfterViewCreationCallbackQueueItems(UIDocument uiDocument)
+        {
+            // This is pretty complicated. The signal flow is like this:
+            // 1. User clicks on a button in the web view
+            // 2. We send that data to the Revit API, which puts the request on a queue
+            // 3. During the Revit Application.Idling event, we process the queue
+            // 4. A viewpoint display request is processed, and a view is created and set as active view
+            //    The active view can only be set in an asynchronous way from the Application.Idling event in
+            //    the Revit API, so we need to wait until the new view is loaded
+            // 5. Once the view is loaded, we check this other queue here and apply the callback, which sets
+            //    e.g. the selected components
+            // 6. After that, we can inform the frontend
+            var queueLength = AfterViewCreationCallbackQueue.Count;
+            for (var i = 0; i < queueLength; i++)
+            {
+                var item = AfterViewCreationCallbackQueue.Dequeue();
+                if (item?.ViewId == uiDocument.ActiveView.Id)
+                {
+                    item.ViewContinuation?.Invoke();
+                    Task.Run(async () =>
+                    {
+                        await item.JavascriptCallback.ExecuteAsync();
+                    });
+                }
+                else if (item != null)
+                {
+                    AfterViewCreationCallbackQueue.Enqueue(item);
+                }
             }
         }
 
@@ -114,9 +162,9 @@ namespace IPA.Bcfier.Revit
             });
         }
 
-        private void HandleCreateRevitViewpointCallback(IJavascriptCallback callback, UIDocument uIDocument)
+        private void HandleCreateRevitViewpointCallback(IJavascriptCallback callback, UIDocument uiDocument)
         {
-            var viewpointService = new RevitViewpointCreationService(uIDocument);
+            var viewpointService = new RevitViewpointCreationService(uiDocument);
             var viewpoint = viewpointService.GenerateViewpoint();
             var contractResolver = new DefaultContractResolver
             {
@@ -131,6 +179,28 @@ namespace IPA.Bcfier.Revit
             {
                 await callback.ExecuteAsync(JsonConvert.SerializeObject(viewpoint, serializerSettings));
             });
+        }
+
+        private void HandleShowRevitViewpointCallback(IJavascriptCallback? callback, BcfViewpoint? viewpoint, UIDocument uiDocument)
+        {
+            if (callback == null || viewpoint == null)
+            {
+                return;
+            }
+
+            var viewpointService = new RevitViewpointDisplayService(uiDocument);
+            var afterViewInitCallback = viewpointService.DisplayViewpoint(viewpoint);
+            if (afterViewInitCallback?.ViewId == null)
+            {
+                Task.Run(async () =>
+                {
+                    await callback.ExecuteAsync();
+                });
+                return;
+            }
+
+            afterViewInitCallback.JavascriptCallback = callback;
+            AfterViewCreationCallbackQueue.Enqueue(afterViewInitCallback);
         }
     }
 }

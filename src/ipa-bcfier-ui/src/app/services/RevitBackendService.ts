@@ -47,6 +47,10 @@ export class RevitBackendService {
     return this.sendCommand<BcfViewpoint>('createViewpoint', null);
   }
 
+  selectViewpoint(viewpoint: BcfViewpoint): void {
+    this.sendCommand('showViewpoint', viewpoint);
+  }
+
   private sendCommand<T>(command: string, data: any): Observable<T> {
     const subject = new Subject<T>();
     this.javascriptBridge!.sendDataToRevit(

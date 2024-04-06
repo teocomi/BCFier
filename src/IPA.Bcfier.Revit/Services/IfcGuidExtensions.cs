@@ -62,7 +62,7 @@ namespace IPA.Bcfier.Revit.Services
         static uint cv_from_64(char[] str, int start, int len)
         {
             int i, j, index;
-            var res = 0;
+            var res = 0U;
             Debug.Assert(len <= 4);
 
             for (i = 0; i < len; i++)
