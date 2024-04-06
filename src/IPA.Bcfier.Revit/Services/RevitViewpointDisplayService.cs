@@ -1,6 +1,7 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using IPA.Bcfier.Models.Bcf;
+using IPA.Bcfier.Revit.OpenProject;
 
 namespace IPA.Bcfier.Revit.Services
 {
@@ -205,7 +206,7 @@ namespace IPA.Bcfier.Revit.Services
 
                     using (var trans = new Transaction(_uiDocument.Document))
                     {
-                        if (trans.Start("Apply BCF visibility and selection") == TransactionStatus.Started)
+                        if (trans.Start("Apply BCF visibility and selection and section box") == TransactionStatus.Started)
                         {
                             if (elementsToHide.Any())
                                 doc.ActiveView.HideElementsTemporary(elementsToHide);
@@ -215,7 +216,13 @@ namespace IPA.Bcfier.Revit.Services
 
                             if (elementsToSelect.Any())
                                 _uiDocument.Selection.SetElementIds(elementsToSelect);
+
+                            if (_uiDocument.ActiveView is View3D view3d)
+                            {
+                                ApplyClippingPlanes(_uiDocument, view3d, bcfViewpoint);
+                            }
                         }
+
                         trans.Commit();
                     }
 
@@ -253,6 +260,42 @@ namespace IPA.Bcfier.Revit.Services
         public string GetName()
         {
             return "3D View";
+        }
+
+        // Take from:
+        // https://github.com/opf/openproject-revit-add-in/blob/93e117ad10176f4fffa741116733a3ee113e9335/src/OpenProject.Revit/Entry/OpenViewpointEventHandler.cs#L212
+        private const decimal _viewpointAngleThresholdRad = 0.087266462599716m;
+
+        private void ApplyClippingPlanes(UIDocument uiDocument, View3D view, BcfViewpoint bcfViewpoint)
+        {
+            AxisAlignedBoundingBox boundingBox = GetViewpointClippingBox(bcfViewpoint);
+
+            if (!boundingBox.Equals(AxisAlignedBoundingBox.Infinite))
+            {
+                view.SetSectionBox(ToRevitSectionBox(boundingBox));
+                view.IsSectionBoxActive = true;
+            }
+        }
+
+        private AxisAlignedBoundingBox GetViewpointClippingBox(BcfViewpoint bcfViewpoint)
+        {
+            return bcfViewpoint.ClippingPlanes
+                .Select(p => p.ToAxisAlignedBoundingBox(_viewpointAngleThresholdRad))
+                .Aggregate(AxisAlignedBoundingBox.Infinite, (current, nextBox) => current.MergeReduce(nextBox));
+        }
+
+        private static BoundingBoxXYZ ToRevitSectionBox(AxisAlignedBoundingBox box)
+        {
+            var min = new XYZ(
+              box.Min.X == decimal.MinValue ? double.MinValue : ((double)box.Min.X).ToInternalRevitUnit(),
+              box.Min.Y == decimal.MinValue ? double.MinValue : ((double)box.Min.Y).ToInternalRevitUnit(),
+              box.Min.Z == decimal.MinValue ? double.MinValue : ((double)box.Min.Z).ToInternalRevitUnit());
+            var max = new XYZ(
+              box.Max.X == decimal.MaxValue ? double.MaxValue : ((double)box.Max.X).ToInternalRevitUnit(),
+              box.Max.Y == decimal.MaxValue ? double.MaxValue : ((double)box.Max.Y).ToInternalRevitUnit(),
+              box.Max.Z == decimal.MaxValue ? double.MaxValue : ((double)box.Max.Z).ToInternalRevitUnit());
+
+            return new BoundingBoxXYZ { Min = min, Max = max };
         }
     }
 }

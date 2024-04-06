@@ -33,6 +33,7 @@ Name: revit24; Description: Addin for Autodesk Revit 2024;  Types: full
 [Files]
 
 ;REVIT 2024
+Source: "{#Repository}\DecimalEx.dll"; DestDir: "{#RevitAddin24}"; Flags: ignoreversion; Components: revit24
 Source: "{#Repository}\Dangl.BCF.dll"; DestDir: "{#RevitAddin24}"; Flags: ignoreversion; Components: revit24
 Source: "{#Repository}\IPA.Bcfier.dll"; DestDir: "{#RevitAddin24}"; Flags: ignoreversion; Components: revit24
 Source: "{#Repository}\IPA.Bcfier.Revit.dll"; DestDir: "{#RevitAddin24}"; Flags: ignoreversion; Components: revit24

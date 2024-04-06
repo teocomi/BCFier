@@ -1,6 +1,7 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using IPA.Bcfier.Models.Bcf;
+using IPA.Bcfier.Revit.OpenProject;
 
 namespace IPA.Bcfier.Revit.Services
 {
@@ -28,6 +29,8 @@ namespace IPA.Bcfier.Revit.Services
                 //Corners of the active UI view
                 var topLeft = _uiDocument.GetOpenUIViews()[0].GetZoomCorners()[0];
                 var bottomRight = _uiDocument.GetOpenUIViews()[0].GetZoomCorners()[1];
+
+                bcfViewpoint.ClippingPlanes = GetBcfClippingPlanes(_uiDocument);
 
                 if (_uiDocument.ActiveView.ViewType == ViewType.ThreeD)
                 {
@@ -184,6 +187,22 @@ namespace IPA.Bcfier.Revit.Services
             }
 
             return null;
+        }
+
+        private static List<BcfViewpointClippingPlane> GetBcfClippingPlanes(UIDocument uiDocument)
+        {
+            if (uiDocument.ActiveView is not View3D view3D)
+            {
+                return new List<BcfViewpointClippingPlane>();
+            }
+
+            BoundingBoxXYZ sectionBox = view3D.GetSectionBox();
+            XYZ transformedMin = sectionBox.Transform.OfPoint(sectionBox.Min);
+            XYZ transformedMax = sectionBox.Transform.OfPoint(sectionBox.Max);
+            Vector3 minCorner = transformedMin.ToVector3().ToMeters();
+            Vector3 maxCorner = transformedMax.ToVector3().ToMeters();
+
+            return new AxisAlignedBoundingBox(minCorner, maxCorner).ToClippingPlanes();
         }
     }
 }
