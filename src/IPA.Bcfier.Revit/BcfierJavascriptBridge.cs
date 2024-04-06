@@ -25,7 +25,6 @@ namespace IPA.Bcfier.Revit
 
             public string Data { get; set; }
         }
-
         public async Task SendDataToRevit(string data, IJavascriptCallback javascriptCallback)
         {
             var classData = JsonConvert.DeserializeObject<DataClass>(data)!;
@@ -42,13 +41,13 @@ namespace IPA.Bcfier.Revit
 
             if (classData.Command == "getSettings")
             {
-                var userSettings = await new Services.SettingsService().LoadSettingsAsync();
+                var userSettings = await new IPA.Bcfier.Services.SettingsService().LoadSettingsAsync();
                 await javascriptCallback.ExecuteAsync(JsonConvert.SerializeObject(userSettings, serializerSettings));
             }
             else if (classData.Command == "setSettings")
             {
                 var userSettings = JsonConvert.DeserializeObject<Settings>(classData.Data);
-                await new Services.SettingsService().SaveSettingsAsync(userSettings!);
+                await new IPA.Bcfier.Services.SettingsService().SaveSettingsAsync(userSettings!);
                 await javascriptCallback.ExecuteAsync(JsonConvert.SerializeObject(userSettings, serializerSettings));
             }
             else if (classData.Command == "openDocumentation")
@@ -69,6 +68,10 @@ namespace IPA.Bcfier.Revit
                     Callback = javascriptCallback,
                     BcfFile = JsonConvert.DeserializeObject<BcfFile>(classData.Data)
                 });
+            }
+            else if (classData.Command == "createViewpoint")
+            {
+                _revitTaskQueueHandler.CreateRevitViewpointCallbacks.Enqueue(javascriptCallback);
             }
             else
             {

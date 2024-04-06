@@ -1,7 +1,8 @@
-using Autodesk.Revit.UI;
+﻿using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Events;
 using CefSharp;
 using IPA.Bcfier.Revit.Models;
+using IPA.Bcfier.Revit.Services;
 using IPA.Bcfier.Services;
 using Microsoft.Win32;
 using Newtonsoft.Json;
@@ -13,6 +14,7 @@ namespace IPA.Bcfier.Revit
     {
         public Queue<IJavascriptCallback> OpenBcfFileCallbacks = new Queue<IJavascriptCallback>();
         public Queue<SaveBcfFileQueueItem> SaveBcfFileCallbacks = new Queue<SaveBcfFileQueueItem>();
+        public Queue<IJavascriptCallback> CreateRevitViewpointCallbacks = new Queue<IJavascriptCallback>();
         private bool shouldUnregister = false;
 
         public void OnIdling(object sender, IdlingEventArgs args)
@@ -39,12 +41,19 @@ namespace IPA.Bcfier.Revit
                 var saveBcfFileQueueItem = SaveBcfFileCallbacks.Dequeue();
                 HandleSaveBcfFileCallback(saveBcfFileQueueItem);
             }
+
+            if (CreateRevitViewpointCallbacks.Count > 0)
+            {
+                var uiDocument = uiApplication.ActiveUIDocument;
+                var callback = CreateRevitViewpointCallbacks.Dequeue();
+                HandleCreateRevitViewpointCallback(callback, uiDocument);
+            }
         }
+
         public void UnregisterEventHandler()
         {
             shouldUnregister = true;
         }
-
 
         private void HandleOpenBcfFileCallback(IJavascriptCallback callback)
         {
@@ -102,6 +111,25 @@ namespace IPA.Bcfier.Revit
                 await bcfFileResult.CopyToAsync(fs);
 
                 await saveBcfFileQueueItem.Callback.ExecuteAsync();
+            });
+        }
+
+        private void HandleCreateRevitViewpointCallback(IJavascriptCallback callback, UIDocument uIDocument)
+        {
+            var viewpointService = new RevitViewpointCreationService(uIDocument);
+            var viewpoint = viewpointService.GenerateViewpoint();
+            var contractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+            };
+            var serializerSettings = new JsonSerializerSettings
+            {
+                ContractResolver = contractResolver,
+                Formatting = Formatting.Indented
+            };
+            Task.Run(async () =>
+            {
+                await callback.ExecuteAsync(JsonConvert.SerializeObject(viewpoint, serializerSettings));
             });
         }
     }

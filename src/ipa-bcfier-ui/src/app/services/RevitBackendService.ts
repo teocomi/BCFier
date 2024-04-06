@@ -44,7 +44,7 @@ export class RevitBackendService {
   }
 
   addViewpoint(): Observable<BcfViewpoint | null> {
-    throw new Error('Method not implemented.');
+    return this.sendCommand<BcfViewpoint>('createViewpoint', null);
   }
 
   private sendCommand<T>(command: string, data: any): Observable<T> {
