@@ -24,7 +24,8 @@ namespace IPA.Bcfier.Revit
 #endif
 
             var taskQueueHandler = new RevitTaskQueueHandler();
-            browser.JavascriptObjectRepository.Register("bcfierJavascriptBridge", new BcfierJavascriptBridge(taskQueueHandler), true);
+            var bcfierJavascriptBridge = new BcfierJavascriptBridge(taskQueueHandler);
+            browser.JavascriptObjectRepository.Register("bcfierJavascriptBridge", bcfierJavascriptBridge, true);
             browser.RequestHandler = new PluginRequestHandler(proxyToLocalhost);
 #if DEBUG_BUILD
             browser.IsBrowserInitializedChanged += (s, e) =>
@@ -54,7 +55,7 @@ namespace IPA.Bcfier.Revit
 
             window.Closed += (s, e) =>
             {
-                commandData.Application.Idling -= taskQueueHandler.OnIdling;
+                taskQueueHandler.UnregisterEventHandler();
                 browser.Dispose();
             };
 

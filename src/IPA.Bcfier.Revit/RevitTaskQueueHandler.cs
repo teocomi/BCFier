@@ -1,4 +1,5 @@
-﻿using Autodesk.Revit.UI.Events;
+using Autodesk.Revit.UI;
+using Autodesk.Revit.UI.Events;
 using CefSharp;
 using IPA.Bcfier.Revit.Models;
 using IPA.Bcfier.Services;
@@ -12,9 +13,21 @@ namespace IPA.Bcfier.Revit
     {
         public Queue<IJavascriptCallback> OpenBcfFileCallbacks = new Queue<IJavascriptCallback>();
         public Queue<SaveBcfFileQueueItem> SaveBcfFileCallbacks = new Queue<SaveBcfFileQueueItem>();
+        private bool shouldUnregister = false;
 
         public void OnIdling(object sender, IdlingEventArgs args)
         {
+            var uiApplication = sender as UIApplication;
+            if (uiApplication == null)
+            {
+                return;
+            }
+
+            if (shouldUnregister)
+            {
+                uiApplication.Idling -= OnIdling;
+            }
+
             if (OpenBcfFileCallbacks.Count > 0)
             {
                 var callback = OpenBcfFileCallbacks.Dequeue();
@@ -27,6 +40,11 @@ namespace IPA.Bcfier.Revit
                 HandleSaveBcfFileCallback(saveBcfFileQueueItem);
             }
         }
+        public void UnregisterEventHandler()
+        {
+            shouldUnregister = true;
+        }
+
 
         private void HandleOpenBcfFileCallback(IJavascriptCallback callback)
         {
