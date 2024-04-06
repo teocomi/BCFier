@@ -45,9 +45,10 @@ namespace Bcfier.Revit.Entry
 
 #endif
 
+        public const string RevitVersion = "2024";
 
 
-    internal static CmdMain ThisCmd = null;
+        internal static CmdMain ThisCmd = null;
     private static bool _isRunning;
     private static ExtAppBcfier _extAppBcfier;
 
