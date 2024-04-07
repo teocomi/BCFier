@@ -268,6 +268,7 @@ export const version = {{
             File.Copy(pluginOutputDirectory / "Dangl.BCF.dll", installerDirectory / "Dangl.BCF.dll");
             File.Copy(pluginOutputDirectory / "IPA.Bcfier.dll", installerDirectory/ "IPA.Bcfier.dll");
             File.Copy(pluginOutputDirectory / "IPA.Bcfier.Revit.dll", installerDirectory/ "IPA.Bcfier.Revit.dll");
+            File.Copy(pluginOutputDirectory / "DecimalEx.dll", installerDirectory/ "DecimalEx.dll");
             File.Copy(pluginOutputDirectory / "IPA.Bcfier.Revit.addin", installerDirectory/ "IPA.Bcfier.Revit.addin");
 
             InnoSetup($"/dAppVersion=\"{GitVersion.AssemblySemVer}\" {pluginOutputDirectory / "Installer.iss"}");
