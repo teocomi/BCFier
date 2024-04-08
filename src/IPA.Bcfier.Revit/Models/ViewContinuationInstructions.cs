@@ -1,7 +1,7 @@
 ﻿using Autodesk.Revit.DB;
 using CefSharp;
 
-namespace IPA.Bcfier.Revit.Services
+namespace IPA.Bcfier.Revit.Models
 {
     public class ViewContinuationInstructions
     {
@@ -9,6 +9,6 @@ namespace IPA.Bcfier.Revit.Services
 
         public ElementId? ViewId { get; set; }
 
-        public IJavascriptCallback JavascriptCallback { get; set; }
+        public Func<Task>? Callback { get; set; }
     }
 }

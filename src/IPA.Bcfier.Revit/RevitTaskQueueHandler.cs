@@ -1,6 +1,5 @@
 ﻿using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Events;
-using CefSharp;
 using IPA.Bcfier.Models.Bcf;
 using IPA.Bcfier.Revit.Models;
 using IPA.Bcfier.Revit.Services;
@@ -13,13 +12,12 @@ namespace IPA.Bcfier.Revit
 {
     public class RevitTaskQueueHandler
     {
-        public Queue<IJavascriptCallback> OpenBcfFileCallbacks { get; } = new Queue<IJavascriptCallback>();
+        public Queue<Func<string, Task>> OpenBcfFileCallbacks { get; } = new Queue<Func<string, Task>>();
         public Queue<SaveBcfFileQueueItem> SaveBcfFileCallbacks { get; } = new Queue<SaveBcfFileQueueItem>();
-        public Queue<IJavascriptCallback> CreateRevitViewpointCallbacks { get; } = new Queue<IJavascriptCallback>();
+        public Queue<Func<string, Task>> CreateRevitViewpointCallbacks { get; } = new Queue<Func<string, Task>>();
         public Queue<ShowViewpointQueueItem> ShowViewpointQueueItems { get; } = new Queue<ShowViewpointQueueItem>();
-        private bool shouldUnregister = false;
-
         private Queue<ViewContinuationInstructions> AfterViewCreationCallbackQueue { get; } = new Queue<ViewContinuationInstructions>();
+        private bool shouldUnregister = false;
 
         public void OnIdling(object sender, IdlingEventArgs args)
         {
@@ -88,7 +86,10 @@ namespace IPA.Bcfier.Revit
                     item.ViewContinuation?.Invoke();
                     Task.Run(async () =>
                     {
-                        await item.JavascriptCallback.ExecuteAsync();
+                        if (item != null)
+                        {
+                            await item.Callback();
+                        }
                     });
                 }
                 else if (item != null)
@@ -103,7 +104,7 @@ namespace IPA.Bcfier.Revit
             shouldUnregister = true;
         }
 
-        private void HandleOpenBcfFileCallback(IJavascriptCallback callback)
+        private void HandleOpenBcfFileCallback(Func<string, Task> callback)
         {
             var openFileDialog = new OpenFileDialog
             {
@@ -130,7 +131,8 @@ namespace IPA.Bcfier.Revit
                     ContractResolver = contractResolver,
                     Formatting = Formatting.Indented
                 };
-                await callback.ExecuteAsync(JsonConvert.SerializeObject(bcfResult, serializerSettings));
+
+                await callback(JsonConvert.SerializeObject(bcfResult, serializerSettings));
             });
         }
 
@@ -162,7 +164,7 @@ namespace IPA.Bcfier.Revit
             });
         }
 
-        private void HandleCreateRevitViewpointCallback(IJavascriptCallback callback, UIDocument uiDocument)
+        private void HandleCreateRevitViewpointCallback(Func<string, Task> callback, UIDocument uiDocument)
         {
             var viewpointService = new RevitViewpointCreationService(uiDocument);
             var viewpoint = viewpointService.GenerateViewpoint();
@@ -177,11 +179,11 @@ namespace IPA.Bcfier.Revit
             };
             Task.Run(async () =>
             {
-                await callback.ExecuteAsync(JsonConvert.SerializeObject(viewpoint, serializerSettings));
+                await callback(JsonConvert.SerializeObject(viewpoint, serializerSettings));
             });
         }
 
-        private void HandleShowRevitViewpointCallback(IJavascriptCallback? callback, BcfViewpoint? viewpoint, UIDocument uiDocument)
+        private void HandleShowRevitViewpointCallback(Func<Task>? callback, BcfViewpoint? viewpoint, UIDocument uiDocument)
         {
             if (callback == null || viewpoint == null)
             {
@@ -194,12 +196,12 @@ namespace IPA.Bcfier.Revit
             {
                 Task.Run(async () =>
                 {
-                    await callback.ExecuteAsync();
+                    await callback();
                 });
                 return;
             }
 
-            afterViewInitCallback.JavascriptCallback = callback;
+            afterViewInitCallback.Callback = callback;
             AfterViewCreationCallbackQueue.Enqueue(afterViewInitCallback);
         }
     }

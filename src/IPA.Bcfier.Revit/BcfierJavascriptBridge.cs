@@ -2,9 +2,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using IPA.Bcfier.Models.Settings;
-using IPA.Bcfier.Services;
-using Autodesk.Revit.UI;
-using Microsoft.Win32;
 using IPA.Bcfier.Revit.Models;
 using IPA.Bcfier.Models.Bcf;
 
@@ -25,6 +22,7 @@ namespace IPA.Bcfier.Revit
 
             public string Data { get; set; }
         }
+
         public async Task SendDataToRevit(string data, IJavascriptCallback javascriptCallback)
         {
             var classData = JsonConvert.DeserializeObject<DataClass>(data)!;
@@ -59,7 +57,7 @@ namespace IPA.Bcfier.Revit
             {
                 // Since we need a Revit context (more specifically access to the UI thread), 
                 // we're enqueuing that task to be executed in the Revit context
-                _revitTaskQueueHandler.OpenBcfFileCallbacks.Enqueue(javascriptCallback);
+                _revitTaskQueueHandler.OpenBcfFileCallbacks.Enqueue(message => javascriptCallback.ExecuteAsync(message));
             }
             else if (classData.Command == "exportBcfFile")
             {
@@ -71,14 +69,14 @@ namespace IPA.Bcfier.Revit
             }
             else if (classData.Command == "createViewpoint")
             {
-                _revitTaskQueueHandler.CreateRevitViewpointCallbacks.Enqueue(javascriptCallback);
+                _revitTaskQueueHandler.CreateRevitViewpointCallbacks.Enqueue(message => javascriptCallback.ExecuteAsync(message));
             }
             else if (classData.Command == "showViewpoint")
             {
                 var viewpoint = JsonConvert.DeserializeObject<BcfViewpoint>(classData.Data);
                 _revitTaskQueueHandler.ShowViewpointQueueItems.Enqueue(new ShowViewpointQueueItem
                 {
-                    Callback = javascriptCallback,
+                    Callback = () => javascriptCallback.ExecuteAsync(),
                     Viewpoint = viewpoint
                 });
             }

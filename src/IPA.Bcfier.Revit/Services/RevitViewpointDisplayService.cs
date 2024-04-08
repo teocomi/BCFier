@@ -1,6 +1,7 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using IPA.Bcfier.Models.Bcf;
+using IPA.Bcfier.Revit.Models;
 using IPA.Bcfier.Revit.OpenProject;
 
 namespace IPA.Bcfier.Revit.Services
