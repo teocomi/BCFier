@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 export class AppConfigService {
   private defaultFrontendConfig: FrontendConfig = {
     isInElectronMode: false,
+    isConnectedToRevit: false,
   };
 
   getFrontendConfig(): FrontendConfig {

@@ -246,11 +246,12 @@ export const version = {{
     Target BuildRevitPlugin => _ => _
         .DependsOn(BuildFrontend)
         .DependsOn(Compile)
+        .DependsOn(BuildElectronApp)
         .Executes(() =>
         {
             CopyDirectoryRecursively(SourceDirectory / "ipa-bcfier-ui" / "dist" / "ipa-bcfier-ui" / "browser", SourceDirectory / "IPA.Bcfier.Revit" / "Resources" / "Browser", DirectoryExistsPolicy.Merge, FileExistsPolicy.Overwrite);
-
             var pluginOutputDirectory = OutputDirectory / "RevitPlugin";
+
             DotNetBuild(c => c.SetProjectFile(SourceDirectory / "IPA.Bcfier.Revit" / "IPA.Bcfier.Revit.csproj")
                             .SetConfiguration("Release")
                             .SetOutputDirectory(pluginOutputDirectory)
@@ -264,6 +265,10 @@ export const version = {{
 
             var installerDirectory = pluginOutputDirectory / "Installer";
             installerDirectory.CreateOrCleanDirectory();
+
+            using var zipStream = File.OpenRead(OutputDirectory / "electron" / "IPA.Bcfier_Unzipped_Windows_X64.zip");
+            ZipFile.ExtractToDirectory(zipStream, installerDirectory / "bcfier-app");
+
             CopyDirectoryRecursively(SourceDirectory / "IPA.Bcfier.Revit" / "InstallerAssets", installerDirectory / "InstallerAssets", DirectoryExistsPolicy.Merge, FileExistsPolicy.Overwrite);
             File.Copy(pluginOutputDirectory / "Dangl.BCF.dll", installerDirectory / "Dangl.BCF.dll");
             File.Copy(pluginOutputDirectory / "IPA.Bcfier.dll", installerDirectory/ "IPA.Bcfier.dll");

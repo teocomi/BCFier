@@ -3,7 +3,7 @@
   <AddIn Type="Application">
     <Name>IPA.BCFier</Name>
     <FullClassName>IPA.Bcfier.Revit.IpaBcfierRevitPlugin</FullClassName>
-    <Assembly>IPA.Bcfier.Revit.dll</Assembly>
+    <Assembly>Ipa.BCFier/IPA.Bcfier.Revit.dll</Assembly>
     <AddInId>cfd740a5-8089-4323-a6e5-c86cfee9cca2</AddInId>
     <VendorId>Dangl IT GmbH</VendorId>
     <VendorDescription>www.dangl-it.com</VendorDescription>

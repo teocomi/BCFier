@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
+using IPA.Bcfier.App.Configuration;
 
 namespace IPA.Bcfier.App.Controllers
 {
@@ -10,6 +11,12 @@ namespace IPA.Bcfier.App.Controllers
     public class FrontendConfigController : ControllerBase
     {
         private static string? _frontendConfig;
+        private readonly RevitParameters _revitParameters;
+
+        public FrontendConfigController(RevitParameters revitParameters)
+        {
+            _revitParameters = revitParameters;
+        }
 
         [HttpGet("config.js")]
         public IActionResult GetFrontendConfigAsJavaScript([FromQuery] string? timestamp)
@@ -57,7 +64,8 @@ window.ipaBcfierFrontendConfig = "
         {
             return new FrontendConfig
             {
-                IsInElectronMode = true
+                IsInElectronMode = true,
+                IsConnectedToRevit = _revitParameters.IsConnectedToRevit
             };
         }
     }

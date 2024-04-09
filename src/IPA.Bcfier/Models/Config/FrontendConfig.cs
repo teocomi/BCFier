@@ -6,5 +6,8 @@ namespace IPA.Bcfier.Models.Config
     {
         [Required]
         public bool IsInElectronMode { get; set; } = false;
+
+        [Required]
+        public bool IsConnectedToRevit { get; set; } = false;
     }
 }

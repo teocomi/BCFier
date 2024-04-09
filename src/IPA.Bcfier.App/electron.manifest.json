@@ -12,13 +12,14 @@
     "productName": "IPA.Bcfier",
     "copyright": "Copyright © 2024 Dangl IT GmbH",
     "afterSign": "../../../electronAfterPackHook.js",
-    "buildVersion": "3.0.0-initial-frontend.15",
+    "buildVersion": "3.0.0-ipc.67",
     "compression": "maximum",
     "directories": {
       "output": "../../../bin/Desktop"
     },
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "icon.ico"
     },
     "nsis": {
       "uninstallDisplayName": "${productName}",

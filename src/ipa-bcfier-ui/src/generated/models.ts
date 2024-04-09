@@ -156,6 +156,7 @@ export interface BcfFile {
 
 export interface FrontendConfig {
     isInElectronMode: boolean;
+    isConnectedToRevit: boolean;
 }
 
 export interface Settings {
