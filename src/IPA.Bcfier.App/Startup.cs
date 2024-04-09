@@ -1,5 +1,6 @@
 ﻿using Dangl.Data.Shared.AspNetCore.SpaUtilities;
 using ElectronNET.API;
+using IPA.Bcfier.App.Configuration;
 using IPA.Bcfier.App.Services;
 using IPA.Bcfier.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,7 @@ namespace IPA.Bcfier.App
             services.AddSingleton<ElectronWindowProvider>();
             services.AddTransient<SettingsService>();
             services.AddHttpContextAccessor();
+            services.AddSingleton(new RevitParameters());
 
             services.Configure<ApiBehaviorOptions>(options =>
             {

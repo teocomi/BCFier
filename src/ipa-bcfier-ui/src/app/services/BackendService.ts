@@ -1,16 +1,25 @@
 import { BcfFile, BcfViewpoint, Settings } from '../../generated/models';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, catchError, of, tap } from 'rxjs';
 
 import { AddSnapshotViewpointComponent } from '../components/add-snapshot-viewpoint/add-snapshot-viewpoint.component';
+import { AppConfigService } from './AppConfigService';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { LoadingService } from './loading.service';
 import { MatDialog } from '@angular/material/dialog';
+import { NotificationsService } from './notifications.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BackendService {
-  constructor(private http: HttpClient, private matDialog: MatDialog) {}
+  constructor(
+    private http: HttpClient,
+    private matDialog: MatDialog,
+    private appConfigService: AppConfigService,
+    private loadingService: LoadingService,
+    private notificationsService: NotificationsService
+  ) {}
 
   importBcfFile(): Observable<BcfFile> {
     return this.http.post<BcfFile>('/api/bcf-conversion/import', null);
@@ -43,25 +52,48 @@ export class BackendService {
   }
 
   addViewpoint(): Observable<BcfViewpoint | null> {
-    const subject = new Subject<BcfViewpoint | null>();
-    this.matDialog
-      .open(AddSnapshotViewpointComponent)
-      .afterClosed()
-      .subscribe((viewpoint) => {
-        if (viewpoint) {
-          subject.next(viewpoint);
-        } else {
-          subject.next(null);
-        }
-        setTimeout(() => {
-          subject.complete();
-        }, 0);
-      });
+    if (this.appConfigService.getFrontendConfig().isConnectedToRevit) {
+      this.loadingService.showLoadingScreen();
+      return this.http.post<BcfViewpoint>('/api/viewpoints', null).pipe(
+        tap(() => this.loadingService.hideLoadingScreen()),
+        catchError(() => {
+          this.loadingService.hideLoadingScreen();
+          this.notificationsService.error('Failed to add viewpoint.');
+          return of(null);
+        })
+      );
+    } else {
+      const subject = new Subject<BcfViewpoint | null>();
+      this.matDialog
+        .open(AddSnapshotViewpointComponent)
+        .afterClosed()
+        .subscribe((viewpoint) => {
+          if (viewpoint) {
+            subject.next(viewpoint);
+          } else {
+            subject.next(null);
+          }
+          setTimeout(() => {
+            subject.complete();
+          }, 0);
+        });
 
-    return subject.asObservable();
+      return subject.asObservable();
+    }
   }
 
   selectViewpoint(viewpoint: BcfViewpoint): void {
-    // Not doing anything in the standalone version
+    if (this.appConfigService.getFrontendConfig().isConnectedToRevit) {
+      this.loadingService.showLoadingScreen();
+      this.http.post('/api/viewpoints/visualization', viewpoint).subscribe({
+        next: () => this.loadingService.hideLoadingScreen(),
+        error: () => {
+          this.loadingService.hideLoadingScreen();
+          this.notificationsService.error('Failed to select viewpoint.');
+        },
+      });
+    } else {
+      // Not doing anything in the standalone version
+    }
   }
 }
