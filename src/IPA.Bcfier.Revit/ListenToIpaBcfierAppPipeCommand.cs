@@ -44,13 +44,13 @@ namespace IPA.Bcfier.Revit
                 return;
             }
 
-            var openProjectBrowserExecutablePath = GetIpaBcfierAppExecutablePath();
-            if (!File.Exists(openProjectBrowserExecutablePath))
+            var ipaBcfierExecutablePath = GetIpaBcfierAppExecutablePath();
+            if (!File.Exists(ipaBcfierExecutablePath))
             {
                 throw new SystemException("IPA.BCFier.App executable not found.");
             }
 
-            _bcfierAppProcess = Process.Start(openProjectBrowserExecutablePath, "--revit-integration");
+            _bcfierAppProcess = Process.Start(ipaBcfierExecutablePath, "--revit-integration");
             _bcfierAppProcess.Exited += (sender, args) =>
             {
                 onExited();
