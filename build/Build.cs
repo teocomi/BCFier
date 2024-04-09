@@ -332,7 +332,7 @@ export const version = {{
         Assert.True(!string.IsNullOrWhiteSpace(CodeSigningKeyVaultTenantId), "!string.IsNullOrWhitespace(CodeSigningKeyVaultTenantId)");
         Assert.True(!string.IsNullOrWhiteSpace(CodeSigningCertificateName), "!string.IsNullOrWhitespace(CodeSigningCertificateName)");
 
-        var globPattern = includeDll ? "*.dll,*.exe" : "*.exe";
+        var globPattern = includeDll ? new[] { "*.dll", "*.exe" } : new[] { "*.exe" };
         var inputFiles = folderPath.GlobFiles(globPattern);
         var filesListPath = OutputDirectory / $"{Guid.NewGuid()}.txt";
         filesListPath.WriteAllText(inputFiles.Select(f => f.ToString()).Join(Environment.NewLine) + Environment.NewLine);
