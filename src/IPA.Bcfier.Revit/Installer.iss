@@ -38,4 +38,4 @@ Source: "{#Repository}\DecimalEx.dll"; DestDir: "{#RevitAddin24}\Ipa.BCFier"; Fl
 Source: "{#Repository}\Dangl.BCF.dll"; DestDir: "{#RevitAddin24}\Ipa.BCFier"; Flags: ignoreversion; Components: revit24
 Source: "{#Repository}\IPA.Bcfier.dll"; DestDir: "{#RevitAddin24}\Ipa.BCFier"; Flags: ignoreversion; Components: revit24
 Source: "{#Repository}\IPA.Bcfier.Revit.dll"; DestDir: "{#RevitAddin24}\Ipa.BCFier"; Flags: ignoreversion; Components: revit24
-Source: "{#Repository}\bcfier-app\**\*"; DestDir: "{#RevitAddin24}\Ipa.BCFier\ipa-bcfier-app"; Flags: ignoreversion; Components: revit24
+Source: "{#Repository}\bcfier-app\*"; DestDir: "{#RevitAddin24}\Ipa.BCFier\ipa-bcfier-app"; Flags: ignoreversion recursesubdirs; Components: revit24
