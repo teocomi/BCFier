@@ -94,5 +94,63 @@ namespace IPA.Bcfier.App.Controllers
             await bcfFileResult.CopyToAsync(fs);
             return NoContent();
         }
+
+        [HttpPost("merge")]
+        public async Task<IActionResult> MergeBcfFilesAsync()
+        {
+            var electronWindow = _electronWindowProvider.BrowserWindow;
+            if (electronWindow == null)
+            {
+                return BadRequest();
+            }
+
+            var fileSelectionResult = await Electron.Dialog.ShowOpenDialogAsync(electronWindow, new OpenDialogOptions
+            {
+                Properties = new OpenDialogProperty[]
+                {
+                    OpenDialogProperty.multiSelections
+                },
+                Filters = new[]
+                {
+                    new FileFilter
+                    {
+                        Name = "BCF Files",
+                        Extensions = new string[] { "bcf", "bcfzip" }
+                    }
+                }
+            });
+
+            if (fileSelectionResult == null)
+            {
+                return NoContent();
+            }
+
+            try
+            {
+                var memStreams = new List<Stream>();
+                foreach (var file in fileSelectionResult)
+                {
+                    using var bcfFileStream = System.IO.File.OpenRead(file);
+                    var memStream = new MemoryStream();
+                    await bcfFileStream.CopyToAsync(memStream);
+                    memStream.Position = 0;
+                    memStreams.Add(memStream);
+                }
+
+                var mergeService = new BcfMergeService();
+                var bcfResult = await mergeService.MergeBcfFilesAsync(memStreams);
+
+                if (bcfResult == null)
+                {
+                    return BadRequest();
+                }
+
+                return Ok(bcfResult);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ToString());
+            }
+        }
     }
 }

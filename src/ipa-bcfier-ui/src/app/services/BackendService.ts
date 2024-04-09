@@ -25,6 +25,10 @@ export class BackendService {
     return this.http.post<BcfFile>('/api/bcf-conversion/import', null);
   }
 
+  mergeBcfFile(): Observable<BcfFile> {
+    return this.http.post<BcfFile>('/api/bcf-conversion/merge', null);
+  }
+
   exportBcfFile(bcfFile: BcfFile): Observable<void> {
     return this.http.post<void>('/api/bcf-conversion/export', bcfFile);
   }

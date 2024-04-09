@@ -27,6 +27,10 @@ export class RevitBackendService {
     return this.sendCommand<BcfFile>('importBcfFile', null);
   }
 
+  mergeBcfFile(): Observable<BcfFile> {
+    throw new Error('Method not implemented.');
+  }
+
   exportBcfFile(bcfFile: BcfFile): Observable<void> {
     return this.sendCommand<void>('exportBcfFile', bcfFile);
   }
