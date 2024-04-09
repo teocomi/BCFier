@@ -1,4 +1,4 @@
-using Autodesk.Revit.Attributes;
+﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using CefSharp;
@@ -74,6 +74,7 @@ namespace IPA.Bcfier.Revit
             typeof(IPA.Bcfier.Models.Bcf.BcfComment).ToString();
             typeof(Dangl.BCF.APIObjects.V21.Auth_GET).ToString();
             typeof(IPA.Bcfier.Ipc.IpcHandler).ToString();
+            typeof(DecimalMath.DecimalEx).ToString();
         }
     }
 }
