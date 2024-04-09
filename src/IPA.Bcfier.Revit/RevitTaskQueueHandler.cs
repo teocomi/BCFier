@@ -72,10 +72,10 @@ namespace IPA.Bcfier.Revit
             // 2. We send that data to the Revit API, which puts the request on a queue
             // 3. During the Revit Application.Idling event, we process the queue
             // 4. A viewpoint display request is processed, and a view is created and set as active view
-            //    The active view can only be set in an asynchronous way from the Application.Idling event in
-            //    the Revit API, so we need to wait until the new view is loaded
-            // 5. Once the view is loaded, we check this other queue here and apply the callback, which sets
-            //    e.g. the selected components
+            // The active view can only be set in an asynchronous way from the Application.Idling
+            // event in the Revit API, so we need to wait until the new view is loaded
+            // 5. Once the view is loaded, we check this other queue here and apply the callback,
+            //    which sets e.g. the selected components
             // 6. After that, we can inform the frontend
             var queueLength = AfterViewCreationCallbackQueue.Count;
             for (var i = 0; i < queueLength; i++)
@@ -179,7 +179,14 @@ namespace IPA.Bcfier.Revit
             };
             Task.Run(async () =>
             {
-                await callback(JsonConvert.SerializeObject(viewpoint, serializerSettings));
+                if (viewpoint == null)
+                {
+                    await callback("{}");
+                }
+                else
+                {
+                    await callback(JsonConvert.SerializeObject(viewpoint, serializerSettings));
+                }
             });
         }
 
