@@ -14,11 +14,11 @@ namespace IPA.Bcfier.Revit.Services
             _uiDocument = uiDocument;
         }
 
-        //<summary>
-        //Generate a VisualizationInfo of the current view
-        //</summary>
-        //<returns></returns>
-        public BcfViewpoint GenerateViewpoint()
+        ///<summary>
+        ///  Generate a VisualizationInfo of the current view
+        ///</summary>
+        ///<returns></returns>
+        public BcfViewpoint? GenerateViewpoint()
         {
             try
             {
