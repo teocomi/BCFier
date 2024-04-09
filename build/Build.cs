@@ -259,7 +259,7 @@ export const version = {{
                             .SetFileVersion(GitVersion.AssemblySemVer)
                             .SetInformationalVersion(GitVersion.InformationalVersion)
                             .EnableNoRestore());
-            SignExecutablesInFolder(pluginOutputDirectory, false);
+            SignExecutablesInFolder(pluginOutputDirectory, includeDll: true);
 
             File.Copy(SourceDirectory / "IPA.Bcfier.Revit" / "Installer.iss", pluginOutputDirectory / "Installer.iss", overwrite: true);
 
