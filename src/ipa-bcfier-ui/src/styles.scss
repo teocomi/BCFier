@@ -5,15 +5,42 @@
 @import "./assets/fonts/fonts/fonts.css";
 @import "./assets/fonts/icons/fonts.css";
 
+
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
 @include mat.core();
 
+
+$yellow-palette: (
+  50: #fdfce5,
+  100: #faf8bf,
+  200: #f6f293,
+  300: #f2ed66,
+  400: #efe940,
+  500: #eee609,
+  600: #eed300,
+  700: #efbb00,
+  800: #efa300,
+  900: #ee7800,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600:  #000000,
+    700:  #000000,
+    800:  #000000,
+    900:  #000000,
+  )
+);
+
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$ipa-bcfier-ui-primary: mat.define-palette(mat.$cyan-palette, 600, 500, 700, 800);
+$ipa-bcfier-ui-primary:mat.define-palette($yellow-palette, 500,600,700);
 $ipa-bcfier-ui-accent: mat.define-palette(mat.$blue-grey-palette, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
