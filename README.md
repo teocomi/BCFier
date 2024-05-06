@@ -2,6 +2,14 @@
 
 
 
+# UPDATE 2024
+> I no longer have time to maintain this project, so it has been archived. All my focus is not going to [Speckle](https://speckle.systems/), the Open Source Data Platform for AEC data.
+We're planning at some point to add some BCF-like features to Speckle.
+
+
+---
+
+
 ## Intro
 
 BCFier is an extendible and Open Source BCF client. Like IFC is the open standard for Building Information models, [BCF](https://github.com/BuildingSMART/BCF-XML) is the open standard for Building Issues. BCFier is a set of plugins and standalone apps (modules) that handle BCF and integrate directly with BIM tools.
