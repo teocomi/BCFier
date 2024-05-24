@@ -3,7 +3,7 @@
 
 
 # UPDATE 2024
-> I no longer have time to maintain this project, so it has been archived. All my focus is not going to [Speckle](https://speckle.systems/), the Open Source Data Platform for AEC data.
+> I no longer have time to maintain this project, so it has been archived. All my focus is now going to [Speckle](https://speckle.systems/), the Open Source Data Platform for AEC data.
 We're planning at some point to add some BCF-like features to Speckle.
 
 
